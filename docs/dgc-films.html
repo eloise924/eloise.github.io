@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Film Database — DGC</title>
+<script>
+  (function() {
+    try {
+      var root = document.documentElement;
+      var openState = window.localStorage.getItem('macsd.palette.open.v2');
+      var positionState = window.localStorage.getItem('macsd.palette.position.v2');
+      root.setAttribute('data-palette-state', openState === 'false' ? 'closed' : 'open');
+      if (positionState) {
+        var parsed = JSON.parse(positionState);
+        if (typeof parsed.x === 'number' && typeof parsed.y === 'number') {
+          root.style.setProperty('--palette-initial-x', parsed.x + 'px');
+          root.style.setProperty('--palette-initial-y', parsed.y + 'px');
+        }
+      }
+    } catch (err) {}
+  })();
+</script>
+<link rel="icon" type="image/png" href="static/images/site-logo-black.png?v=2">
+<link rel="shortcut icon" type="image/png" href="static/images/site-logo-black.png?v=2">
+<link rel="apple-touch-icon" href="static/images/site-logo-black.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/main.css">
+
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-mark logo-mark-fallback">MC</div>
+      <img
+        src="static/images/site-logo-black.png"
+        alt="MACSD Tool logo"
+        class="logo-image"
+        onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';"
+      >
+      <div class="logo-copy">
+        <div class="logo-name">MACSD Tool</div>
+        <div class="logo-ver">v0.1 · internal</div>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Main</span>
+      <a href="dashboard.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        <span class="nav-item__label">Dashboard</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Outreach</span>
+      <a href="outreach.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="10" rx="2"/><path d="M1.5 4.5l6.5 4.5 6.5-4.5"/></svg>
+        <span class="nav-item__label">Outreach Projects</span>
+      </a>
+      <a href="outreach-manage.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 5h6M5 8h6M5 11h4"/></svg>
+        <span class="nav-item__label">Project Management</span>
+      </a>
+      <a href="outreach-resources.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5h10"/><path d="M3 8h10"/><path d="M3 11.5h6"/><circle cx="12" cy="11.5" r="1.5"/></svg>
+        <span class="nav-item__label">Resource Hub</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">DGC</span>
+      <a href="dgc-films.html" class="nav-item active">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M6 5l5 3-5 3V5z"/></svg>
+        <span class="nav-item__label">Film Database</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">SDLFF</span>
+      <a href="sdlff-films.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M6 5l5 3-5 3V5z"/></svg>
+        <span class="nav-item__label">Film Database</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Directory</span>
+      <a href="crm.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="3"/><path d="M1 13c0-3 2-5 5-5s5 2 5 5"/><circle cx="12" cy="5" r="2"/><path d="M15 13c0-2-1-4-3-4.5"/></svg>
+        <span class="nav-item__label">CRM Directory</span>
+      </a>
+      <a href="database-map.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3-1.5 4 1.5 3-1.5v8L10 13 6 11.5 3 13v-8.5Z"/><path d="M6 3v8.5"/><path d="M10 4.5V13"/></svg>
+        <span class="nav-item__label">San Diego Atlas</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Reports</span>
+      <a href="reports.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13.5h10"/><path d="M5 11V6"/><path d="M8 11V2.5"/><path d="M11 11V8"/></svg>
+        <span class="nav-item__label">Report</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Operations</span>
+      <a href="task-flow.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h10"/><path d="M3 8h7"/><path d="M3 12h5"/><circle cx="12" cy="8" r="2.5"/></svg>
+        <span class="nav-item__label">Task Management</span>
+      </a>
+      <a href="task-projects.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M5 6h6"/><path d="M5 9h4"/></svg>
+        <span class="nav-item__label">Task Projects</span>
+      </a>
+      <a href="website-crawler.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5.5"/><path d="M2.5 8h11"/><path d="M8 2.5a8.5 8.5 0 0 1 0 11"/><path d="M8 2.5a8.5 8.5 0 0 0 0 11"/></svg>
+        <span class="nav-item__label">Website Crawler</span>
+      </a>
+      <a href="image-to-sheet.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 5h6M5 8h6M5 11h2"/><path d="M11 10.5l1.5 1.5 2-3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="nav-item__label">Image to Sheet</span>
+      </a>
+      <a href="inventory.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="12" height="6" rx="1"/><path d="M5 8V5a3 3 0 0 1 6 0v3"/></svg>
+        <span class="nav-item__label">Inventory</span>
+      </a>
+      <a href="users.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-4 2.5-6 6-6s6 2 6 6"/></svg>
+        <span class="nav-item__label">Users</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="avatar">AD</div>
+        <div class="user-copy">
+          <div class="user-name">Admin User</div>
+          <div class="user-role">admin</div>
+        </div>
+        <button
+          type="button"
+          class="palette-toggle"
+          id="palette-toggle"
+          title="Toggle palette"
+          aria-label="Toggle palette"
+          aria-expanded="true"
+        >
+          <span class="palette-toggle__core"></span>
+        </button>
+        <a href="login.html" class="logout-btn" title="Sign out">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3"/><path d="M7 11l3-3-3-3"/><path d="M10 8H2"/></svg>
+        </a>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="sidebar-peek-toggle"
+      onclick="toggleSidebar()"
+      title="Toggle sidebar"
+      aria-label="Toggle sidebar"
+    >
+      <svg class="sidebar-peek-toggle__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3.5L5.5 8L10 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main" id="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()" title="Toggle menu" aria-label="Toggle sidebar">☰</button>
+      <div class="topbar-info">
+        <h1 class="topbar-title">Film Database</h1>
+        <span class="topbar-bread">DGC / Films</span>
+      </div>
+      <div class="topbar-right">
+        
+  <a href="dgc-films.html" class="btn btn-primary btn-sm">+ Add Film</a>
+
+      </div>
+    </header>
+
+    <!-- FLASH MESSAGES -->
+    
+      
+    
+
+    <!-- PAGE CONTENT -->
+    <main class="content">
+      
+<div class="scraper-box">
+  <form method="POST" action="/dgc/films/fetch">
+    <div class="input-with-button">
+      <input type="text" name="url" placeholder="Paste film URL..." required>
+      <button type="submit" class="fetch-btn">Fetch</button>
+    </div>
+  </form>
+</div>
+
+
+<div class="film-row film-row-link" onclick="window.location='/dgc/films/31'">
+  <div class="film-poster">
+    
+      <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/03/23104229/ajeiriNRFPLESjGZ0vdp4MVardZ-683x1024.jpg" alt="Palestine ’36" style="width:36px;height:48px;object-fit:cover;border-radius:4px;">
+    
+  </div>
+  <div>
+    
+    
+    <div class="film-title-row">
+      <div class="film-title">Palestine ’36</div>
+      
+    </div>
+    <div class="film-meta">
+      Dir. Annemarie Jacir
+       · Palestine, UK, Denmark, France, Qatar, Saudi Arabia, Jordan
+       · 2025
+    </div>
+    
+  </div>
+  <div class="film-meta">
+    120 min
+     · English and Arabic w/ English subtitles
+  </div>
+  <div>
+    <span class="pill pill-amber">Pending</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;" onclick="event.stopPropagation();">
+    <a href="dgc-film-detail.html" class="btn btn-sec btn-sm">View</a>
+    <a href="/dgc/films/edit/31" class="btn btn-sec btn-sm">Edit</a>
+    <form method="POST" action="/dgc/films/delete/31"
+          onsubmit="return confirm('Delete Palestine ’36?')" style="margin:0;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="film-row film-row-link" onclick="window.location='/dgc/films/30'">
+  <div class="film-poster">
+    
+      <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/03/23105743/aLQYyqWlIBBU3L8L84txbh0x1nq-683x1024.jpg" alt="My Father’s Shadow" style="width:36px;height:48px;object-fit:cover;border-radius:4px;">
+    
+  </div>
+  <div>
+    
+    
+    <div class="film-title-row">
+      <div class="film-title">My Father’s Shadow</div>
+      
+    </div>
+    <div class="film-meta">
+      Dir. Akinola Davies Jr.
+       · UK, Nigeria
+       · 2025
+    </div>
+    
+  </div>
+  <div class="film-meta">
+    93 min
+     · Nigerian Pidgin (Naija) and Yoruba w/ English subtitles, English
+  </div>
+  <div>
+    <span class="pill pill-amber">Pending</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;" onclick="event.stopPropagation();">
+    <a href="/dgc/films/30" class="btn btn-sec btn-sm">View</a>
+    <a href="/dgc/films/edit/30" class="btn btn-sec btn-sm">Edit</a>
+    <form method="POST" action="/dgc/films/delete/30"
+          onsubmit="return confirm('Delete My Father’s Shadow?')" style="margin:0;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="film-row film-row-link" onclick="window.location='/dgc/films/28'">
+  <div class="film-poster">
+    
+      <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/02/08135222/zg4jUEjRhHmTD1iu2MlpTfWXbn1-683x1024.jpg" alt="Bonkers Half-Assed Midnight: Demonwarp" style="width:36px;height:48px;object-fit:cover;border-radius:4px;">
+    
+  </div>
+  <div>
+    
+    
+    <div class="film-title-row">
+      <div class="film-title">Bonkers Half-Assed Midnight: Demonwarp</div>
+      
+    </div>
+    <div class="film-meta">
+      Dir. Emmett Alston
+      
+       · 1988
+    </div>
+    
+  </div>
+  <div class="film-meta">
+    91 min
+    
+  </div>
+  <div>
+    <span class="pill pill-amber">Pending</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;" onclick="event.stopPropagation();">
+    <a href="/dgc/films/28" class="btn btn-sec btn-sm">View</a>
+    <a href="/dgc/films/edit/28" class="btn btn-sec btn-sm">Edit</a>
+    <form method="POST" action="/dgc/films/delete/28"
+          onsubmit="return confirm('Delete Bonkers Half-Assed Midnight: Demonwarp?')" style="margin:0;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="film-row film-row-link" onclick="window.location='/dgc/films/27'">
+  <div class="film-poster">
+    
+      <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/03/16113755/jtxhyGaYhurH6KsjvP1jV3dDypz-683x1024.jpg" alt="DGC Video: The Young Girls of Rochefort" style="width:36px;height:48px;object-fit:cover;border-radius:4px;">
+    
+  </div>
+  <div>
+    
+    
+    <div class="film-title-row">
+      <div class="film-title">DGC Video: The Young Girls of Rochefort</div>
+      
+    </div>
+    <div class="film-meta">
+      Dir. Jacques Demy
+      
+       · 1967
+    </div>
+    
+  </div>
+  <div class="film-meta">
+    126 min
+     · French
+  </div>
+  <div>
+    <span class="pill pill-amber">Pending</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;" onclick="event.stopPropagation();">
+    <a href="/dgc/films/27" class="btn btn-sec btn-sm">View</a>
+    <a href="/dgc/films/edit/27" class="btn btn-sec btn-sm">Edit</a>
+    <form method="POST" action="/dgc/films/delete/27"
+          onsubmit="return confirm('Delete DGC Video: The Young Girls of Rochefort?')" style="margin:0;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="film-row film-row-link" onclick="window.location='/dgc/films/26'">
+  <div class="film-poster">
+    
+      <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/03/17085232/eB56l7U3VbvjLpmTbW9uv5jsAeI-1-683x1024.jpg" alt="A Savage Art: The Life &amp; Cartoons of Pat Oliphant" style="width:36px;height:48px;object-fit:cover;border-radius:4px;">
+    
+  </div>
+  <div>
+    
+    
+    <div class="film-title-row">
+      <div class="film-title">A Savage Art: The Life &amp; Cartoons of Pat Oliphant</div>
+      
+    </div>
+    <div class="film-meta">
+      Dir. Bill Banowsky
+      
+       · 2025
+    </div>
+    
+  </div>
+  <div class="film-meta">
+    89 min
+    
+  </div>
+  <div>
+    <span class="pill pill-amber">Pending</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;" onclick="event.stopPropagation();">
+    <a href="/dgc/films/26" class="btn btn-sec btn-sm">View</a>
+    <a href="/dgc/films/edit/26" class="btn btn-sec btn-sm">Edit</a>
+    <form method="POST" action="/dgc/films/delete/26"
+          onsubmit="return confirm('Delete A Savage Art: The Life &amp; Cartoons of Pat Oliphant?')" style="margin:0;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="film-row film-row-link" onclick="window.location='/dgc/films/15'">
+  <div class="film-poster">
+    
+      <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/03/09134420/9zJVyNQCmJIly2Pet1XOQMpGNzN-733x1024.jpg" alt="“This is America at 250: Frederick Wiseman” – Hospital" style="width:36px;height:48px;object-fit:cover;border-radius:4px;">
+    
+  </div>
+  <div>
+    
+    
+    <div class="film-title-row">
+      <div class="film-title">“This is America at 250: Frederick Wiseman” – Hospital</div>
+      
+    </div>
+    <div class="film-meta">
+      Dir. Frederick Wiseman
+      
+       · 1970
+    </div>
+    
+  </div>
+  <div class="film-meta">
+    84 min
+    
+  </div>
+  <div>
+    <span class="pill pill-amber">Pending</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;" onclick="event.stopPropagation();">
+    <a href="/dgc/films/15" class="btn btn-sec btn-sm">View</a>
+    <a href="/dgc/films/edit/15" class="btn btn-sec btn-sm">Edit</a>
+    <form method="POST" action="/dgc/films/delete/15"
+          onsubmit="return confirm('Delete “This is America at 250: Frederick Wiseman” – Hospital?')" style="margin:0;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="film-row film-row-link" onclick="window.location='/dgc/films/14'">
+  <div class="film-poster">
+    
+      <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/02/08132024/unnamed-7-691x1024.jpg" alt="Lumière, Le Cinéma" style="width:36px;height:48px;object-fit:cover;border-radius:4px;">
+    
+  </div>
+  <div>
+    
+    
+    <div class="film-title-row">
+      <div class="film-title">Lumière, Le Cinéma</div>
+      
+    </div>
+    <div class="film-meta">
+      Dir. Thierry Frémaux
+      
+       · 2024
+    </div>
+    
+  </div>
+  <div class="film-meta">
+    103 min
+     · French
+  </div>
+  <div>
+    <span class="pill pill-amber">Pending</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;" onclick="event.stopPropagation();">
+    <a href="/dgc/films/14" class="btn btn-sec btn-sm">View</a>
+    <a href="/dgc/films/edit/14" class="btn btn-sec btn-sm">Edit</a>
+    <form method="POST" action="/dgc/films/delete/14"
+          onsubmit="return confirm('Delete Lumière, Le Cinéma?')" style="margin:0;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="film-row film-row-link" onclick="window.location='/dgc/films/12'">
+  <div class="film-poster">
+    
+      <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/03/13091927/jnW2xfpB8BnHuHOiT7XA8EBSW9F-683x1024.jpg" alt="What Does That Nature Say to You" style="width:36px;height:48px;object-fit:cover;border-radius:4px;">
+    
+  </div>
+  <div>
+    
+    
+    <div class="film-title-row">
+      <div class="film-title">What Does That Nature Say to You</div>
+      
+    </div>
+    <div class="film-meta">
+      Dir. Hong Sang-soo
+      
+       · 2025
+    </div>
+    
+  </div>
+  <div class="film-meta">
+    109 min
+     · Korean
+  </div>
+  <div>
+    <span class="pill pill-amber">Pending</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;" onclick="event.stopPropagation();">
+    <a href="/dgc/films/12" class="btn btn-sec btn-sm">View</a>
+    <a href="/dgc/films/edit/12" class="btn btn-sec btn-sm">Edit</a>
+    <form method="POST" action="/dgc/films/delete/12"
+          onsubmit="return confirm('Delete What Does That Nature Say to You?')" style="margin:0;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="film-row film-row-link" onclick="window.location='/dgc/films/11'">
+  <div class="film-poster">
+    
+      <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/02/17092659/bRiokhWMk82MLAk5SjvRw1KmSZt.jpg" alt="The President’s Cake" style="width:36px;height:48px;object-fit:cover;border-radius:4px;">
+    
+  </div>
+  <div>
+    
+    
+    <div class="film-title-row">
+      <div class="film-title">The President’s Cake</div>
+      
+    </div>
+    <div class="film-meta">
+      Dir. Hasan Hadi
+      
+       · 2025
+    </div>
+    
+  </div>
+  <div class="film-meta">
+    105 min
+    
+  </div>
+  <div>
+    <span class="pill pill-amber">Pending</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;" onclick="event.stopPropagation();">
+    <a href="/dgc/films/11" class="btn btn-sec btn-sm">View</a>
+    <a href="/dgc/films/edit/11" class="btn btn-sec btn-sm">Edit</a>
+    <form method="POST" action="/dgc/films/delete/11"
+          onsubmit="return confirm('Delete The President’s Cake?')" style="margin:0;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div class="film-row film-row-link" onclick="window.location='/dgc/films/10'">
+  <div class="film-poster">
+    
+      <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/02/18103500/bzBtsLi17rK4G6kDvOXfUZfAhca-scaled.jpg" alt="Sirāt" style="width:36px;height:48px;object-fit:cover;border-radius:4px;">
+    
+  </div>
+  <div>
+    
+    
+    <div class="film-title-row">
+      <div class="film-title">Sirāt</div>
+      
+    </div>
+    <div class="film-meta">
+      Dir. Oliver Laxe
+      
+       · 2025
+    </div>
+    
+  </div>
+  <div class="film-meta">
+    115 min
+     · Spanish
+  </div>
+  <div>
+    <span class="pill pill-amber">Pending</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;" onclick="event.stopPropagation();">
+    <a href="/dgc/films/10" class="btn btn-sec btn-sm">View</a>
+    <a href="/dgc/films/edit/10" class="btn btn-sec btn-sm">Edit</a>
+    <form method="POST" action="/dgc/films/delete/10"
+          onsubmit="return confirm('Delete Sirāt?')" style="margin:0;">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+</div>
+
+
+    </main>
+  </div>
+
+</div>
+<aside
+  class="palette-panel is-booting"
+  id="palette-panel"
+  aria-hidden="false"
+  data-default-open="true"
+>
+  <div class="palette-panel__header" id="palette-drag-handle">
+    <div class="palette-panel__title">Palette</div>
+    <button
+      type="button"
+      class="palette-panel__close"
+      id="palette-close"
+      title="Hide palette"
+      aria-label="Hide palette"
+    >
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 8h8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="palette-panel__body">
+    <section class="palette-section">
+      <div class="palette-section__label">Recent</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="website-crawler.html"
+            class="palette-tile palette-tile--website_crawler"
+            title="Website Crawler"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--mint"></span>
+            <span class="palette-tile__icon">WC</span>
+            <span class="palette-tile__label">Website Crawler</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="196"
+            title="Pin Website Crawler"
+            aria-label="Pin Website Crawler"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="task-projects.html"
+            class="palette-tile palette-tile--task_projects"
+            title="Task Projects"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Task Projects</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="195"
+            title="Pin Task Projects"
+            aria-label="Pin Task Projects"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="outreach-resources.html"
+            class="palette-tile palette-tile--outreach"
+            title="Outreach Resources"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--green"></span>
+            <span class="palette-tile__icon">OW</span>
+            <span class="palette-tile__label">Outreach Resources</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="194"
+            title="Pin Outreach Resources"
+            aria-label="Pin Outreach Resources"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="database-map.html"
+            class="palette-tile palette-tile--database_map"
+            title="San Diego Atlas"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">San Diego Atlas</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="193"
+            title="Pin San Diego Atlas"
+            aria-label="Pin San Diego Atlas"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="film-report.html"
+            class="palette-tile palette-tile--film_report"
+            title="Film Report"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">FR</span>
+            <span class="palette-tile__label">Film Report</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="192"
+            title="Pin Film Report"
+            aria-label="Pin Film Report"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="reports.html"
+            class="palette-tile palette-tile--reports"
+            title="Reports"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">RT</span>
+            <span class="palette-tile__label">Reports</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="191"
+            title="Pin Reports"
+            aria-label="Pin Reports"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="crm-report.html"
+            class="palette-tile palette-tile--crm_report"
+            title="CRM Report"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--blue"></span>
+            <span class="palette-tile__icon">RP</span>
+            <span class="palette-tile__label">CRM Report</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="190"
+            title="Pin CRM Report"
+            aria-label="Pin CRM Report"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="task-flow.html"
+            class="palette-tile palette-tile--task_flow"
+            title="Task Flow"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Task Flow</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="189"
+            title="Pin Task Flow"
+            aria-label="Pin Task Flow"
+          >•</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="palette-section__label">Pinned</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/sdlff/films/7"
+            class="palette-tile palette-tile--film"
+            title="ANGIE"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">ANGIE</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="34"
+            title="Unpin ANGIE"
+            aria-label="Unpin ANGIE"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/dgc/films/27"
+            class="palette-tile palette-tile--film"
+            title="DGC Video: The Young Girls of Rochefort"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">DGC Video: The Young Girls of Rochefort</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="18"
+            title="Unpin DGC Video: The Young Girls of Rochefort"
+            aria-label="Unpin DGC Video: The Young Girls of Rochefort"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/dgc/films/28"
+            class="palette-tile palette-tile--film"
+            title="Bonkers Half-Assed Midnight: Demonwarp"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Bonkers Half-Assed Midnight: Demonwarp</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="16"
+            title="Unpin Bonkers Half-Assed Midnight: Demonwarp"
+            aria-label="Unpin Bonkers Half-Assed Midnight: Demonwarp"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="outreach.html"
+            class="palette-tile palette-tile--outreach"
+            title="Outreach Projects"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">OW</span>
+            <span class="palette-tile__label">Outreach Projects</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="5"
+            title="Unpin Outreach Projects"
+            aria-label="Unpin Outreach Projects"
+          >•</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="palette-section__label">Apps</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="https://www.canva.com/"
+            class="palette-tile palette-tile--app"
+            title="Canva"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">CV</span>
+            <span class="palette-tile__label">Canva</span>
+          </a>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="https://docs.google.com/spreadsheets/d/1uWRg1f2Odr7ErWQtmammraE3rF5q9bF1iFyqZ3fOpVk/edit?gid=1358102068#gid=1358102068"
+            class="palette-tile palette-tile--app"
+            title="CRM Sheet"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">GS</span>
+            <span class="palette-tile__label">CRM Sheet</span>
+          </a>
+        </div>
+        
+      </div>
+    </section>
+  </div>
+</aside>
+<div class="chatbot-shell" data-chatbot-shell>
+  <button
+    type="button"
+    class="chatbot-restore"
+    id="chatbot-restore"
+    aria-controls="chatbot-panel"
+    hidden
+  >
+    Show assistant
+  </button>
+  <button
+    type="button"
+    class="chatbot-launcher"
+    id="chatbot-launcher"
+    aria-expanded="false"
+    aria-controls="chatbot-panel"
+  >
+    <span class="chatbot-launcher__pulse"></span>
+    <span class="chatbot-launcher__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 10.5h8"></path>
+        <path d="M8 14h5"></path>
+        <path d="M12 3C7.03 3 3 6.58 3 11c0 2.1.92 4 2.42 5.42V21l4.07-2.26c.8.17 1.64.26 2.51.26 4.97 0 9-3.58 9-8s-4.03-8-9-8z"></path>
+      </svg>
+    </span>
+    <span class="chatbot-launcher__text">
+      <strong>Ask MACSD</strong>
+      <span>Need help in this workspace?</span>
+    </span>
+  </button>
+  <button
+    type="button"
+    class="chatbot-launcher-hide"
+    id="chatbot-hide"
+    aria-label="Hide chatbot"
+    title="Hide chatbot"
+  >
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 4l8 8"></path>
+      <path d="M12 4l-8 8"></path>
+    </svg>
+  </button>
+
+  <aside
+    class="chatbot-panel"
+    id="chatbot-panel"
+    aria-hidden="true"
+    data-chatbot-open="false"
+  >
+    <div class="chatbot-panel__header">
+      <div class="chatbot-panel__eyebrow">Assistant</div>
+      <div>
+        <div class="chatbot-panel__title">MACSD Helper</div>
+        <div class="chatbot-panel__subtitle">Ask about pages, workflows, or records.</div>
+      </div>
+      <button
+        type="button"
+        class="chatbot-panel__close"
+        id="chatbot-close"
+        aria-label="Close chatbot"
+      >
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M4 4l8 8"></path>
+          <path d="M12 4l-8 8"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="chatbot-panel__hide"
+        id="chatbot-panel-hide"
+        aria-label="Hide chatbot"
+      >
+        Hide
+      </button>
+    </div>
+
+    <div class="chatbot-panel__body">
+      <div class="chatbot-panel__intro">
+        <div class="chatbot-panel__badge">UI skeleton</div>
+        <p>
+          This is the shared chatbot shell. Next we can connect it to an API and pass page context from Flask.
+        </p>
+      </div>
+
+      <div class="chatbot-suggestions" aria-label="Suggested prompts">
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="How do I use this page?">How do I use this page?</button>
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="Where can I find film records?">Where can I find film records?</button>
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="Help me navigate the CRM.">Help me navigate the CRM.</button>
+      </div>
+
+      <div class="chatbot-thread" id="chatbot-thread" aria-live="polite">
+        <article class="chatbot-message chatbot-message--bot">
+          <div class="chatbot-message__meta">MACSD Helper</div>
+          <div class="chatbot-message__bubble">
+            Hi there. I am ready for the backend hookup, but the UI is already in place so we can keep building from here.
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <form class="chatbot-composer" id="chatbot-form">
+      <label class="sr-only" for="chatbot-input">Chat message</label>
+      <textarea
+        id="chatbot-input"
+        class="chatbot-composer__input"
+        rows="1"
+        placeholder="Ask about this page or a workflow..."
+      ></textarea>
+      <button type="submit" class="chatbot-composer__submit">Send</button>
+    </form>
+  </aside>
+</div>
+<script src="static/js/main.js"></script>
+
+</body>
+</html>

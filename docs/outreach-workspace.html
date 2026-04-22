@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonkers Half-Assed Midnight: Demonwarp – Outreach</title>
+<script>
+  (function() {
+    try {
+      var root = document.documentElement;
+      var openState = window.localStorage.getItem('macsd.palette.open.v2');
+      var positionState = window.localStorage.getItem('macsd.palette.position.v2');
+      root.setAttribute('data-palette-state', openState === 'false' ? 'closed' : 'open');
+      if (positionState) {
+        var parsed = JSON.parse(positionState);
+        if (typeof parsed.x === 'number' && typeof parsed.y === 'number') {
+          root.style.setProperty('--palette-initial-x', parsed.x + 'px');
+          root.style.setProperty('--palette-initial-y', parsed.y + 'px');
+        }
+      }
+    } catch (err) {}
+  })();
+</script>
+<link rel="icon" type="image/png" href="static/images/site-logo-black.png?v=2">
+<link rel="shortcut icon" type="image/png" href="static/images/site-logo-black.png?v=2">
+<link rel="apple-touch-icon" href="static/images/site-logo-black.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/main.css">
+
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-mark logo-mark-fallback">MC</div>
+      <img
+        src="static/images/site-logo-black.png"
+        alt="MACSD Tool logo"
+        class="logo-image"
+        onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';"
+      >
+      <div class="logo-copy">
+        <div class="logo-name">MACSD Tool</div>
+        <div class="logo-ver">v0.1 · internal</div>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Main</span>
+      <a href="dashboard.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        <span class="nav-item__label">Dashboard</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Outreach</span>
+      <a href="outreach.html" class="nav-item active">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="10" rx="2"/><path d="M1.5 4.5l6.5 4.5 6.5-4.5"/></svg>
+        <span class="nav-item__label">Outreach Projects</span>
+      </a>
+      <a href="outreach-manage.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 5h6M5 8h6M5 11h4"/></svg>
+        <span class="nav-item__label">Project Management</span>
+      </a>
+      <a href="outreach-resources.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5h10"/><path d="M3 8h10"/><path d="M3 11.5h6"/><circle cx="12" cy="11.5" r="1.5"/></svg>
+        <span class="nav-item__label">Resource Hub</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">DGC</span>
+      <a href="dgc-films.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M6 5l5 3-5 3V5z"/></svg>
+        <span class="nav-item__label">Film Database</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">SDLFF</span>
+      <a href="sdlff-films.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M6 5l5 3-5 3V5z"/></svg>
+        <span class="nav-item__label">Film Database</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Directory</span>
+      <a href="crm.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="3"/><path d="M1 13c0-3 2-5 5-5s5 2 5 5"/><circle cx="12" cy="5" r="2"/><path d="M15 13c0-2-1-4-3-4.5"/></svg>
+        <span class="nav-item__label">CRM Directory</span>
+      </a>
+      <a href="database-map.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3-1.5 4 1.5 3-1.5v8L10 13 6 11.5 3 13v-8.5Z"/><path d="M6 3v8.5"/><path d="M10 4.5V13"/></svg>
+        <span class="nav-item__label">San Diego Atlas</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Reports</span>
+      <a href="reports.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13.5h10"/><path d="M5 11V6"/><path d="M8 11V2.5"/><path d="M11 11V8"/></svg>
+        <span class="nav-item__label">Report</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Operations</span>
+      <a href="task-flow.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h10"/><path d="M3 8h7"/><path d="M3 12h5"/><circle cx="12" cy="8" r="2.5"/></svg>
+        <span class="nav-item__label">Task Management</span>
+      </a>
+      <a href="task-projects.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M5 6h6"/><path d="M5 9h4"/></svg>
+        <span class="nav-item__label">Task Projects</span>
+      </a>
+      <a href="website-crawler.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5.5"/><path d="M2.5 8h11"/><path d="M8 2.5a8.5 8.5 0 0 1 0 11"/><path d="M8 2.5a8.5 8.5 0 0 0 0 11"/></svg>
+        <span class="nav-item__label">Website Crawler</span>
+      </a>
+      <a href="image-to-sheet.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 5h6M5 8h6M5 11h2"/><path d="M11 10.5l1.5 1.5 2-3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="nav-item__label">Image to Sheet</span>
+      </a>
+      <a href="inventory.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="12" height="6" rx="1"/><path d="M5 8V5a3 3 0 0 1 6 0v3"/></svg>
+        <span class="nav-item__label">Inventory</span>
+      </a>
+      <a href="users.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-4 2.5-6 6-6s6 2 6 6"/></svg>
+        <span class="nav-item__label">Users</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="avatar">AD</div>
+        <div class="user-copy">
+          <div class="user-name">Admin User</div>
+          <div class="user-role">admin</div>
+        </div>
+        <button
+          type="button"
+          class="palette-toggle"
+          id="palette-toggle"
+          title="Toggle palette"
+          aria-label="Toggle palette"
+          aria-expanded="true"
+        >
+          <span class="palette-toggle__core"></span>
+        </button>
+        <a href="login.html" class="logout-btn" title="Sign out">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3"/><path d="M7 11l3-3-3-3"/><path d="M10 8H2"/></svg>
+        </a>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="sidebar-peek-toggle"
+      onclick="toggleSidebar()"
+      title="Toggle sidebar"
+      aria-label="Toggle sidebar"
+    >
+      <svg class="sidebar-peek-toggle__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3.5L5.5 8L10 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main" id="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()" title="Toggle menu" aria-label="Toggle sidebar">☰</button>
+      <div class="topbar-info">
+        <h1 class="topbar-title"></h1>
+        <span class="topbar-bread"></span>
+      </div>
+      <div class="topbar-right">
+        
+      </div>
+    </header>
+
+    <!-- FLASH MESSAGES -->
+    
+      
+    
+
+    <!-- PAGE CONTENT -->
+    <main class="content">
+      
+<script>
+  window.OW_PROJECT_ID = 6;
+  window.OW_USED_TARGETS = [];
+  window.OW_GROUPS = [];
+  window.OW_PROJECT_ATTACHMENTS = [];
+  window.OW_CANVA_EXPORTS = [];
+  window.OW_FIRST_DRAFT = "";
+  window.OW_FILM = {"id": 28, "title": "Bonkers Half-Assed Midnight: Demonwarp", "director": "Emmett Alston", "runtime": "91 min", "year": "1988", "country": "", "language": "", "synopsis": "Bigfoot. Aliens. Zombies. Demonic Gods. George Kennedy. These are just a smattering of what to expect from the delirious cult sensation, Demonwarp . Shot in 1988 from an original story by John Carl Buechler ( Friday the 13th Part VII: The New Blood ), the film follows a group of friends on what\u2019s supposed to be a nice, long weekend of relaxation at a remote cabin. Unfortunately for them, the cabin is also ground zero for an alien invasion spearheaded by a blood-thirsty sasquatch \u2013 or that\u2019s probably what\u2019s happening . If you\u2019re able to recount the plot after watching Demonwarp , it might be time to book that appointment with the specialist. Forever languishing in VHS purgatory, this bonkers 80s classic has now been fully restored in glorious 4K and stands ready to challenge your entire understanding of the universe!", "logline": "", "status": "Pending", "website": "https://digitalgym.org/movies/bonkers-half-assed-midnight-demonwarp/", "starring": "Billy Jayne, Colleen McDermott, David Michael O'Neill, George Kennedy, Pamela Gilbert", "showtimes": "Saturday, April 11, 2025: 10:00", "ticket_prices": "$13 Regular / $11 Students & Seniors / $9 Members", "trailer": "https://youtu.be/Y0YfEM6vfLA", "poster_url": "https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/02/08135222/zg4jUEjRhHmTD1iu2MlpTfWXbn1-683x1024.jpg", "created_at": "2026-03-25 22:45:11", "tags": "", "poster": "https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/02/08135222/zg4jUEjRhHmTD1iu2MlpTfWXbn1-683x1024.jpg"};
+  window.OW_SIGNATURE = {"enabled": true, "name": "Admin User", "detail_lines": ["MACSD / admin", "123-456-7891 / admin@macsd.org", "1100 Market St. San Diego, CA 92101"]};
+</script>
+
+<div class="ow-page" style="display:flex;flex-direction:column;">
+
+  <!-- ══ TOP BAR ════════════════════════════════════════════════ -->
+  <div class="ow-topbar">
+    <a href="outreach.html" class="ow-topbar__back">← Projects</a>
+
+    
+      <img class="ow-topbar__poster" src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/02/08135222/zg4jUEjRhHmTD1iu2MlpTfWXbn1-683x1024.jpg"
+           alt="Bonkers Half-Assed Midnight: Demonwarp"
+           onerror="this.src='https://via.placeholder.com/46x64/21253a/7a809e?text=?'">
+    
+
+    <div class="ow-topbar__info">
+      <div class="ow-topbar__title">Bonkers Half-Assed Midnight: Demonwarp</div>
+      <div class="ow-topbar__meta">
+        <span>DGC</span>
+        
+          <span>1988</span>
+          
+          <span>Emmett Alston</span>
+        
+      </div>
+    </div>
+
+    <span class="ow-topbar__badge ow-topbar__badge--draft">draft</span>
+
+    <div class="ow-topbar__actions">
+      
+    </div>
+  </div>
+
+  <div class="ow-flow">
+    <div class="ow-stage-tabs" id="ow-stage-tabs">
+      <button type="button" class="ow-stage-tab is-active" data-target-step="shared">
+        <span class="ow-stage-tab__num">1</span>
+        <span class="ow-stage-tab__label">Shared Email</span>
+      </button>
+      <button type="button" class="ow-stage-tab is-disabled" data-target-step="groups" disabled>
+        <span class="ow-stage-tab__num">2</span>
+        <span class="ow-stage-tab__label">Groups</span>
+      </button>
+      <button type="button" class="ow-stage-tab is-disabled" data-target-step="custom" disabled>
+        <span class="ow-stage-tab__num" id="ow-stage-num-custom">3</span>
+        <span class="ow-stage-tab__label">Custom Email</span>
+      </button>
+      <button type="button" class="ow-stage-tab is-disabled" data-target-step="outreach" disabled>
+        <span class="ow-stage-tab__num" id="ow-stage-num-outreach">4</span>
+        <span class="ow-stage-tab__label">Outreach</span>
+      </button>
+    </div>
+
+    <section class="ow-step is-active" id="ow-step-shared" data-step="shared">
+      <div class="ow-step__header">
+        <div class="ow-step__num">1</div>
+        <div class="ow-step__headcopy">
+          <div class="ow-step__label">Step 1</div>
+          <div class="ow-step__title">전체 메일 구조 작성</div>
+          <div class="ow-step__desc">거의 항상 같은 문장과 영화/수신자 변수들을 조합해서 전체 메일의 공통 구조를 먼저 완성합니다.</div>
+        </div>
+      </div>
+      <div class="ow-step__body">
+        <div class="ow-col__label">First Draft · Shared Promo Template</div>
+
+        <div class="ow-email-mode-picker" id="ow-email-mode-picker">
+          <div class="ow-email-mode-picker__header">
+            <div class="ow-email-mode-picker__eyebrow">Email Format</div>
+            <div class="ow-email-mode-picker__title">먼저 Shared Email 발송 방식을 선택하세요</div>
+            <div class="ow-email-mode-picker__desc">Gmail 초안을 일반 텍스트 기반으로 만들지, Canva에서 내보낸 HTML 업로드본으로 만들지 먼저 정한 뒤 Step 1을 진행합니다.</div>
+          </div>
+          <div class="ow-email-mode-picker__grid">
+            <button type="button" class="ow-email-mode-card" data-email-mode-choice="plain">
+              <div class="ow-email-mode-card__eyebrow">Current flow</div>
+              <div class="ow-email-mode-card__title">Plain text Gmail</div>
+              <div class="ow-email-mode-card__desc">지금처럼 shared draft를 직접 작성하고 변수 토큰을 넣어 Gmail 초안을 만듭니다.</div>
+              <div class="ow-email-mode-card__meta">Best for quick edits and reusable text templates</div>
+            </button>
+            <button type="button" class="ow-email-mode-card" data-email-mode-choice="canva">
+              <div class="ow-email-mode-card__eyebrow">HTML route</div>
+              <div class="ow-email-mode-card__title">Canva HTML upload</div>
+              <div class="ow-email-mode-card__desc">Canva export HTML과 이미지 assets를 업로드한 뒤 Gmail 초안에 그 HTML을 그대로 사용합니다.</div>
+              <div class="ow-email-mode-card__meta">Best for designed newsletters and poster-heavy emails</div>
+            </button>
+          </div>
+        </div>
+
+        <div class="ow-email-mode-switcher" id="ow-email-mode-switcher" hidden>
+          <div class="ow-email-mode-switcher__label">Selected Format</div>
+          <div class="ow-email-mode-switcher__actions">
+            <button type="button" class="ow-email-mode-pill" data-email-mode-choice="plain">Plain text Gmail</button>
+            <button type="button" class="ow-email-mode-pill" data-email-mode-choice="canva">Canva HTML upload</button>
+          </div>
+        </div>
+
+        <div class="ow-draft">
+          <div class="ow-email-mode-panel" data-email-mode-panel="plain" hidden>
+            <p style="font-size:12px;color:var(--ow-muted);line-height:1.6;">
+              Write the reusable email structure here. Film data and recipient data can be inserted with variables, while the unhighlighted parts stay fixed.
+            </p>
+            <div class="ow-template-tools">
+              <div class="ow-template-tools__featured">
+                <div class="ow-template-tools__featured-label">Recommended Start</div>
+                <button type="button" class="ow-btn ow-btn--primary ow-btn--featured" id="ow-fill-suggested-template">Apply Suggested Structure</button>
+              </div>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ film_title }}">Film Title</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ film_logline }}">Film Logline</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ film_synopsis }}">Synopsis</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ film_screening_info }}">Screening Info</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ film_link }}">Film Link</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ trailer_link }}">Trailer Link</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_first_name }}">Recipient First Name</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_name }}">Recipient Name</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_org }}">Recipient Org</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_role }}">Recipient Role</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_group_phrase }}">Audience Phrase</button>
+            </div>
+            <div class="ow-insert-ui">
+              <div class="ow-insert-ui__label">Choose Where Custom Writing Should Appear</div>
+              <div class="ow-insert-ui__helper">Place your cursor in the shared email first, then choose what should be inserted there.</div>
+              <div class="ow-insert-ui__grid">
+                <button type="button" class="ow-insert-card" data-insert-token="{{ group_message }}">
+                  <div class="ow-insert-card__eyebrow">Insert Position</div>
+                  <div class="ow-insert-card__title">Insert Group Custom Message</div>
+                  <div class="ow-insert-card__desc">The group-level note from Step 3 will appear here for this audience cluster.</div>
+                  <div class="ow-insert-card__preview">
+                    <span>Shared intro paragraph</span>
+                    <strong>Group-specific message appears here</strong>
+                    <span>Closing lines</span>
+                  </div>
+                  <div class="ow-insert-card__token-label">Auto slot</div>
+                  <div class="ow-insert-card__token">{{ group_message }}</div>
+                </button>
+                <button type="button" class="ow-insert-card" data-insert-token="{{ personal_message }}">
+                  <div class="ow-insert-card__eyebrow">Insert Position</div>
+                  <div class="ow-insert-card__title">Insert Personal Precision Note</div>
+                  <div class="ow-insert-card__desc">The one-person tailored line from Step 3 will appear here for each recipient.</div>
+                  <div class="ow-insert-card__preview">
+                    <span>Shared intro paragraph</span>
+                    <strong>Personal one-to-one note appears here</strong>
+                    <span>Closing lines</span>
+                  </div>
+                  <div class="ow-insert-card__token-label">Auto slot</div>
+                  <div class="ow-insert-card__token">{{ personal_message }}</div>
+                </button>
+              </div>
+            </div>
+            <textarea id="first-draft-ta"
+                      data-project-id="6"
+                      placeholder="Build the reusable email structure here.&#10;&#10;Example:&#10;Dear {{ recipient_first_name }},&#10;&#10;I hope this email finds you well. We will be showing {{ film_title }}..."
+                      style="min-height:320px;"></textarea>
+            <div id="first-draft-status" class="ow-save-status"></div>
+          </div>
+
+          <div class="ow-email-mode-panel" data-email-mode-panel="canva" hidden>
+            <div class="ow-helper-card ow-helper-card--canva-choice">
+              <div class="ow-helper-card__title">Canva HTML for Gmail</div>
+              <div class="ow-helper-card__sub">Upload a Canva export package and select which saved HTML should be used when Gmail drafts are generated for this project.</div>
+              <div class="ow-insert-ui" style="margin-top:0;">
+                <div class="ow-insert-ui__label">Saved Canva Export</div>
+                <div class="ow-insert-ui__helper">If a saved export is selected here, Gmail drafts will use the uploaded HTML instead of the plain-text shared draft.</div>
+                <select id="ow-outreach-canva-export" class="ow-modal__input">
+                  <option value="">Choose a saved Canva export</option>
+                  
+                </select>
+              </div>
+              <div class="ow-email-mode-actions">
+                <a href="/outreach/project/6/canva" class="ow-btn ow-btn--secondary">Upload or Manage Canva Export</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ow-step__grid ow-step__grid--two">
+          <div class="ow-helper-card">
+            <div class="ow-helper-card__title">Variable Guide</div>
+            <div class="ow-helper-card__list">
+              <div><strong>Film DB</strong>: `{{ film_title }}`, `{{ film_logline }}`, `{{ film_synopsis }}`, `{{ film_screening_info }}`, `{{ film_link }}`, `{{ trailer_link }}`</div>
+              <div><strong>People/Org DB</strong>: `{{ recipient_first_name }}`, `{{ recipient_name }}`, `{{ recipient_org }}`, `{{ recipient_role }}`, `{{ recipient_email }}`, `{{ recipient_group_phrase }}`</div>
+              <div><strong>Insert Slots</strong>: `{{ group_message }}`, `{{ personal_message }}` 를 Shared Email 안 원하는 위치에 넣으면 Step 3 문구가 그 자리에 들어갑니다.</div>
+              <div><strong>Tip</strong>: repeated fixed sentences should stay plain text so you only swap the highlighted data points.</div>
+            </div>
+          </div>
+
+          <div class="ow-attachments">
+            <div class="ow-attach-label">Project Attachments (shared)</div>
+            <div class="ow-attach-list" data-attach-list="project-6">
+              
+            </div>
+            <button class="ow-upload-btn ow-upload-trigger"
+                    data-ref-type="project" data-ref-id="6">
+              + Add Shared Attachment
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ow-step ow-step--locked" id="ow-step-groups" data-step="groups">
+      <div class="ow-step__header">
+        <div class="ow-step__num">2</div>
+        <div class="ow-step__headcopy">
+          <div class="ow-step__label">Step 2</div>
+          <div class="ow-step__title">그룹 선택 및 생성</div>
+          <div class="ow-step__desc">아웃리치할 대상을 고르고 그룹을 만든 뒤, 같은 스타일의 메일을 누구에게 보낼지 묶어줍니다.</div>
+        </div>
+      </div>
+      <div class="ow-step__body ow-step__stack ow-step__stack--groups">
+        <section class="ow-step__section ow-step__section--reco">
+          <div class="ow-reco-panel is-collapsed" id="ow-reco-panel">
+            <button type="button" class="ow-reco-panel__toggle" id="ow-reco-toggle" aria-expanded="false" aria-controls="ow-reco-content">
+              <div class="ow-reco-panel__head">
+                <div>
+                  <div class="ow-reco-panel__eyebrow">Tag Match Engine</div>
+                  <div class="ow-reco-panel__title">추천 대상 구역</div>
+                </div>
+                <div class="ow-reco-panel__head-side">
+                  <span class="ow-reco-panel__badge">Live</span>
+                  <span class="ow-reco-panel__chevron" aria-hidden="true">⌄</span>
+                </div>
+              </div>
+            </button>
+
+            <div class="ow-reco-panel__content" id="ow-reco-content">
+              <div>
+                <div class="ow-reco-panel__desc" id="ow-reco-desc">
+                  영화 태그와 CRM 태그가 겹치는 people / organizations를 점수순으로 보여줍니다.
+                  상세 설명은 필요할 때만 ChatGPT를 호출합니다.
+                </div>
+              </div>
+
+              <div class="ow-reco-grid">
+                <div class="ow-reco-card">
+                  <div class="ow-reco-card__label">Film Tags</div>
+                  <div class="ow-reco-tags" id="ow-reco-film-tags">
+                    <span class="ow-reco-tag">Loading…</span>
+                  </div>
+                </div>
+
+                <div class="ow-reco-card">
+                  <div class="ow-reco-card__label">How Ranking Works</div>
+                  <ul class="ow-reco-list">
+                    <li>겹치는 태그 수가 많을수록 점수가 올라갑니다.</li>
+                    <li>CRM priority / score가 있으면 보너스가 붙습니다.</li>
+                    <li>Explain 버튼을 눌렀을 때만 선택적으로 ChatGPT를 호출합니다.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="ow-reco-preview">
+                <div class="ow-reco-preview__label">Top Recommendations</div>
+                <div class="ow-reco-preview__items" id="ow-reco-items">
+                  <div class="ow-reco-preview__item ow-reco-preview__item--muted">
+                    추천 결과를 불러오는 중입니다.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="ow-step__section ow-step__section--targets">
+          <div class="ow-col__label">Select Outreach Targets</div>
+          <div id="ow-target-panel" class="ow-target-panel"
+               data-project-id="6"
+               data-film-type="dgc">
+
+            <div class="ow-search-row">
+              <input id="target-search" type="text" class="ow-search-input"
+                     placeholder="Search organizations, people, or saved groups…">
+              <div class="ow-type-tabs">
+                <button class="ow-type-tab active" data-type="all">All</button>
+                <button class="ow-type-tab" data-type="org">Orgs</button>
+                <button class="ow-type-tab" data-type="person">People</button>
+                <button class="ow-type-tab" data-type="group">Groups</button>
+              </div>
+            </div>
+
+            <div class="ow-selection-bar">
+              <span class="ow-selection-count" id="target-sel-count"><strong>0</strong> selected</span>
+              <button id="create-group-btn" class="ow-btn ow-btn--secondary ow-btn--sm" disabled>
+                Create Group
+              </button>
+            </div>
+
+            <div id="target-list" class="ow-target-list">
+              <!-- populated by JS -->
+            </div>
+
+            <p style="font-size:11px;color:var(--ow-muted);line-height:1.6;">
+              Greyed-out targets have already been added to another group in this project.
+            </p>
+          </div>
+        </section>
+
+        <section class="ow-step__section ow-step__section--groups-bottom">
+        <div class="ow-helper-card ow-helper-card--groups-bottom">
+          <div class="ow-bottom__header">
+            <span class="ow-bottom__title">Groups</span>
+            <span class="ow-bottom__count" id="ow-card-count-step2">0</span>
+          </div>
+          <div class="ow-helper-card__sub">
+            Create groups here, then continue refining in Step 3 and send from Step 4.
+          </div>
+          <div class="ow-cards ow-cards--rail" id="ow-cards-step2" data-group-cards>
+            
+
+            <div class="ow-card ow-card--empty">
+              <span>+</span>
+              <span>Select targets above &amp; click "Create Group"</span>
+            </div>
+          </div>
+        </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="ow-step ow-step--locked" id="ow-step-custom" data-step="custom">
+      <div class="ow-step__header">
+        <div class="ow-step__num" id="ow-step-num-custom">3</div>
+        <div class="ow-step__headcopy">
+          <div class="ow-step__label" id="ow-step-label-custom">Step 3</div>
+          <div class="ow-step__title">그룹별 맞춤 메일 작성</div>
+          <div class="ow-step__desc">생성한 그룹을 선택한 다음, 수신자에 맞는 맞춤 문장과 첨부파일을 더해 최종 메일을 마무리합니다.</div>
+        </div>
+      </div>
+      <div class="ow-step__body" id="ow-right-col">
+        <div class="ow-col__label">Email Draft</div>
+
+        <div id="ow-no-group-hint" style="text-align:center;padding:40px 0;color:var(--ow-muted);">
+          <div style="font-size:32px;margin-bottom:10px;">✉️</div>
+          <div style="font-size:13px;">Select a group above or create a new group to start drafting.</div>
+        </div>
+
+        <div id="ow-group-detail" class="ow-group-detail "
+             data-group-id="">
+
+          <div class="ow-group-detail__head">
+            <div class="ow-group-detail__name">
+              
+            </div>
+            <button id="rename-group-btn" class="ow-btn ow-btn--ghost ow-btn--sm">Rename</button>
+          </div>
+
+          <div id="gd-members" style="display:flex;flex-wrap:wrap;gap:5px;">
+            
+          </div>
+
+          <div class="ow-draft">
+            <div class="ow-draft__section-title">Group Message</div>
+            <div class="ow-template-tools ow-template-tools--compact">
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_first_name }}">Recipient First Name</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_name }}">Recipient Name</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_org }}">Recipient Org</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_role }}">Recipient Role</button>
+              <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_group_phrase }}">Audience Phrase</button>
+            </div>
+            <textarea id="second-draft-ta"
+                      placeholder="Add the group-specific lines here.&#10;&#10;Example: We would gladly offer free tickets if you could help share this with {{ recipient_group_phrase }}."
+                      style="min-height:220px;"></textarea>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <span id="second-draft-status" class="ow-save-status"></span>
+              <button id="second-draft-save-btn" class="ow-btn ow-btn--primary ow-btn--sm">Save Draft</button>
+            </div>
+          </div>
+
+          <div class="ow-helper-card">
+            <div class="ow-helper-card__title">Personal Precision Layer</div>
+            <div class="ow-helper-card__sub">After writing the group-level note, select one person below and add a more specific line just for them.</div>
+
+            <div id="gd-person-list" class="ow-person-list"></div>
+
+            <div class="ow-draft ow-draft--personal">
+              <div class="ow-draft__section-title">Personal Message</div>
+              <div class="ow-template-tools ow-template-tools--compact">
+                <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_first_name }}">Recipient First Name</button>
+                <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_name }}">Recipient Name</button>
+                <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_org }}">Recipient Org</button>
+                <button type="button" class="ow-chip-btn" data-insert-token="{{ recipient_role }}">Recipient Role</button>
+              </div>
+              <textarea id="personal-draft-ta"
+                        placeholder="Write a highly specific sentence for the selected recipient.&#10;&#10;Example: Because of your work in Korean studies at UCSD, I thought this film might especially resonate with your students."
+                        style="min-height:160px;"></textarea>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                <span id="personal-draft-status" class="ow-save-status"></span>
+                <button id="personal-draft-save-btn" class="ow-btn ow-btn--secondary ow-btn--sm">Save Personal Note</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ow-helper-card">
+            <div class="ow-helper-card__title">Final Email Preview</div>
+            <div class="ow-helper-card__sub">This preview combines the shared template, the group message, and the selected recipient's personal note.</div>
+            <div class="ow-preview-actions">
+              <span id="gd-email-preview-mode" class="ow-preview-mode-badge">Auto-generated</span>
+              <div class="ow-preview-actions__buttons">
+                <button id="gd-email-preview-edit-btn" type="button" class="ow-btn ow-btn--ghost ow-btn--sm">Edit Final Email</button>
+                <button id="gd-email-preview-reset-btn" type="button" class="ow-btn ow-btn--secondary ow-btn--sm" style="display:none;">Reset to Auto</button>
+                <button id="gd-email-preview-cancel-btn" type="button" class="ow-btn ow-btn--ghost ow-btn--sm" hidden>Cancel</button>
+                <button id="gd-email-preview-save-btn" type="button" class="ow-btn ow-btn--primary ow-btn--sm" hidden>Save Final Email</button>
+              </div>
+            </div>
+            <div id="gd-email-preview" class="ow-rendered-preview"></div>
+            <div id="gd-email-preview-editor-wrap" class="ow-preview-editor" hidden>
+              <div class="ow-rich-toolbar">
+                <button id="gd-email-preview-bold-btn" type="button" class="ow-rich-toolbar__btn" title="Bold (Ctrl/Cmd+B)"><strong>B</strong></button>
+                <button id="gd-email-preview-italic-btn" type="button" class="ow-rich-toolbar__btn" title="Italic"><em>I</em></button>
+                <span class="ow-rich-toolbar__divider" aria-hidden="true"></span>
+                <button id="gd-email-preview-small-btn" type="button" class="ow-rich-toolbar__btn" title="Small Text"><small>A</small></button>
+                <span class="ow-rich-toolbar__divider" aria-hidden="true"></span>
+                <button id="gd-email-preview-link-btn" type="button" class="ow-rich-toolbar__btn" title="Insert Link">Link</button>
+              </div>
+              <div id="gd-email-preview-ta"
+                   class="ow-rendered-preview ow-rendered-preview--editor"
+                   contenteditable="true"
+                   data-placeholder="Edit the final email exactly as it should be sent to the selected recipient."></div>
+            </div>
+            <div id="gd-email-preview-status" class="ow-save-status"></div>
+          </div>
+
+          <div class="ow-attachments">
+            <div class="ow-attach-label">Group Attachments</div>
+            <div class="ow-attach-list"
+                 id="gd-attach-list"
+                 data-attach-list="group-0">
+              
+            </div>
+            <button class="ow-upload-btn ow-upload-trigger"
+                    id="gd-attach-btn"
+                    data-ref-type="group"
+                    data-ref-id="">
+              + Add Attachment
+            </button>
+          </div>
+
+          <div class="ow-helper-card">
+            <div class="ow-bottom__header">
+              <span class="ow-bottom__title">Groups</span>
+              <span class="ow-bottom__count" id="ow-card-count">0</span>
+            </div>
+            <div class="ow-helper-card__sub">Review each group here, switch between them, and move to Step 4 when you're ready to test or send.</div>
+            <div class="ow-cards ow-cards--stack" id="ow-cards" data-group-cards>
+              
+
+              <div class="ow-card ow-card--empty">
+                <span>+</span>
+                <span>Select targets in Step 2 &amp; click "Create Group"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ow-step ow-step--locked" id="ow-step-outreach" data-step="outreach">
+      <div class="ow-step__header">
+        <div class="ow-step__num" id="ow-step-num-outreach">4</div>
+        <div class="ow-step__headcopy">
+          <div class="ow-step__label" id="ow-step-label-outreach">Step 4</div>
+          <div class="ow-step__title">그룹 선택 후 발송 진행</div>
+          <div class="ow-step__desc">보낼 그룹을 고른 다음, recipient별 최종 메일을 확인하고 테스트 드래프트와 실제 Gmail 드래프트 생성을 진행합니다.</div>
+        </div>
+      </div>
+      <div class="ow-step__body">
+        <div class="ow-helper-card ow-outreach-switcher">
+          <div class="ow-bottom__header">
+            <span class="ow-bottom__title">Outreach Groups</span>
+            <span class="ow-bottom__count" id="ow-card-count-step4">0</span>
+          </div>
+          <div class="ow-helper-card__sub">Choose a group to review recipient-specific email content and send drafts.</div>
+          <div class="ow-outreach-switcher__rail">
+            <div class="ow-cards ow-outreach-switcher__cards" id="ow-outreach-cards" data-group-cards>
+              
+            </div>
+          </div>
+        </div>
+
+        <div id="ow-outreach-panel" class="ow-outreach-panel">
+          <div id="ow-outreach-empty" class="ow-helper-card" >
+            <div class="ow-helper-card__title">No Group Selected</div>
+            <div class="ow-helper-card__sub">Choose a group on the left to review recipient-specific email content and create drafts.</div>
+          </div>
+
+          <div id="ow-outreach-content" class="ow-outreach-content" style="display:none;">
+            <div class="ow-modal__meta" id="ow-outreach-meta"></div>
+
+            <div class="ow-modal__grid">
+              <div class="ow-modal__section">
+                <div class="ow-modal__section-title">Group Summary</div>
+                <div class="ow-modal__facts" id="ow-outreach-facts"></div>
+              </div>
+
+              <div class="ow-modal__section">
+                <div class="ow-modal__section-title">Send History</div>
+                <div class="ow-modal__facts" id="ow-outreach-history"></div>
+              </div>
+            </div>
+
+            <div class="ow-modal__section ow-modal__section--wide">
+              <div class="ow-modal__section-title">Recipients</div>
+              <div class="ow-recipient-toolbar">
+                <div class="ow-recipient-toolbar__left">
+                  <div id="ow-outreach-selection-summary" class="ow-recipient-toolbar__summary">Select recipients to mark them as drafted.</div>
+                  <div class="ow-recipient-toolbar__quick">
+                    <button type="button" class="ow-btn ow-btn--ghost ow-btn--sm ow-outreach-quick-select" data-count="20">20</button>
+                    <button type="button" class="ow-btn ow-btn--ghost ow-btn--sm ow-outreach-quick-select" data-count="30">30</button>
+                    <button type="button" class="ow-btn ow-btn--ghost ow-btn--sm ow-outreach-quick-select" data-count="40">40</button>
+                    <button type="button" class="ow-btn ow-btn--ghost ow-btn--sm" id="ow-outreach-clear-selection-btn">Clear</button>
+                  </div>
+                </div>
+                <button type="button" class="ow-btn ow-btn--ghost ow-btn--sm" id="ow-outreach-mark-drafted-btn" disabled>Mark Selected as Drafted</button>
+              </div>
+              <div id="ow-outreach-recipients" class="ow-recipient-table-wrap"></div>
+            </div>
+
+            <div class="ow-modal__section">
+              <div class="ow-modal__section-title">Outreach Content</div>
+              <div class="ow-modal__stack">
+                <div>
+                  <div class="ow-modal__label">Subject</div>
+                  <input id="ow-outreach-subject" class="ow-modal__input" type="text" placeholder="Enter outreach subject">
+                </div>
+                <div>
+                  <div class="ow-modal__label">CC</div>
+                  <input id="ow-outreach-cc" class="ow-modal__input" type="text" placeholder="name@example.com, team@example.com">
+                </div>
+                <div data-outreach-mode-panel="plain">
+                  <div class="ow-modal__label">Shared Promo</div>
+                  <div id="ow-outreach-first-draft" class="ow-modal__text"></div>
+                </div>
+                <div data-outreach-mode-panel="plain">
+                  <div class="ow-modal__label">Group Draft</div>
+                  <div id="ow-outreach-second-draft" class="ow-modal__text"></div>
+                </div>
+                <div data-outreach-mode-panel="plain">
+                  <div class="ow-modal__label">Combined Preview</div>
+                  <div id="ow-outreach-combined" class="ow-modal__text ow-modal__text--preview"></div>
+                </div>
+                <div data-outreach-mode-panel="canva" hidden>
+                  <div class="ow-modal__label">Actual Gmail HTML Preview</div>
+                  <div id="ow-outreach-html-preview-meta" class="ow-outreach-html-preview__meta">Choose a recipient to load the actual Gmail rendering preview.</div>
+                  <div id="ow-outreach-html-preview-empty" class="ow-modal__text">Choose a saved Canva export above to preview the HTML version that Gmail drafts will use.</div>
+                  <iframe id="ow-outreach-html-preview-frame" class="ow-outreach-html-preview" title="Gmail HTML preview" hidden></iframe>
+                </div>
+              </div>
+            </div>
+
+            <div class="ow-modal__grid">
+              <div class="ow-modal__section">
+                <div class="ow-modal__section-title">Shared Attachments</div>
+                <div id="ow-outreach-project-attachments" class="ow-modal__attachment-list"></div>
+              </div>
+
+              <div class="ow-modal__section">
+                <div class="ow-modal__section-title">Group Attachments</div>
+                <div id="ow-outreach-group-attachments" class="ow-modal__attachment-list"></div>
+              </div>
+            </div>
+
+            <div class="ow-modal__section">
+              <div class="ow-modal__section-title">Delivery Note</div>
+              <div class="ow-modal__stack">
+                <div>
+                  <div class="ow-modal__label">Result Status</div>
+                  <select id="ow-outreach-result-status" class="ow-modal__input">
+                    <option value="">Select result</option>
+                    <option value="pending">Pending</option>
+                    <option value="sent">Sent</option>
+                    <option value="follow_up">Follow Up Needed</option>
+                    <option value="bounced">Bounced</option>
+                  </select>
+                </div>
+                <div>
+                  <div class="ow-modal__label">Memo</div>
+                  <textarea id="ow-outreach-note" class="ow-modal__textarea" placeholder="Add notes about delivery, follow-up, or context"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="ow-modal__section">
+              <div class="ow-modal__section-title">Test Draft</div>
+              <div class="ow-modal__stack">
+                <div>
+                  <div class="ow-modal__label">Reference Recipient</div>
+                  <select id="ow-outreach-test-member" class="ow-modal__input"></select>
+                </div>
+                <div>
+                  <div class="ow-modal__label">Send Test Draft To</div>
+                  <input id="ow-outreach-test-email" class="ow-modal__input" type="email" placeholder="test@example.com">
+                </div>
+              </div>
+            </div>
+
+            <div class="ow-modal__actions">
+              <div id="ow-gmail-status" class="ow-gmail-status">Checking Gmail connection…</div>
+              <div id="ow-draft-progress" class="ow-draft-progress" hidden></div>
+              <button type="button" class="ow-btn ow-btn--secondary" id="ow-outreach-save-btn">Save Details</button>
+              <button type="button" class="ow-btn ow-btn--secondary" id="ow-outreach-test-send-btn">Send Test Draft</button>
+              <button type="button" class="ow-btn ow-btn--secondary" id="ow-outreach-mark-sent-btn">Mark as Sent</button>
+              <button type="button" class="ow-btn ow-btn--primary" id="ow-outreach-send-btn">Create Gmail Drafts</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</div><!-- /ow-page -->
+
+<script src="static/js/outreach.js"></script>
+
+
+    </main>
+  </div>
+
+</div>
+<aside
+  class="palette-panel is-booting"
+  id="palette-panel"
+  aria-hidden="false"
+  data-default-open="true"
+>
+  <div class="palette-panel__header" id="palette-drag-handle">
+    <div class="palette-panel__title">Palette</div>
+    <button
+      type="button"
+      class="palette-panel__close"
+      id="palette-close"
+      title="Hide palette"
+      aria-label="Hide palette"
+    >
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 8h8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="palette-panel__body">
+    <section class="palette-section">
+      <div class="palette-section__label">Recent</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="website-crawler.html"
+            class="palette-tile palette-tile--website_crawler"
+            title="Website Crawler"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--mint"></span>
+            <span class="palette-tile__icon">WC</span>
+            <span class="palette-tile__label">Website Crawler</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="196"
+            title="Pin Website Crawler"
+            aria-label="Pin Website Crawler"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="task-projects.html"
+            class="palette-tile palette-tile--task_projects"
+            title="Task Projects"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Task Projects</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="195"
+            title="Pin Task Projects"
+            aria-label="Pin Task Projects"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="outreach-resources.html"
+            class="palette-tile palette-tile--outreach"
+            title="Outreach Resources"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--green"></span>
+            <span class="palette-tile__icon">OW</span>
+            <span class="palette-tile__label">Outreach Resources</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="194"
+            title="Pin Outreach Resources"
+            aria-label="Pin Outreach Resources"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="database-map.html"
+            class="palette-tile palette-tile--database_map"
+            title="San Diego Atlas"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">San Diego Atlas</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="193"
+            title="Pin San Diego Atlas"
+            aria-label="Pin San Diego Atlas"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="film-report.html"
+            class="palette-tile palette-tile--film_report"
+            title="Film Report"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">FR</span>
+            <span class="palette-tile__label">Film Report</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="192"
+            title="Pin Film Report"
+            aria-label="Pin Film Report"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="reports.html"
+            class="palette-tile palette-tile--reports"
+            title="Reports"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">RT</span>
+            <span class="palette-tile__label">Reports</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="191"
+            title="Pin Reports"
+            aria-label="Pin Reports"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="crm-report.html"
+            class="palette-tile palette-tile--crm_report"
+            title="CRM Report"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--blue"></span>
+            <span class="palette-tile__icon">RP</span>
+            <span class="palette-tile__label">CRM Report</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="190"
+            title="Pin CRM Report"
+            aria-label="Pin CRM Report"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="task-flow.html"
+            class="palette-tile palette-tile--task_flow"
+            title="Task Flow"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Task Flow</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="189"
+            title="Pin Task Flow"
+            aria-label="Pin Task Flow"
+          >•</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="palette-section__label">Pinned</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="outreach.html"
+            class="palette-tile palette-tile--outreach"
+            title="Outreach Projects"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">OW</span>
+            <span class="palette-tile__label">Outreach Projects</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="5"
+            title="Unpin Outreach Projects"
+            aria-label="Unpin Outreach Projects"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/sdlff/films/7"
+            class="palette-tile palette-tile--film"
+            title="ANGIE"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">ANGIE</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="34"
+            title="Unpin ANGIE"
+            aria-label="Unpin ANGIE"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/dgc/films/27"
+            class="palette-tile palette-tile--film"
+            title="DGC Video: The Young Girls of Rochefort"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">DGC Video: The Young Girls of Rochefort</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="18"
+            title="Unpin DGC Video: The Young Girls of Rochefort"
+            aria-label="Unpin DGC Video: The Young Girls of Rochefort"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/dgc/films/28"
+            class="palette-tile palette-tile--film"
+            title="Bonkers Half-Assed Midnight: Demonwarp"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Bonkers Half-Assed Midnight: Demonwarp</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="16"
+            title="Unpin Bonkers Half-Assed Midnight: Demonwarp"
+            aria-label="Unpin Bonkers Half-Assed Midnight: Demonwarp"
+          >•</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="palette-section__label">Apps</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="https://www.canva.com/"
+            class="palette-tile palette-tile--app"
+            title="Canva"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">CV</span>
+            <span class="palette-tile__label">Canva</span>
+          </a>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="https://docs.google.com/spreadsheets/d/1uWRg1f2Odr7ErWQtmammraE3rF5q9bF1iFyqZ3fOpVk/edit?gid=1358102068#gid=1358102068"
+            class="palette-tile palette-tile--app"
+            title="CRM Sheet"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">GS</span>
+            <span class="palette-tile__label">CRM Sheet</span>
+          </a>
+        </div>
+        
+      </div>
+    </section>
+  </div>
+</aside>
+<div class="chatbot-shell" data-chatbot-shell>
+  <button
+    type="button"
+    class="chatbot-restore"
+    id="chatbot-restore"
+    aria-controls="chatbot-panel"
+    hidden
+  >
+    Show assistant
+  </button>
+  <button
+    type="button"
+    class="chatbot-launcher"
+    id="chatbot-launcher"
+    aria-expanded="false"
+    aria-controls="chatbot-panel"
+  >
+    <span class="chatbot-launcher__pulse"></span>
+    <span class="chatbot-launcher__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 10.5h8"></path>
+        <path d="M8 14h5"></path>
+        <path d="M12 3C7.03 3 3 6.58 3 11c0 2.1.92 4 2.42 5.42V21l4.07-2.26c.8.17 1.64.26 2.51.26 4.97 0 9-3.58 9-8s-4.03-8-9-8z"></path>
+      </svg>
+    </span>
+    <span class="chatbot-launcher__text">
+      <strong>Ask MACSD</strong>
+      <span>Need help in this workspace?</span>
+    </span>
+  </button>
+  <button
+    type="button"
+    class="chatbot-launcher-hide"
+    id="chatbot-hide"
+    aria-label="Hide chatbot"
+    title="Hide chatbot"
+  >
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 4l8 8"></path>
+      <path d="M12 4l-8 8"></path>
+    </svg>
+  </button>
+
+  <aside
+    class="chatbot-panel"
+    id="chatbot-panel"
+    aria-hidden="true"
+    data-chatbot-open="false"
+  >
+    <div class="chatbot-panel__header">
+      <div class="chatbot-panel__eyebrow">Assistant</div>
+      <div>
+        <div class="chatbot-panel__title">MACSD Helper</div>
+        <div class="chatbot-panel__subtitle">Ask about pages, workflows, or records.</div>
+      </div>
+      <button
+        type="button"
+        class="chatbot-panel__close"
+        id="chatbot-close"
+        aria-label="Close chatbot"
+      >
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M4 4l8 8"></path>
+          <path d="M12 4l-8 8"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="chatbot-panel__hide"
+        id="chatbot-panel-hide"
+        aria-label="Hide chatbot"
+      >
+        Hide
+      </button>
+    </div>
+
+    <div class="chatbot-panel__body">
+      <div class="chatbot-panel__intro">
+        <div class="chatbot-panel__badge">UI skeleton</div>
+        <p>
+          This is the shared chatbot shell. Next we can connect it to an API and pass page context from Flask.
+        </p>
+      </div>
+
+      <div class="chatbot-suggestions" aria-label="Suggested prompts">
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="How do I use this page?">How do I use this page?</button>
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="Where can I find film records?">Where can I find film records?</button>
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="Help me navigate the CRM.">Help me navigate the CRM.</button>
+      </div>
+
+      <div class="chatbot-thread" id="chatbot-thread" aria-live="polite">
+        <article class="chatbot-message chatbot-message--bot">
+          <div class="chatbot-message__meta">MACSD Helper</div>
+          <div class="chatbot-message__bubble">
+            Hi there. I am ready for the backend hookup, but the UI is already in place so we can keep building from here.
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <form class="chatbot-composer" id="chatbot-form">
+      <label class="sr-only" for="chatbot-input">Chat message</label>
+      <textarea
+        id="chatbot-input"
+        class="chatbot-composer__input"
+        rows="1"
+        placeholder="Ask about this page or a workflow..."
+      ></textarea>
+      <button type="submit" class="chatbot-composer__submit">Send</button>
+    </form>
+  </aside>
+</div>
+<script src="static/js/main.js"></script>
+
+</body>
+</html>

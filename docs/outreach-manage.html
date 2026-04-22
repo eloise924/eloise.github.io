@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Management</title>
+<script>
+  (function() {
+    try {
+      var root = document.documentElement;
+      var openState = window.localStorage.getItem('macsd.palette.open.v2');
+      var positionState = window.localStorage.getItem('macsd.palette.position.v2');
+      root.setAttribute('data-palette-state', openState === 'false' ? 'closed' : 'open');
+      if (positionState) {
+        var parsed = JSON.parse(positionState);
+        if (typeof parsed.x === 'number' && typeof parsed.y === 'number') {
+          root.style.setProperty('--palette-initial-x', parsed.x + 'px');
+          root.style.setProperty('--palette-initial-y', parsed.y + 'px');
+        }
+      }
+    } catch (err) {}
+  })();
+</script>
+<link rel="icon" type="image/png" href="static/images/site-logo-black.png?v=2">
+<link rel="shortcut icon" type="image/png" href="static/images/site-logo-black.png?v=2">
+<link rel="apple-touch-icon" href="static/images/site-logo-black.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/main.css">
+
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-mark logo-mark-fallback">MC</div>
+      <img
+        src="static/images/site-logo-black.png"
+        alt="MACSD Tool logo"
+        class="logo-image"
+        onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';"
+      >
+      <div class="logo-copy">
+        <div class="logo-name">MACSD Tool</div>
+        <div class="logo-ver">v0.1 · internal</div>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Main</span>
+      <a href="dashboard.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        <span class="nav-item__label">Dashboard</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Outreach</span>
+      <a href="outreach.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="10" rx="2"/><path d="M1.5 4.5l6.5 4.5 6.5-4.5"/></svg>
+        <span class="nav-item__label">Outreach Projects</span>
+      </a>
+      <a href="outreach-manage.html" class="nav-item active">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 5h6M5 8h6M5 11h4"/></svg>
+        <span class="nav-item__label">Project Management</span>
+      </a>
+      <a href="outreach-resources.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5h10"/><path d="M3 8h10"/><path d="M3 11.5h6"/><circle cx="12" cy="11.5" r="1.5"/></svg>
+        <span class="nav-item__label">Resource Hub</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">DGC</span>
+      <a href="dgc-films.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M6 5l5 3-5 3V5z"/></svg>
+        <span class="nav-item__label">Film Database</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">SDLFF</span>
+      <a href="sdlff-films.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M6 5l5 3-5 3V5z"/></svg>
+        <span class="nav-item__label">Film Database</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Directory</span>
+      <a href="crm.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="3"/><path d="M1 13c0-3 2-5 5-5s5 2 5 5"/><circle cx="12" cy="5" r="2"/><path d="M15 13c0-2-1-4-3-4.5"/></svg>
+        <span class="nav-item__label">CRM Directory</span>
+      </a>
+      <a href="database-map.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3-1.5 4 1.5 3-1.5v8L10 13 6 11.5 3 13v-8.5Z"/><path d="M6 3v8.5"/><path d="M10 4.5V13"/></svg>
+        <span class="nav-item__label">San Diego Atlas</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Reports</span>
+      <a href="reports.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13.5h10"/><path d="M5 11V6"/><path d="M8 11V2.5"/><path d="M11 11V8"/></svg>
+        <span class="nav-item__label">Report</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Operations</span>
+      <a href="task-flow.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h10"/><path d="M3 8h7"/><path d="M3 12h5"/><circle cx="12" cy="8" r="2.5"/></svg>
+        <span class="nav-item__label">Task Management</span>
+      </a>
+      <a href="task-projects.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M5 6h6"/><path d="M5 9h4"/></svg>
+        <span class="nav-item__label">Task Projects</span>
+      </a>
+      <a href="website-crawler.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5.5"/><path d="M2.5 8h11"/><path d="M8 2.5a8.5 8.5 0 0 1 0 11"/><path d="M8 2.5a8.5 8.5 0 0 0 0 11"/></svg>
+        <span class="nav-item__label">Website Crawler</span>
+      </a>
+      <a href="image-to-sheet.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 5h6M5 8h6M5 11h2"/><path d="M11 10.5l1.5 1.5 2-3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="nav-item__label">Image to Sheet</span>
+      </a>
+      <a href="inventory.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="12" height="6" rx="1"/><path d="M5 8V5a3 3 0 0 1 6 0v3"/></svg>
+        <span class="nav-item__label">Inventory</span>
+      </a>
+      <a href="users.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-4 2.5-6 6-6s6 2 6 6"/></svg>
+        <span class="nav-item__label">Users</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="avatar">AD</div>
+        <div class="user-copy">
+          <div class="user-name">Admin User</div>
+          <div class="user-role">admin</div>
+        </div>
+        <button
+          type="button"
+          class="palette-toggle"
+          id="palette-toggle"
+          title="Toggle palette"
+          aria-label="Toggle palette"
+          aria-expanded="true"
+        >
+          <span class="palette-toggle__core"></span>
+        </button>
+        <a href="login.html" class="logout-btn" title="Sign out">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3"/><path d="M7 11l3-3-3-3"/><path d="M10 8H2"/></svg>
+        </a>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="sidebar-peek-toggle"
+      onclick="toggleSidebar()"
+      title="Toggle sidebar"
+      aria-label="Toggle sidebar"
+    >
+      <svg class="sidebar-peek-toggle__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3.5L5.5 8L10 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main" id="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()" title="Toggle menu" aria-label="Toggle sidebar">☰</button>
+      <div class="topbar-info">
+        <h1 class="topbar-title">Project Management</h1>
+        <span class="topbar-bread">Outreach / Project Management</span>
+      </div>
+      <div class="topbar-right">
+        
+      </div>
+    </header>
+
+    <!-- FLASH MESSAGES -->
+    
+      
+    
+
+    <!-- PAGE CONTENT -->
+    <main class="content">
+      
+<div class="ow-page" style="background:var(--ow-bg);padding:0;">
+  <div class="ow-proj-page ow-proj-page--manage">
+    <div class="ow-proj-page__head ow-proj-page__head--stack">
+      <div>
+        <div class="ow-proj-page__title">Project Management</div>
+        <p class="ow-browse-intro">Review every outreach workspace in one place, then sort, filter, and clean up projects without leaving the management view.</p>
+      </div>
+
+      <div class="ow-browse-head-row">
+        <div class="ow-browse-crumbs">
+          <button type="button" class="ow-browse-crumb is-active" data-manage-category="all" onclick="setManageCategory(this)">All Projects</button>
+          <button type="button" class="ow-browse-crumb " data-manage-category="dgc" onclick="setManageCategory(this)">DGC PROJECTS</button>
+          <button type="button" class="ow-browse-crumb " data-manage-category="sdlff" onclick="setManageCategory(this)">SDLFF PROJECTS</button>
+          <button type="button" class="ow-browse-crumb " data-manage-category="custom" onclick="setManageCategory(this)">CUSTOM PROJECTS</button>
+        </div>
+        <a href="outreach.html" class="ow-btn ow-btn--ghost">Open Workspace Hub</a>
+      </div>
+    </div>
+
+    <div class="ow-manage-summary">
+      <div class="ow-manage-stat">
+        <div class="ow-manage-stat__label">Total Projects</div>
+        <div class="ow-manage-stat__value">13</div>
+      </div>
+      <div class="ow-manage-stat">
+        <div class="ow-manage-stat__label">In Progress</div>
+        <div class="ow-manage-stat__value">5</div>
+      </div>
+      <div class="ow-manage-stat">
+        <div class="ow-manage-stat__label">Draft</div>
+        <div class="ow-manage-stat__value">8</div>
+      </div>
+      <div class="ow-manage-stat">
+        <div class="ow-manage-stat__label">Completed</div>
+        <div class="ow-manage-stat__value">0</div>
+      </div>
+    </div>
+
+    <div class="ow-branch-grid ow-branch-grid--manage">
+      <button type="button" class="ow-branch-card ow-branch-card--manage " data-manage-category="dgc" onclick="setManageCategory(this)">
+        <div class="ow-branch-card__eyebrow">Film-Based Outreach</div>
+        <div class="ow-branch-card__title">DGC PROJECTS</div>
+        <div class="ow-branch-card__desc">Manage Digital Gym Cinema outreach workspaces, reopen drafts, and clean up older campaign shells.</div>
+        <div class="ow-branch-card__meta">7 active projects</div>
+      </button>
+
+      <button type="button" class="ow-branch-card ow-branch-card--manage " data-manage-category="sdlff" onclick="setManageCategory(this)">
+        <div class="ow-branch-card__eyebrow">Festival Outreach</div>
+        <div class="ow-branch-card__title">SDLFF PROJECTS</div>
+        <div class="ow-branch-card__desc">Filter by festival year, track live outreach progress, and keep seasonal project sets organized.</div>
+        <div class="ow-branch-card__meta">5 active projects</div>
+      </button>
+
+      <button type="button" class="ow-branch-card ow-branch-card--manage " data-manage-category="custom" onclick="setManageCategory(this)">
+        <div class="ow-branch-card__eyebrow">Flexible Workflow</div>
+        <div class="ow-branch-card__title">CUSTOM PROJECTS</div>
+        <div class="ow-branch-card__desc">Review manually created workspaces that are not tied to the DGC or SDLFF film catalogs.</div>
+        <div class="ow-branch-card__meta">1 custom project</div>
+      </button>
+    </div>
+
+    <div class="ow-browse-panel ow-manage-panel">
+      <div class="ow-browse-panel__head">
+        <div>
+          <div class="ow-proj-section__title">PROJECT MANAGEMENT</div>
+          <div class="ow-browse-panel__title">Manage Outreach Projects</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end;">
+          <a
+            href="outreach-manage.html"
+            id="ow-manage-new-custom"
+            class="ow-btn ow-btn--primary"
+            style="display:none;"
+          >+ New Custom Project</a>
+          <div class="ow-browse-panel__meta"><span id="ow-manage-visible-count">13</span> projects</div>
+        </div>
+      </div>
+
+      <div class="ow-manage-toolbar ow-manage-toolbar--stack">
+        <div class="ow-manage-toolbar__row">
+          <input
+            id="ow-manage-search"
+            type="text"
+            class="ow-search-input"
+            placeholder="Search projects, films, directors, labels, or festival years..."
+            oninput="filterManagedProjects()"
+          >
+        </div>
+
+        <div class="ow-manage-toolbar__row ow-manage-toolbar__row--controls">
+          <div class="ow-manage-filters">
+            <button type="button" class="ow-filter-pill is-active" data-manage-status="all" onclick="setManageStatus(this)">All Status</button>
+            <button type="button" class="ow-filter-pill" data-manage-status="draft" onclick="setManageStatus(this)">Draft</button>
+            <button type="button" class="ow-filter-pill" data-manage-status="in_progress" onclick="setManageStatus(this)">In Progress</button>
+            <button type="button" class="ow-filter-pill" data-manage-status="completed" onclick="setManageStatus(this)">Completed</button>
+          </div>
+
+          <div class="ow-manage-selects">
+            <label class="ow-manage-select">
+              <span class="ow-manage-select__label">Sort</span>
+              <select id="ow-manage-sort" onchange="filterManagedProjects()">
+                <option value="updated_desc">Updated Latest</option>
+                <option value="created_desc">Created Latest</option>
+                <option value="title_asc">Title A-Z</option>
+                <option value="groups_desc">Most Groups</option>
+              </select>
+            </label>
+
+            <label class="ow-manage-select" id="ow-manage-year-filter-wrap">
+              <span class="ow-manage-select__label">SDLFF Year</span>
+              <select id="ow-manage-year-filter" onchange="filterManagedProjects()">
+                <option value="all">All Years</option>
+                
+                <option value="2026">2026</option>
+                
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="ow-proj-list ow-proj-list--browse" id="ow-manage-list">
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="dgc"
+          data-manage-status="in_progress"
+          data-manage-year=""
+          data-manage-title="my father’s shadow"
+          data-manage-created="2026-03-30 22:10:24"
+          data-manage-updated="2026-04-22 00:37:25"
+          data-manage-groups="2"
+          data-manage-search="my father’s shadow     in_progress"
+        >
+          <form action="/outreach/project/13/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/13" class="ow-proj-row__main">
+            
+            <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/03/23105743/aLQYyqWlIBBU3L8L84txbh0x1nq-683x1024.jpg" alt="My Father’s Shadow" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">DGC</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">My Father’s Shadow</div>
+              <div class="ow-proj-row__meta">
+                <span>DGC</span>
+                
+                <span>2 groups</span>
+                <span>Updated 2026-04-22</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--dgc">
+                  DGC
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--in_progress">in progress</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/13" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="custom"
+          data-manage-status="in_progress"
+          data-manage-year=""
+          data-manage-title="ivie awards &amp; student film festival"
+          data-manage-created="2026-04-01 19:25:12"
+          data-manage-updated="2026-04-16 21:46:27"
+          data-manage-groups="7"
+          data-manage-search="ivie awards &amp; student film festival event  [{&#34;label&#34;: &#34;screening &amp; awards ceremony&#34;, &#34;value&#34;: &#34;may 30, 2026&#34;}, {&#34;label&#34;: &#34;location&#34;, &#34;value&#34;: &#34;digital gym cinema \u2013 ucsd park &amp; market&#34;}, {&#34;label&#34;: &#34;format&#34;, &#34;value&#34;: &#34;awards ceremony / student film festival&#34;}, {&#34;label&#34;: &#34;submission deadline&#34;, &#34;value&#34;: &#34;april 20, 2026&#34;}, {&#34;label&#34;: &#34;submission link&#34;, &#34;value&#34;: &#34;filmfreeway.com/ivieawards&#34;}]  in_progress"
+        >
+          <form action="/outreach/project/16/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/16" class="ow-proj-row__main">
+            
+            <img src="static/uploads/ce8919d1_Student_Film_Festival_2026_ChosenIteration_v2.jpg" alt="iVIE Awards &amp; Student Film Festival" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">Event</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">iVIE Awards &amp; Student Film Festival</div>
+              <div class="ow-proj-row__meta">
+                <span>Event</span>
+                
+                <span>7 groups</span>
+                <span>Updated 2026-04-16</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ">
+                  Event
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--in_progress">in progress</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/16/edit" method="GET">
+              <button type="submit" class="ow-btn ow-btn--ghost ow-btn--sm">Edit</button>
+            </form>
+            
+            <form action="/outreach/manage/16" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="sdlff"
+          data-manage-status="in_progress"
+          data-manage-year="2026"
+          data-manage-title="american pachuco: the legend of luis valdez"
+          data-manage-created="2026-04-09 21:35:31"
+          data-manage-updated="2026-04-13 20:59:45"
+          data-manage-groups="1"
+          data-manage-search="american pachuco: the legend of luis valdez    2026 in_progress"
+        >
+          <form action="/outreach/project/19/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/19" class="ow-proj-row__main">
+            
+            <img src="https://static-a.eventive.org/02463f5e89b6ac23797fd19e2cd61f7f.jpg?w=300" alt="American Pachuco: The Legend of Luis Valdez" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">SDLFF</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">American Pachuco: The Legend of Luis Valdez</div>
+              <div class="ow-proj-row__meta">
+                <span>SDLFF</span>
+                <span>Festival 2026</span>
+                <span>1 group</span>
+                <span>Updated 2026-04-13</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--sdlff">
+                  SDLFF
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--in_progress">in progress</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/19" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="dgc"
+          data-manage-status="draft"
+          data-manage-year=""
+          data-manage-title="dgc video: the young girls of rochefort"
+          data-manage-created="2026-04-09 22:19:35"
+          data-manage-updated="2026-04-09 22:19:35"
+          data-manage-groups="0"
+          data-manage-search="dgc video: the young girls of rochefort     draft"
+        >
+          <form action="/outreach/project/20/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/20" class="ow-proj-row__main">
+            
+            <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/03/16113755/jtxhyGaYhurH6KsjvP1jV3dDypz-683x1024.jpg" alt="DGC Video: The Young Girls of Rochefort" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">DGC</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">DGC Video: The Young Girls of Rochefort</div>
+              <div class="ow-proj-row__meta">
+                <span>DGC</span>
+                
+                <span>0 groups</span>
+                <span>Updated 2026-04-09</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--dgc">
+                  DGC
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--draft">draft</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/20" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="sdlff"
+          data-manage-status="draft"
+          data-manage-year="2026"
+          data-manage-title="2 de copas"
+          data-manage-created="2026-04-07 23:37:49"
+          data-manage-updated="2026-04-07 23:37:49"
+          data-manage-groups="0"
+          data-manage-search="2 de copas    2026 draft"
+        >
+          <form action="/outreach/project/18/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/18" class="ow-proj-row__main">
+            
+            <img src="https://static-a.eventive.org/1771283840462temp-1771283840405-poster.jpg" alt="2 de copas" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">SDLFF</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">2 de copas</div>
+              <div class="ow-proj-row__meta">
+                <span>SDLFF</span>
+                <span>Festival 2026</span>
+                <span>0 groups</span>
+                <span>Updated 2026-04-07</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--sdlff">
+                  SDLFF
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--draft">draft</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/18" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="sdlff"
+          data-manage-status="draft"
+          data-manage-year="2026"
+          data-manage-title="#1 bad dad"
+          data-manage-created="2026-04-01 20:16:41"
+          data-manage-updated="2026-04-01 20:16:41"
+          data-manage-groups="0"
+          data-manage-search="#1 bad dad    2026 draft"
+        >
+          <form action="/outreach/project/17/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/17" class="ow-proj-row__main">
+            
+            <img src="https://static-a.eventive.org/1769467450091temp-1769467450064-poster.jpg" alt="#1 BAD DAD" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">SDLFF</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">#1 BAD DAD</div>
+              <div class="ow-proj-row__meta">
+                <span>SDLFF</span>
+                <span>Festival 2026</span>
+                <span>0 groups</span>
+                <span>Updated 2026-04-01</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--sdlff">
+                  SDLFF
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--draft">draft</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/17" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="dgc"
+          data-manage-status="in_progress"
+          data-manage-year=""
+          data-manage-title="palestine ’36"
+          data-manage-created="2026-03-30 21:30:36"
+          data-manage-updated="2026-03-31 23:25:16"
+          data-manage-groups="2"
+          data-manage-search="palestine ’36     in_progress"
+        >
+          <form action="/outreach/project/12/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/12" class="ow-proj-row__main">
+            
+            <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/03/23104229/ajeiriNRFPLESjGZ0vdp4MVardZ-683x1024.jpg" alt="Palestine ’36" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">DGC</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">Palestine ’36</div>
+              <div class="ow-proj-row__meta">
+                <span>DGC</span>
+                
+                <span>2 groups</span>
+                <span>Updated 2026-03-31</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--dgc">
+                  DGC
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--in_progress">in progress</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/12" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="dgc"
+          data-manage-status="draft"
+          data-manage-year=""
+          data-manage-title="the president’s cake"
+          data-manage-created="2026-03-27 01:06:36"
+          data-manage-updated="2026-03-30 21:06:30"
+          data-manage-groups="0"
+          data-manage-search="the president’s cake     draft"
+        >
+          <form action="/outreach/project/11/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/11" class="ow-proj-row__main">
+            
+            <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/02/17092659/bRiokhWMk82MLAk5SjvRw1KmSZt.jpg" alt="The President’s Cake" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">DGC</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">The President’s Cake</div>
+              <div class="ow-proj-row__meta">
+                <span>DGC</span>
+                
+                <span>0 groups</span>
+                <span>Updated 2026-03-30</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--dgc">
+                  DGC
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--draft">draft</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/11" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="sdlff"
+          data-manage-status="draft"
+          data-manage-year="2026"
+          data-manage-title="las hijas de eva"
+          data-manage-created="2026-03-26 20:48:34"
+          data-manage-updated="2026-03-26 20:48:34"
+          data-manage-groups="0"
+          data-manage-search="las hijas de eva    2026 draft"
+        >
+          <form action="/outreach/project/10/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/10" class="ow-proj-row__main">
+            
+            <img src="https://static-a.eventive.org/1769471502790temp-1769471502747-poster.jpg" alt="LAS HIJAS DE EVA" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">SDLFF</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">LAS HIJAS DE EVA</div>
+              <div class="ow-proj-row__meta">
+                <span>SDLFF</span>
+                <span>Festival 2026</span>
+                <span>0 groups</span>
+                <span>Updated 2026-03-26</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--sdlff">
+                  SDLFF
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--draft">draft</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/10" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="dgc"
+          data-manage-status="in_progress"
+          data-manage-year=""
+          data-manage-title="“this is america at 250: frederick wiseman” – hospital"
+          data-manage-created="2026-03-26 20:21:49"
+          data-manage-updated="2026-03-26 20:25:34"
+          data-manage-groups="1"
+          data-manage-search="“this is america at 250: frederick wiseman” – hospital     in_progress"
+        >
+          <form action="/outreach/project/9/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/9" class="ow-proj-row__main">
+            
+            <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/03/09134420/9zJVyNQCmJIly2Pet1XOQMpGNzN-733x1024.jpg" alt="“This is America at 250: Frederick Wiseman” – Hospital" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">DGC</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">“This is America at 250: Frederick Wiseman” – Hospital</div>
+              <div class="ow-proj-row__meta">
+                <span>DGC</span>
+                
+                <span>1 group</span>
+                <span>Updated 2026-03-26</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--dgc">
+                  DGC
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--in_progress">in progress</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/9" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="sdlff"
+          data-manage-status="draft"
+          data-manage-year="2026"
+          data-manage-title="barrio"
+          data-manage-created="2026-03-26 19:03:55"
+          data-manage-updated="2026-03-26 19:03:55"
+          data-manage-groups="0"
+          data-manage-search="barrio    2026 draft"
+        >
+          <form action="/outreach/project/8/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/8" class="ow-proj-row__main">
+            
+            <img src="https://static-a.eventive.org/1769468543269temp-1769468543243-poster.jpg" alt="Barrio" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">SDLFF</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">Barrio</div>
+              <div class="ow-proj-row__meta">
+                <span>SDLFF</span>
+                <span>Festival 2026</span>
+                <span>0 groups</span>
+                <span>Updated 2026-03-26</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--sdlff">
+                  SDLFF
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--draft">draft</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/8" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="dgc"
+          data-manage-status="draft"
+          data-manage-year=""
+          data-manage-title="sirāt"
+          data-manage-created="2026-03-26 19:02:24"
+          data-manage-updated="2026-03-26 19:02:42"
+          data-manage-groups="0"
+          data-manage-search="sirāt     draft"
+        >
+          <form action="/outreach/project/7/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="/outreach/manage/7" class="ow-proj-row__main">
+            
+            <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/02/18103500/bzBtsLi17rK4G6kDvOXfUZfAhca-scaled.jpg" alt="Sirāt" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">DGC</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">Sirāt</div>
+              <div class="ow-proj-row__meta">
+                <span>DGC</span>
+                
+                <span>0 groups</span>
+                <span>Updated 2026-03-26</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--dgc">
+                  DGC
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--draft">draft</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="/outreach/manage/7" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+        <div
+          class="ow-proj-row ow-proj-row--browse ow-manage-row"
+          data-manage-row
+          data-manage-type="dgc"
+          data-manage-status="draft"
+          data-manage-year=""
+          data-manage-title="bonkers half-assed midnight: demonwarp"
+          data-manage-created="2026-03-25 22:50:42"
+          data-manage-updated="2026-03-25 23:04:07"
+          data-manage-groups="0"
+          data-manage-search="bonkers half-assed midnight: demonwarp     draft"
+        >
+          <form action="/outreach/project/6/delete" method="POST" class="ow-proj-row__delete-form" onsubmit="return confirm('Delete this project?')">
+            <input type="hidden" name="next" value="/outreach/manage">
+            <button type="submit" class="ow-proj-row__delete-btn" aria-label="Delete project" title="Delete project">×</button>
+          </form>
+
+          <a href="outreach-manage-detail.html" class="ow-proj-row__main">
+            
+            <img src="https://s3.amazonaws.com/nightjarprod/content/uploads/sites/216/2026/02/08135222/zg4jUEjRhHmTD1iu2MlpTfWXbn1-683x1024.jpg" alt="Bonkers Half-Assed Midnight: Demonwarp" class="ow-proj-row__poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="ow-proj-row__thumb" style="display:none;">DGC</div>
+            
+
+            <div class="ow-proj-row__body">
+              <div class="ow-proj-row__title">Bonkers Half-Assed Midnight: Demonwarp</div>
+              <div class="ow-proj-row__meta">
+                <span>DGC</span>
+                
+                <span>0 groups</span>
+                <span>Updated 2026-03-25</span>
+              </div>
+              <div class="ow-proj-row__badges">
+                <span class="ow-proj-chip ow-proj-chip--dgc">
+                  DGC
+                </span>
+                <span class="ow-topbar__badge ow-topbar__badge--draft">draft</span>
+              </div>
+            </div>
+          </a>
+
+          <div class="ow-proj-row__actions">
+            
+            <form action="outreach-manage-detail.html" method="GET">
+              <button type="submit" class="ow-btn ow-btn--secondary ow-btn--sm">Open</button>
+            </form>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="ow-proj-empty" id="ow-manage-empty" style="display:none;">No projects match the current filters.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentManageCategory = 'all';
+  let currentManageStatus = 'all';
+
+  function syncManageCategoryUI(category) {
+    document.querySelectorAll('[data-manage-category]').forEach(el => {
+      const isActive = (el.dataset.manageCategory || 'all') === category;
+      el.classList.toggle('is-active', isActive);
+    });
+    const newCustomButton = document.getElementById('ow-manage-new-custom');
+    if (newCustomButton) {
+      newCustomButton.style.display = category === 'custom' ? 'inline-flex' : 'none';
+    }
+    const wrap = document.getElementById('ow-manage-year-filter-wrap');
+    if (wrap) {
+      wrap.style.display = (category === 'all' || category === 'sdlff') ? '' : 'none';
+    }
+  }
+
+  function setManageCategory(target) {
+    currentManageCategory = target.dataset.manageCategory || 'all';
+    syncManageCategoryUI(currentManageCategory);
+    filterManagedProjects();
+  }
+
+  function setManageStatus(target) {
+    currentManageStatus = target.dataset.manageStatus || 'all';
+    document.querySelectorAll('[data-manage-status]').forEach(el => {
+      el.classList.toggle('is-active', el === target);
+    });
+    filterManagedProjects();
+  }
+
+  function sortManagedRows(rows, sortValue) {
+    const sorters = {
+      updated_desc: (a, b) => (b.dataset.manageUpdated || '').localeCompare(a.dataset.manageUpdated || ''),
+      created_desc: (a, b) => (b.dataset.manageCreated || '').localeCompare(a.dataset.manageCreated || ''),
+      title_asc: (a, b) => (a.dataset.manageTitle || '').localeCompare(b.dataset.manageTitle || ''),
+      groups_desc: (a, b) => Number(b.dataset.manageGroups || 0) - Number(a.dataset.manageGroups || 0),
+    };
+    const sorter = sorters[sortValue] || sorters.updated_desc;
+    rows.sort(sorter);
+  }
+
+  function filterManagedProjects() {
+    const query = String(document.getElementById('ow-manage-search')?.value || '').toLowerCase();
+    const yearValue = String(document.getElementById('ow-manage-year-filter')?.value || 'all');
+    const sortValue = String(document.getElementById('ow-manage-sort')?.value || 'updated_desc');
+    const list = document.getElementById('ow-manage-list');
+    if (!list) return;
+
+    const rows = Array.from(list.querySelectorAll('[data-manage-row]'));
+    sortManagedRows(rows, sortValue);
+    rows.forEach(row => list.appendChild(row));
+
+    let visibleCount = 0;
+    rows.forEach(row => {
+      const matchesCategory = currentManageCategory === 'all' || row.dataset.manageType === currentManageCategory;
+      const matchesStatus = currentManageStatus === 'all' || row.dataset.manageStatus === currentManageStatus;
+      const haystack = row.dataset.manageSearch || '';
+      const matchesQuery = haystack.includes(query);
+      const matchesYear = yearValue === 'all' || row.dataset.manageYear === yearValue;
+      const show = matchesCategory && matchesStatus && matchesQuery && matchesYear;
+      row.style.display = show ? '' : 'none';
+      if (show) visibleCount += 1;
+    });
+
+    const count = document.getElementById('ow-manage-visible-count');
+    if (count) count.textContent = String(visibleCount);
+    const empty = document.getElementById('ow-manage-empty');
+    if (empty) empty.style.display = visibleCount === 0 ? 'flex' : 'none';
+  }
+
+  syncManageCategoryUI(currentManageCategory);
+  filterManagedProjects();
+</script>
+
+    </main>
+  </div>
+
+</div>
+<aside
+  class="palette-panel is-booting"
+  id="palette-panel"
+  aria-hidden="false"
+  data-default-open="true"
+>
+  <div class="palette-panel__header" id="palette-drag-handle">
+    <div class="palette-panel__title">Palette</div>
+    <button
+      type="button"
+      class="palette-panel__close"
+      id="palette-close"
+      title="Hide palette"
+      aria-label="Hide palette"
+    >
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 8h8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="palette-panel__body">
+    <section class="palette-section">
+      <div class="palette-section__label">Recent</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="website-crawler.html"
+            class="palette-tile palette-tile--website_crawler"
+            title="Website Crawler"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--mint"></span>
+            <span class="palette-tile__icon">WC</span>
+            <span class="palette-tile__label">Website Crawler</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="196"
+            title="Pin Website Crawler"
+            aria-label="Pin Website Crawler"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="task-projects.html"
+            class="palette-tile palette-tile--task_projects"
+            title="Task Projects"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Task Projects</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="195"
+            title="Pin Task Projects"
+            aria-label="Pin Task Projects"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="outreach-resources.html"
+            class="palette-tile palette-tile--outreach"
+            title="Outreach Resources"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--green"></span>
+            <span class="palette-tile__icon">OW</span>
+            <span class="palette-tile__label">Outreach Resources</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="194"
+            title="Pin Outreach Resources"
+            aria-label="Pin Outreach Resources"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="database-map.html"
+            class="palette-tile palette-tile--database_map"
+            title="San Diego Atlas"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">San Diego Atlas</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="193"
+            title="Pin San Diego Atlas"
+            aria-label="Pin San Diego Atlas"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="film-report.html"
+            class="palette-tile palette-tile--film_report"
+            title="Film Report"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">FR</span>
+            <span class="palette-tile__label">Film Report</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="192"
+            title="Pin Film Report"
+            aria-label="Pin Film Report"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="reports.html"
+            class="palette-tile palette-tile--reports"
+            title="Reports"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">RT</span>
+            <span class="palette-tile__label">Reports</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="191"
+            title="Pin Reports"
+            aria-label="Pin Reports"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="crm-report.html"
+            class="palette-tile palette-tile--crm_report"
+            title="CRM Report"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--blue"></span>
+            <span class="palette-tile__icon">RP</span>
+            <span class="palette-tile__label">CRM Report</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="190"
+            title="Pin CRM Report"
+            aria-label="Pin CRM Report"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="task-flow.html"
+            class="palette-tile palette-tile--task_flow"
+            title="Task Flow"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Task Flow</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="189"
+            title="Pin Task Flow"
+            aria-label="Pin Task Flow"
+          >•</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="palette-section__label">Pinned</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="outreach.html"
+            class="palette-tile palette-tile--outreach"
+            title="Outreach Projects"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">OW</span>
+            <span class="palette-tile__label">Outreach Projects</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="5"
+            title="Unpin Outreach Projects"
+            aria-label="Unpin Outreach Projects"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/sdlff/films/7"
+            class="palette-tile palette-tile--film"
+            title="ANGIE"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">ANGIE</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="34"
+            title="Unpin ANGIE"
+            aria-label="Unpin ANGIE"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/dgc/films/27"
+            class="palette-tile palette-tile--film"
+            title="DGC Video: The Young Girls of Rochefort"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">DGC Video: The Young Girls of Rochefort</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="18"
+            title="Unpin DGC Video: The Young Girls of Rochefort"
+            aria-label="Unpin DGC Video: The Young Girls of Rochefort"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/dgc/films/28"
+            class="palette-tile palette-tile--film"
+            title="Bonkers Half-Assed Midnight: Demonwarp"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Bonkers Half-Assed Midnight: Demonwarp</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="16"
+            title="Unpin Bonkers Half-Assed Midnight: Demonwarp"
+            aria-label="Unpin Bonkers Half-Assed Midnight: Demonwarp"
+          >•</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="palette-section__label">Apps</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="https://www.canva.com/"
+            class="palette-tile palette-tile--app"
+            title="Canva"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">CV</span>
+            <span class="palette-tile__label">Canva</span>
+          </a>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="https://docs.google.com/spreadsheets/d/1uWRg1f2Odr7ErWQtmammraE3rF5q9bF1iFyqZ3fOpVk/edit?gid=1358102068#gid=1358102068"
+            class="palette-tile palette-tile--app"
+            title="CRM Sheet"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">GS</span>
+            <span class="palette-tile__label">CRM Sheet</span>
+          </a>
+        </div>
+        
+      </div>
+    </section>
+  </div>
+</aside>
+<div class="chatbot-shell" data-chatbot-shell>
+  <button
+    type="button"
+    class="chatbot-restore"
+    id="chatbot-restore"
+    aria-controls="chatbot-panel"
+    hidden
+  >
+    Show assistant
+  </button>
+  <button
+    type="button"
+    class="chatbot-launcher"
+    id="chatbot-launcher"
+    aria-expanded="false"
+    aria-controls="chatbot-panel"
+  >
+    <span class="chatbot-launcher__pulse"></span>
+    <span class="chatbot-launcher__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 10.5h8"></path>
+        <path d="M8 14h5"></path>
+        <path d="M12 3C7.03 3 3 6.58 3 11c0 2.1.92 4 2.42 5.42V21l4.07-2.26c.8.17 1.64.26 2.51.26 4.97 0 9-3.58 9-8s-4.03-8-9-8z"></path>
+      </svg>
+    </span>
+    <span class="chatbot-launcher__text">
+      <strong>Ask MACSD</strong>
+      <span>Need help in this workspace?</span>
+    </span>
+  </button>
+  <button
+    type="button"
+    class="chatbot-launcher-hide"
+    id="chatbot-hide"
+    aria-label="Hide chatbot"
+    title="Hide chatbot"
+  >
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 4l8 8"></path>
+      <path d="M12 4l-8 8"></path>
+    </svg>
+  </button>
+
+  <aside
+    class="chatbot-panel"
+    id="chatbot-panel"
+    aria-hidden="true"
+    data-chatbot-open="false"
+  >
+    <div class="chatbot-panel__header">
+      <div class="chatbot-panel__eyebrow">Assistant</div>
+      <div>
+        <div class="chatbot-panel__title">MACSD Helper</div>
+        <div class="chatbot-panel__subtitle">Ask about pages, workflows, or records.</div>
+      </div>
+      <button
+        type="button"
+        class="chatbot-panel__close"
+        id="chatbot-close"
+        aria-label="Close chatbot"
+      >
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M4 4l8 8"></path>
+          <path d="M12 4l-8 8"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="chatbot-panel__hide"
+        id="chatbot-panel-hide"
+        aria-label="Hide chatbot"
+      >
+        Hide
+      </button>
+    </div>
+
+    <div class="chatbot-panel__body">
+      <div class="chatbot-panel__intro">
+        <div class="chatbot-panel__badge">UI skeleton</div>
+        <p>
+          This is the shared chatbot shell. Next we can connect it to an API and pass page context from Flask.
+        </p>
+      </div>
+
+      <div class="chatbot-suggestions" aria-label="Suggested prompts">
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="How do I use this page?">How do I use this page?</button>
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="Where can I find film records?">Where can I find film records?</button>
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="Help me navigate the CRM.">Help me navigate the CRM.</button>
+      </div>
+
+      <div class="chatbot-thread" id="chatbot-thread" aria-live="polite">
+        <article class="chatbot-message chatbot-message--bot">
+          <div class="chatbot-message__meta">MACSD Helper</div>
+          <div class="chatbot-message__bubble">
+            Hi there. I am ready for the backend hookup, but the UI is already in place so we can keep building from here.
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <form class="chatbot-composer" id="chatbot-form">
+      <label class="sr-only" for="chatbot-input">Chat message</label>
+      <textarea
+        id="chatbot-input"
+        class="chatbot-composer__input"
+        rows="1"
+        placeholder="Ask about this page or a workflow..."
+      ></textarea>
+      <button type="submit" class="chatbot-composer__submit">Send</button>
+    </form>
+  </aside>
+</div>
+<script src="static/js/main.js"></script>
+
+</body>
+</html>

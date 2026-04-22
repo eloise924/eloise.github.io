@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Person Detail</title>
+<script>
+  (function() {
+    try {
+      var root = document.documentElement;
+      var openState = window.localStorage.getItem('macsd.palette.open.v2');
+      var positionState = window.localStorage.getItem('macsd.palette.position.v2');
+      root.setAttribute('data-palette-state', openState === 'false' ? 'closed' : 'open');
+      if (positionState) {
+        var parsed = JSON.parse(positionState);
+        if (typeof parsed.x === 'number' && typeof parsed.y === 'number') {
+          root.style.setProperty('--palette-initial-x', parsed.x + 'px');
+          root.style.setProperty('--palette-initial-y', parsed.y + 'px');
+        }
+      }
+    } catch (err) {}
+  })();
+</script>
+<link rel="icon" type="image/png" href="static/images/site-logo-black.png?v=2">
+<link rel="shortcut icon" type="image/png" href="static/images/site-logo-black.png?v=2">
+<link rel="apple-touch-icon" href="static/images/site-logo-black.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/main.css">
+
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-mark logo-mark-fallback">MC</div>
+      <img
+        src="static/images/site-logo-black.png"
+        alt="MACSD Tool logo"
+        class="logo-image"
+        onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';"
+      >
+      <div class="logo-copy">
+        <div class="logo-name">MACSD Tool</div>
+        <div class="logo-ver">v0.1 · internal</div>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Main</span>
+      <a href="dashboard.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        <span class="nav-item__label">Dashboard</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Outreach</span>
+      <a href="outreach.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="10" rx="2"/><path d="M1.5 4.5l6.5 4.5 6.5-4.5"/></svg>
+        <span class="nav-item__label">Outreach Projects</span>
+      </a>
+      <a href="outreach-manage.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 5h6M5 8h6M5 11h4"/></svg>
+        <span class="nav-item__label">Project Management</span>
+      </a>
+      <a href="outreach-resources.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5h10"/><path d="M3 8h10"/><path d="M3 11.5h6"/><circle cx="12" cy="11.5" r="1.5"/></svg>
+        <span class="nav-item__label">Resource Hub</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">DGC</span>
+      <a href="dgc-films.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M6 5l5 3-5 3V5z"/></svg>
+        <span class="nav-item__label">Film Database</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">SDLFF</span>
+      <a href="sdlff-films.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M6 5l5 3-5 3V5z"/></svg>
+        <span class="nav-item__label">Film Database</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Directory</span>
+      <a href="crm.html" class="nav-item active">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="3"/><path d="M1 13c0-3 2-5 5-5s5 2 5 5"/><circle cx="12" cy="5" r="2"/><path d="M15 13c0-2-1-4-3-4.5"/></svg>
+        <span class="nav-item__label">CRM Directory</span>
+      </a>
+      <a href="database-map.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3-1.5 4 1.5 3-1.5v8L10 13 6 11.5 3 13v-8.5Z"/><path d="M6 3v8.5"/><path d="M10 4.5V13"/></svg>
+        <span class="nav-item__label">San Diego Atlas</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Reports</span>
+      <a href="reports.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13.5h10"/><path d="M5 11V6"/><path d="M8 11V2.5"/><path d="M11 11V8"/></svg>
+        <span class="nav-item__label">Report</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Operations</span>
+      <a href="task-flow.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h10"/><path d="M3 8h7"/><path d="M3 12h5"/><circle cx="12" cy="8" r="2.5"/></svg>
+        <span class="nav-item__label">Task Management</span>
+      </a>
+      <a href="task-projects.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M5 6h6"/><path d="M5 9h4"/></svg>
+        <span class="nav-item__label">Task Projects</span>
+      </a>
+      <a href="website-crawler.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5.5"/><path d="M2.5 8h11"/><path d="M8 2.5a8.5 8.5 0 0 1 0 11"/><path d="M8 2.5a8.5 8.5 0 0 0 0 11"/></svg>
+        <span class="nav-item__label">Website Crawler</span>
+      </a>
+      <a href="image-to-sheet.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 5h6M5 8h6M5 11h2"/><path d="M11 10.5l1.5 1.5 2-3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="nav-item__label">Image to Sheet</span>
+      </a>
+      <a href="inventory.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="12" height="6" rx="1"/><path d="M5 8V5a3 3 0 0 1 6 0v3"/></svg>
+        <span class="nav-item__label">Inventory</span>
+      </a>
+      <a href="users.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-4 2.5-6 6-6s6 2 6 6"/></svg>
+        <span class="nav-item__label">Users</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="avatar">AD</div>
+        <div class="user-copy">
+          <div class="user-name">Admin User</div>
+          <div class="user-role">admin</div>
+        </div>
+        <button
+          type="button"
+          class="palette-toggle"
+          id="palette-toggle"
+          title="Toggle palette"
+          aria-label="Toggle palette"
+          aria-expanded="true"
+        >
+          <span class="palette-toggle__core"></span>
+        </button>
+        <a href="login.html" class="logout-btn" title="Sign out">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3"/><path d="M7 11l3-3-3-3"/><path d="M10 8H2"/></svg>
+        </a>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="sidebar-peek-toggle"
+      onclick="toggleSidebar()"
+      title="Toggle sidebar"
+      aria-label="Toggle sidebar"
+    >
+      <svg class="sidebar-peek-toggle__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3.5L5.5 8L10 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main" id="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()" title="Toggle menu" aria-label="Toggle sidebar">☰</button>
+      <div class="topbar-info">
+        <h1 class="topbar-title">CRM Person Detail</h1>
+        <span class="topbar-bread">MACSD / Directory / Person</span>
+      </div>
+      <div class="topbar-right">
+        
+<a href="/crm?tab=people" class="btn btn-sec btn-sm">← Back to Directory</a>
+<a href="/crm/people/PER001/edit" class="btn btn-primary btn-sm">Edit</a>
+
+      </div>
+    </header>
+
+    <!-- FLASH MESSAGES -->
+    
+      
+    
+
+    <!-- PAGE CONTENT -->
+    <main class="content">
+      
+
+<div class="detail-page">
+  <style>
+    .detail-history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .detail-history-item {
+      border: 0.5px solid var(--border2);
+      border-radius: 14px;
+      background: var(--bg2);
+      padding: 14px 16px;
+    }
+    .detail-history-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    .detail-history-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .detail-history-meta {
+      font-size: 11px;
+      color: var(--text3);
+      white-space: nowrap;
+    }
+    .detail-history-subject {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .detail-history-body {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text2);
+      white-space: pre-wrap;
+      max-height: 160px;
+      overflow: auto;
+    }
+    .detail-history-foot {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--text3);
+    }
+    .campaign-history-table-wrap {
+      border: 0.5px solid var(--border2);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg2);
+    }
+    .campaign-history-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: auto;
+    }
+    .campaign-history-table th,
+    .campaign-history-table td {
+      padding: 7px 8px;
+      border-bottom: 0.5px solid var(--border2);
+      text-align: left;
+      vertical-align: top;
+      font-size: 11px;
+      line-height: 1.25;
+    }
+    .campaign-history-table th {
+      background: rgba(255,255,255,0.55);
+      color: var(--text3);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+    .campaign-history-row {
+      cursor: pointer;
+    }
+    .campaign-history-row:hover {
+      background: rgba(255,255,255,0.45);
+    }
+    .campaign-history-row.is-open {
+      background: rgba(255,255,255,0.52);
+    }
+    .campaign-history-toggle {
+      border: 0;
+      background: none;
+      padding: 0;
+      font: inherit;
+      color: inherit;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+    }
+    .campaign-history-main {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+    .campaign-history-cell-nowrap {
+      white-space: nowrap;
+    }
+    .campaign-history-cell-tight {
+      width: 1%;
+      white-space: nowrap;
+    }
+    .campaign-history-cell-subject {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 140px;
+    }
+    .campaign-history-actions {
+      white-space: nowrap;
+      text-align: right;
+    }
+    .campaign-history-delete-form {
+      margin: 0;
+    }
+    .campaign-history-delete-btn {
+      border: 0.5px solid var(--border2);
+      background: rgba(255,255,255,0.72);
+      color: #a33;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 10px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .campaign-history-delete-btn:hover {
+      background: rgba(255,255,255,0.92);
+    }
+    .campaign-history-detail {
+      display: none;
+      background: var(--bg);
+    }
+    .campaign-history-detail.is-open {
+      display: table-row;
+    }
+    .campaign-history-detail-cell {
+      padding: 0;
+    }
+    .campaign-history-detail-inner {
+      padding: 12px 14px 14px;
+      display: grid;
+      gap: 12px;
+    }
+    .campaign-history-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .campaign-history-detail-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 6px;
+    }
+    .campaign-history-detail-value {
+      font-size: 13px;
+      color: var(--text2);
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+    .campaign-history-detail-body {
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 0.5px solid var(--border2);
+      background: var(--bg2);
+      max-height: 240px;
+      overflow: auto;
+      font-size: 13px;
+      color: var(--text2);
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+    @media (max-width: 900px) {
+      .campaign-history-detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .detail-note-editor {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .detail-note-textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      border-radius: 14px;
+      border: 0.5px solid var(--border2);
+      background: var(--bg2);
+      padding: 12px 14px;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--text2);
+    }
+    .detail-note-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+    }
+    .detail-note-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .detail-note-status {
+      font-size: 12px;
+      color: var(--text3);
+      min-height: 18px;
+    }
+    .detail-note-status.is-saving {
+      color: var(--accent);
+    }
+    .detail-note-status.is-saved {
+      color: var(--success);
+      font-weight: 700;
+    }
+    .detail-note-status.is-error {
+      color: #b91c1c;
+    }
+    .detail-note-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .detail-note-select {
+      min-width: 180px;
+      border-radius: 12px;
+      border: 0.5px solid var(--border2);
+      background: var(--bg2);
+      padding: 8px 10px;
+      font: inherit;
+      font-size: 12px;
+      color: var(--text2);
+    }
+    .detail-note-log-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .detail-note-log-wrap {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 0.5px solid var(--border2);
+    }
+    .detail-note-log-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      text-align: left;
+    }
+    .detail-note-log-toggle-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .detail-note-log-toggle-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .detail-note-log-toggle-meta {
+      font-size: 11px;
+      color: var(--text3);
+    }
+    .detail-note-log-toggle-icon {
+      font-size: 12px;
+      color: var(--text3);
+      transition: transform .18s ease;
+      flex: 0 0 auto;
+    }
+    .detail-note-log-wrap.is-open .detail-note-log-toggle-icon {
+      transform: rotate(180deg);
+    }
+    .detail-note-log-panel {
+      display: none;
+      margin-top: 12px;
+    }
+    .detail-note-log-wrap.is-open .detail-note-log-panel {
+      display: block;
+    }
+    .detail-note-log-item {
+      border: 0.5px solid var(--border2);
+      border-radius: 14px;
+      background: var(--bg2);
+      padding: 12px 14px;
+      position: relative;
+      transition: opacity .22s ease, transform .22s ease, max-height .22s ease, margin .22s ease, padding .22s ease;
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 240px;
+      overflow: hidden;
+    }
+    .detail-note-log-item.is-removing {
+      opacity: 0;
+      transform: translateY(-6px);
+      max-height: 0;
+      margin: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-width: 0;
+    }
+    .detail-note-log-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .detail-note-log-type {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .detail-note-log-meta {
+      font-size: 11px;
+      color: var(--text3);
+    }
+    .detail-note-log-body {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--text2);
+      white-space: pre-wrap;
+    }
+    .detail-note-log-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-right: 24px;
+    }
+    .detail-note-log-delete {
+      border: 0;
+      background: transparent;
+      color: var(--text3);
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 400;
+      cursor: pointer;
+      padding: 0;
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      opacity: .75;
+    }
+    .detail-note-log-delete:hover {
+      opacity: 1;
+      color: var(--text);
+    }
+    .detail-card--flash {
+      box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+      transition: box-shadow .25s ease;
+    }
+    .detail-chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .detail-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--bg2);
+      border: 0.5px solid var(--border2);
+      font-size: 12px;
+      color: var(--text2);
+      text-decoration: none;
+    }
+    .detail-chip:hover {
+      color: var(--accent);
+      border-color: rgba(37,99,235,.18);
+    }
+    .detail-subsection {
+      margin-top: 14px;
+    }
+    .detail-subsection:first-child {
+      margin-top: 0;
+    }
+    .detail-subsection-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-bottom: 8px;
+    }
+    .detail-clean-toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.38);
+      border: 0.5px solid var(--border2);
+      opacity: 0.8;
+      align-self: flex-end;
+      margin-bottom: 2px;
+      cursor: pointer;
+    }
+    .detail-clean-toggle:hover {
+      opacity: 1;
+    }
+    .detail-clean-toggle input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      margin: 0;
+    }
+    .detail-clean-switch {
+      position: relative;
+      width: 34px;
+      height: 20px;
+      border-radius: 999px;
+      background: rgba(148,163,184,.45);
+      transition: background .18s ease;
+      flex: 0 0 auto;
+    }
+    .detail-clean-switch::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 2px rgba(15,23,42,.18);
+      transition: transform .18s ease;
+    }
+    .detail-clean-toggle input:checked + .detail-clean-switch {
+      background: rgba(37,99,235,.55);
+    }
+    .detail-clean-toggle input:checked + .detail-clean-switch::after {
+      transform: translateX(14px);
+    }
+    .detail-clean-switch::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 8px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.9);
+      transform: translateY(-50%);
+      opacity: .7;
+      transition: opacity .18s ease;
+    }
+    .detail-clean-toggle input:checked + .detail-clean-switch::before {
+      opacity: 0;
+    }
+    .detail-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-auto-flow: dense;
+      align-items: start;
+    }
+    .detail-col {
+      display: contents;
+    }
+    .detail-card--span-8 {
+      grid-column: span 8;
+    }
+    .detail-card--span-6 {
+      grid-column: span 6;
+    }
+    .detail-card--span-4 {
+      grid-column: span 4;
+    }
+    .detail-card--span-12 {
+      grid-column: 1 / -1;
+    }
+    .is-clean-hidden {
+      display: none !important;
+    }
+    @media (max-width: 1200px) {
+      .detail-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .detail-card--span-8,
+      .detail-card--span-6,
+      .detail-card--span-4 {
+        grid-column: span 1;
+      }
+      .detail-card--span-12 {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (max-width: 900px) {
+      .detail-col {
+        display: flex;
+      }
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+      .detail-card--span-8,
+      .detail-card--span-6,
+      .detail-card--span-4,
+      .detail-card--span-12 {
+        grid-column: auto;
+      }
+    }
+  </style>
+  <div class="detail-header-card">
+    <div class="detail-header-main">
+      <div class="detail-eyebrow">PERSON PROFILE</div>
+      <h1 class="detail-title">Mina Lee</h1>
+      <div class="detail-subtitle">
+        Professor
+        
+          · UCSD Department of Physics
+        
+      </div>
+    </div>
+
+    <div class="detail-header-side">
+      <label class="detail-clean-toggle" for="detail-clean-toggle" title="Toggle clean view">
+        <input type="checkbox" id="detail-clean-toggle">
+        <span class="detail-clean-switch" aria-hidden="true"></span>
+      </label>
+      <div class="detail-badge-group">
+        <div class="detail-mini-block">
+          <div class="detail-mini-label">Outreach</div>
+          <div class="detail-mini-value">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-grid">
+    <div class="detail-col">
+
+      <div class="detail-card detail-clean-card detail-card--span-8">
+        <div class="detail-card-title">Contact Info</div>
+        <div class="detail-field-grid">
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Full Name</div>
+            <div class="detail-value">Mina Lee</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">First Name</div>
+            <div class="detail-value">Mina</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Email</div>
+            <div class="detail-value">mlee@ucsd.edu</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Email Status</div>
+            <div class="detail-value">valid</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-card detail-clean-card detail-card--span-8">
+        <div class="detail-card-title">Background / Profile</div>
+        <div class="detail-stack">
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Bio</div>
+            <div class="detail-value detail-multiline">Teaches physics and is also connected to Korean Studies.</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="true">
+            <div class="detail-label">Vision</div>
+            <div class="detail-value detail-multiline">—</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="true">
+            <div class="detail-label">Interested</div>
+            <div class="detail-value detail-multiline">—</div>
+          </div>
+          
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Draft Rule Preview</div>
+            <div class="detail-value detail-multiline">
+              
+              
+              Interested draft: Teaches physics and is also connected to Korean Studies.
+            </div>
+          </div>
+          
+          <div class="detail-field-grid">
+            <div class="detail-field detail-clean-item" data-empty="false">
+              <div class="detail-label">Nationality</div>
+              <div class="detail-value">Korean</div>
+            </div>
+            <div class="detail-field detail-clean-item" data-empty="false">
+              <div class="detail-label">Country</div>
+              <div class="detail-value">USA</div>
+            </div>
+            <div class="detail-field detail-clean-item" data-empty="false">
+              <div class="detail-label">Primary Language</div>
+              <div class="detail-value">English</div>
+            </div>
+            <div class="detail-field detail-clean-item" data-empty="false">
+              <div class="detail-label">Other Languages</div>
+              <div class="detail-value">Korean</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-card detail-clean-card detail-card--span-8">
+        <div class="detail-card-title">Organization Info</div>
+        <div class="detail-field-grid">
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Organization</div>
+            <div class="detail-value">
+              
+                <a href="crm-org-detail.html" class="detail-link">UCSD Department of Physics</a>
+              
+            </div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Title / Role</div>
+            <div class="detail-value">Professor</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Source Name</div>
+            <div class="detail-value">UCSD Faculty Page</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Source Website</div>
+            <div class="detail-value">
+              
+                <a href="https://physics.ucsd.edu/faculty/mlee" target="_blank" class="detail-link">https://physics.ucsd.edu/faculty/mlee</a>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="detail-col">
+
+      <div class="detail-card detail-clean-card detail-card--span-4">
+        <div class="detail-card-title">Tags &amp; Priority</div>
+        <div class="detail-field-grid">
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Tags</div>
+            <div class="detail-value">Faculty</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Priority</div>
+            <div class="detail-value">High</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Score</div>
+            <div class="detail-value">4</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Level</div>
+            <div class="detail-value">🔥</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-card detail-card--span-4" id="person-notes-card">
+        <div class="detail-card-title">Notes</div>
+        <div class="detail-field">
+          <div class="detail-label">Profile Memo</div>
+          <div class="detail-note-editor">
+            <textarea id="profile-memo-input" class="detail-note-textarea" placeholder="Add notes about this person..."></textarea>
+            <div class="detail-note-actions">
+              <div id="profile-memo-status" class="detail-note-status"></div>
+              <div class="detail-note-controls">
+                <select id="profile-memo-type" class="detail-note-select">
+                  <option value="internal">Internal Note</option>
+                  <option value="reply">Reply / Response</option>
+                  <option value="availability">Availability / OOO</option>
+                  <option value="follow_up">Follow-up Reminder</option>
+                </select>
+                <button type="button" id="profile-memo-save-btn" class="btn btn-primary btn-sm">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="detail-note-log-wrap" id="detail-note-log-wrap">
+          <button type="button" id="detail-note-log-toggle" class="detail-note-log-toggle" aria-expanded="false" aria-controls="person-note-log-panel">
+            <div class="detail-note-log-toggle-copy">
+              <div class="detail-note-log-toggle-title">Note Log</div>
+              <div class="detail-note-log-toggle-meta">0 items</div>
+            </div>
+            <div class="detail-note-log-toggle-icon">▾</div>
+          </button>
+          <div id="person-note-log-panel" class="detail-note-log-panel" aria-hidden="true">
+            <div id="person-note-log" class="detail-note-log-list">
+              
+                <div class="detail-placeholder-list">
+                  <div class="detail-placeholder-item">No note log yet</div>
+                  <div class="detail-placeholder-item">Saved notes will appear here with type, author, and timestamp</div>
+                </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-card detail-clean-card detail-card--span-4">
+        <div class="detail-card-title">Group Membership</div>
+
+        <div class="detail-subsection detail-clean-section" data-empty="true">
+          <div class="detail-subsection-title">Saved Groups</div>
+          
+          <div class="detail-value">—</div>
+          
+        </div>
+
+        <div class="detail-subsection detail-clean-section" data-empty="true">
+          <div class="detail-subsection-title">Outreach Groups</div>
+          
+          <div class="detail-value">—</div>
+          
+        </div>
+      </div>
+
+      <div class="detail-card detail-card--span-4">
+        <div class="detail-card-title">Reusable Snippet</div>
+        
+          <div class="detail-placeholder-list">
+            <div class="detail-placeholder-item">No reusable snippet yet</div>
+            <div class="detail-placeholder-item">Personal precision notes saved in outreach will appear here</div>
+          </div>
+        
+      </div>
+
+      <div class="detail-card detail-clean-card detail-card--span-4">
+        <div class="detail-card-title">Metadata</div>
+        <div class="detail-field-grid">
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Person ID</div>
+            <div class="detail-value">PER001</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Created At</div>
+            <div class="detail-value">2026-03-12</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Updated At</div>
+            <div class="detail-value">2026-03-12</div>
+          </div>
+          <div class="detail-field detail-clean-item" data-empty="false">
+            <div class="detail-label">Personal Website</div>
+            <div class="detail-value">
+              
+                <a href="https://minalee.com" target="_blank" class="detail-link">https://minalee.com</a>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="detail-card detail-card--span-12">
+    <div class="detail-card-title">Campaign History (1)</div>
+    
+      <div class="campaign-history-table-wrap">
+        <table class="campaign-history-table">
+          <thead>
+            <tr>
+              <th class="campaign-history-cell-tight">Campaign</th>
+              <th class="campaign-history-cell-tight">Status</th>
+              <th>Subject</th>
+              <th class="campaign-history-cell-tight">Drafted</th>
+              <th class="campaign-history-cell-tight">Sent</th>
+              <th class="campaign-history-cell-tight">By</th>
+              <th class="campaign-history-cell-tight">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            
+            <tr class="campaign-history-row" data-history-trigger="history-1">
+              <td>
+                <button type="button" class="campaign-history-toggle" aria-expanded="false" aria-controls="history-1">
+                  <div class="campaign-history-main">iVIE Awards &amp; Student Film Festival</div>
+                </button>
+              </td>
+              <td class="campaign-history-cell-nowrap campaign-history-cell-tight">
+                Draft
+              </td>
+              <td><div class="campaign-history-cell-subject">TEST: Invitation to the iVIE Awards &amp; Student Film Festival – May 30</div></td>
+              <td class="campaign-history-cell-nowrap campaign-history-cell-tight">
+                
+                  <span data-utc="2026-04-07 05:54:23" data-utc-format="compact">04-07 05:54</span>
+                
+              </td>
+              <td class="campaign-history-cell-nowrap campaign-history-cell-tight">
+                
+                  <span data-utc="" data-utc-format="compact">—</span>
+                
+              </td>
+              <td class="campaign-history-cell-nowrap campaign-history-cell-tight">
+                <div class="campaign-history-cell-subject" style="max-width:110px;">Eloise Lee</div>
+              </td>
+              <td class="campaign-history-actions campaign-history-cell-tight">
+                <form method="POST" action="/crm/people/PER001/campaign-history/delete" class="campaign-history-delete-form" onsubmit="return confirm('Delete this campaign history entry?');" onclick="event.stopPropagation();">
+                  <input type="hidden" name="project_id" value="16">
+                  <input type="hidden" name="group_id" value="21">
+                  <input type="hidden" name="film_type" value="custom">
+                  <input type="hidden" name="film_id" value="0">
+                  <input type="hidden" name="subject" value="TEST: Invitation to the iVIE Awards &amp; Student Film Festival – May 30">
+                  <button type="submit" class="campaign-history-delete-btn">Delete</button>
+                </form>
+              </td>
+            </tr>
+            <tr id="history-1" class="campaign-history-detail" aria-hidden="true">
+              <td colspan="7" class="campaign-history-detail-cell">
+                <div class="campaign-history-detail-inner">
+                  <div class="campaign-history-detail-grid">
+                    <div>
+                      <div class="campaign-history-detail-label">Campaign</div>
+                      <div class="campaign-history-detail-value">iVIE Awards &amp; Student Film Festival</div>
+                    </div>
+                    <div>
+                      <div class="campaign-history-detail-label">Status</div>
+                      <div class="campaign-history-detail-value">Draft</div>
+                    </div>
+                    <div>
+                      <div class="campaign-history-detail-label">Subject</div>
+                      <div class="campaign-history-detail-value">TEST: Invitation to the iVIE Awards &amp; Student Film Festival – May 30</div>
+                    </div>
+                    <div>
+                      <div class="campaign-history-detail-label">Result</div>
+                      <div class="campaign-history-detail-value">pending</div>
+                    </div>
+                    <div>
+                      <div class="campaign-history-detail-label">By</div>
+                      <div class="campaign-history-detail-value">Eloise Lee</div>
+                    </div>
+                    <div>
+                      <div class="campaign-history-detail-label">Drafted At</div>
+                      <div class="campaign-history-detail-value">
+                        <span data-utc="2026-04-07 05:54:23" data-utc-format="full">2026-04-07 05:54:23</span>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="campaign-history-detail-label">Sent At</div>
+                      <div class="campaign-history-detail-value">
+                        <span data-utc="" data-utc-format="full">—</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="campaign-history-detail-label">Sent Content</div>
+                    <div class="campaign-history-detail-body">Dear Mina,
+
+I hope this message finds you well.
+
+My name is Eloise Lee, and I am an intern at Media Arts Center San Diego (MACSD). I am reaching out to warmly invite your school community to the 25th Annual iVIE Awards &amp; Student Film Festival, a celebration of student creativity and storytelling through film.
+
+Each year, iVIE receives hundreds of student film submissions from across San Diego, which are reviewed by media arts professionals. We encourage your school to share this opportunity with students who may be interested in showcasing their creativity through film.
+
+Submission Deadline: April 20, 2026
+Submission Link: filmfreeway.com/iVIEAwards
+
+In addition to submitting their work, students and school communities are warmly invited to attend the festival and awards ceremony, where outstanding student films will be recognized and celebrated.
+
+Event Details:
+• Date: May 30, 2026
+• Location: Digital Gym CINEMA – UCSD Park &amp; Market
+• Program: Student Film Screenings &amp; Awards Ceremony
+
+We would be honored to have your students and school community join us for this special event. It can be a valuable and inspiring experience for students interested in media, storytelling, and the arts.
+
+Please let us know if your school might be interested in participating or attending, or if we can provide any additional materials to share with your students and teachers.
+
+Thank you for your time and for your continued support of student learning and creativity.
+
+Best regards,
+Chaehyeon Lee (Eloise)
+Media Arts Center San Diego / Intern
+6194532636 / cheloiselee@gmail.com
+1100 Market St. San Diego, CA 92101</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    
+  </div>
+</div>
+
+
+    </main>
+  </div>
+
+</div>
+<aside
+  class="palette-panel is-booting"
+  id="palette-panel"
+  aria-hidden="false"
+  data-default-open="true"
+>
+  <div class="palette-panel__header" id="palette-drag-handle">
+    <div class="palette-panel__title">Palette</div>
+    <button
+      type="button"
+      class="palette-panel__close"
+      id="palette-close"
+      title="Hide palette"
+      aria-label="Hide palette"
+    >
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 8h8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="palette-panel__body">
+    <section class="palette-section">
+      <div class="palette-section__label">Recent</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="sdlff-film-detail.html"
+            class="palette-tile palette-tile--film"
+            title="Época de plagas"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Época de plagas</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="228"
+            title="Pin Época de plagas"
+            aria-label="Pin Época de plagas"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="crm-person-detail.html"
+            class="palette-tile palette-tile--crm_person"
+            title="Mina Lee"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--blue"></span>
+            <span class="palette-tile__icon">PS</span>
+            <span class="palette-tile__label">Mina Lee</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="198"
+            title="Pin Mina Lee"
+            aria-label="Pin Mina Lee"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="website-crawler.html"
+            class="palette-tile palette-tile--website_crawler"
+            title="Website Crawler"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--mint"></span>
+            <span class="palette-tile__icon">WC</span>
+            <span class="palette-tile__label">Website Crawler</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="196"
+            title="Pin Website Crawler"
+            aria-label="Pin Website Crawler"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="task-projects.html"
+            class="palette-tile palette-tile--task_projects"
+            title="Task Projects"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Task Projects</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="195"
+            title="Pin Task Projects"
+            aria-label="Pin Task Projects"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="outreach-resources.html"
+            class="palette-tile palette-tile--outreach"
+            title="Outreach Resources"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--green"></span>
+            <span class="palette-tile__icon">OW</span>
+            <span class="palette-tile__label">Outreach Resources</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="194"
+            title="Pin Outreach Resources"
+            aria-label="Pin Outreach Resources"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="database-map.html"
+            class="palette-tile palette-tile--database_map"
+            title="San Diego Atlas"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">San Diego Atlas</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="193"
+            title="Pin San Diego Atlas"
+            aria-label="Pin San Diego Atlas"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="film-report.html"
+            class="palette-tile palette-tile--film_report"
+            title="Film Report"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">FR</span>
+            <span class="palette-tile__label">Film Report</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="192"
+            title="Pin Film Report"
+            aria-label="Pin Film Report"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="reports.html"
+            class="palette-tile palette-tile--reports"
+            title="Reports"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">RT</span>
+            <span class="palette-tile__label">Reports</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="191"
+            title="Pin Reports"
+            aria-label="Pin Reports"
+          >•</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="palette-section__label">Pinned</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="outreach.html"
+            class="palette-tile palette-tile--outreach"
+            title="Outreach Projects"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">OW</span>
+            <span class="palette-tile__label">Outreach Projects</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="5"
+            title="Unpin Outreach Projects"
+            aria-label="Unpin Outreach Projects"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/sdlff/films/7"
+            class="palette-tile palette-tile--film"
+            title="ANGIE"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">ANGIE</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="34"
+            title="Unpin ANGIE"
+            aria-label="Unpin ANGIE"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/dgc/films/27"
+            class="palette-tile palette-tile--film"
+            title="DGC Video: The Young Girls of Rochefort"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">DGC Video: The Young Girls of Rochefort</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="18"
+            title="Unpin DGC Video: The Young Girls of Rochefort"
+            aria-label="Unpin DGC Video: The Young Girls of Rochefort"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/dgc/films/28"
+            class="palette-tile palette-tile--film"
+            title="Bonkers Half-Assed Midnight: Demonwarp"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Bonkers Half-Assed Midnight: Demonwarp</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="16"
+            title="Unpin Bonkers Half-Assed Midnight: Demonwarp"
+            aria-label="Unpin Bonkers Half-Assed Midnight: Demonwarp"
+          >•</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="palette-section__label">Apps</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="https://www.canva.com/"
+            class="palette-tile palette-tile--app"
+            title="Canva"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">CV</span>
+            <span class="palette-tile__label">Canva</span>
+          </a>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="https://docs.google.com/spreadsheets/d/1uWRg1f2Odr7ErWQtmammraE3rF5q9bF1iFyqZ3fOpVk/edit?gid=1358102068#gid=1358102068"
+            class="palette-tile palette-tile--app"
+            title="CRM Sheet"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">GS</span>
+            <span class="palette-tile__label">CRM Sheet</span>
+          </a>
+        </div>
+        
+      </div>
+    </section>
+  </div>
+</aside>
+<div class="chatbot-shell" data-chatbot-shell>
+  <button
+    type="button"
+    class="chatbot-restore"
+    id="chatbot-restore"
+    aria-controls="chatbot-panel"
+    hidden
+  >
+    Show assistant
+  </button>
+  <button
+    type="button"
+    class="chatbot-launcher"
+    id="chatbot-launcher"
+    aria-expanded="false"
+    aria-controls="chatbot-panel"
+  >
+    <span class="chatbot-launcher__pulse"></span>
+    <span class="chatbot-launcher__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 10.5h8"></path>
+        <path d="M8 14h5"></path>
+        <path d="M12 3C7.03 3 3 6.58 3 11c0 2.1.92 4 2.42 5.42V21l4.07-2.26c.8.17 1.64.26 2.51.26 4.97 0 9-3.58 9-8s-4.03-8-9-8z"></path>
+      </svg>
+    </span>
+    <span class="chatbot-launcher__text">
+      <strong>Ask MACSD</strong>
+      <span>Need help in this workspace?</span>
+    </span>
+  </button>
+  <button
+    type="button"
+    class="chatbot-launcher-hide"
+    id="chatbot-hide"
+    aria-label="Hide chatbot"
+    title="Hide chatbot"
+  >
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 4l8 8"></path>
+      <path d="M12 4l-8 8"></path>
+    </svg>
+  </button>
+
+  <aside
+    class="chatbot-panel"
+    id="chatbot-panel"
+    aria-hidden="true"
+    data-chatbot-open="false"
+  >
+    <div class="chatbot-panel__header">
+      <div class="chatbot-panel__eyebrow">Assistant</div>
+      <div>
+        <div class="chatbot-panel__title">MACSD Helper</div>
+        <div class="chatbot-panel__subtitle">Ask about pages, workflows, or records.</div>
+      </div>
+      <button
+        type="button"
+        class="chatbot-panel__close"
+        id="chatbot-close"
+        aria-label="Close chatbot"
+      >
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M4 4l8 8"></path>
+          <path d="M12 4l-8 8"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="chatbot-panel__hide"
+        id="chatbot-panel-hide"
+        aria-label="Hide chatbot"
+      >
+        Hide
+      </button>
+    </div>
+
+    <div class="chatbot-panel__body">
+      <div class="chatbot-panel__intro">
+        <div class="chatbot-panel__badge">UI skeleton</div>
+        <p>
+          This is the shared chatbot shell. Next we can connect it to an API and pass page context from Flask.
+        </p>
+      </div>
+
+      <div class="chatbot-suggestions" aria-label="Suggested prompts">
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="How do I use this page?">How do I use this page?</button>
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="Where can I find film records?">Where can I find film records?</button>
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="Help me navigate the CRM.">Help me navigate the CRM.</button>
+      </div>
+
+      <div class="chatbot-thread" id="chatbot-thread" aria-live="polite">
+        <article class="chatbot-message chatbot-message--bot">
+          <div class="chatbot-message__meta">MACSD Helper</div>
+          <div class="chatbot-message__bubble">
+            Hi there. I am ready for the backend hookup, but the UI is already in place so we can keep building from here.
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <form class="chatbot-composer" id="chatbot-form">
+      <label class="sr-only" for="chatbot-input">Chat message</label>
+      <textarea
+        id="chatbot-input"
+        class="chatbot-composer__input"
+        rows="1"
+        placeholder="Ask about this page or a workflow..."
+      ></textarea>
+      <button type="submit" class="chatbot-composer__submit">Send</button>
+    </form>
+  </aside>
+</div>
+<script src="static/js/main.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const textarea = document.getElementById('profile-memo-input');
+    const saveBtn = document.getElementById('profile-memo-save-btn');
+    const statusEl = document.getElementById('profile-memo-status');
+    const typeEl = document.getElementById('profile-memo-type');
+    const noteLogEl = document.getElementById('person-note-log');
+    const notesCardEl = document.getElementById('person-notes-card');
+    const noteLogWrapEl = document.getElementById('detail-note-log-wrap');
+    const noteLogToggleEl = document.getElementById('detail-note-log-toggle');
+    const noteLogPanelEl = document.getElementById('person-note-log-panel');
+    const cleanToggleEl = document.getElementById('detail-clean-toggle');
+
+    function setNoteLogExpanded(expanded) {
+      if (!noteLogWrapEl || !noteLogToggleEl || !noteLogPanelEl) return;
+      noteLogWrapEl.classList.toggle('is-open', expanded);
+      noteLogToggleEl.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      noteLogPanelEl.setAttribute('aria-hidden', expanded ? 'false' : 'true');
+    }
+
+    function applyCleanView(enabled) {
+      document.querySelectorAll('.detail-clean-item, .detail-clean-section').forEach(function (item) {
+        const isEmpty = item.dataset.empty === 'true';
+        item.classList.toggle('is-clean-hidden', enabled && isEmpty);
+      });
+
+      document.querySelectorAll('.detail-clean-card').forEach(function (card) {
+        const visibleChildren = card.querySelectorAll('.detail-clean-item:not(.is-clean-hidden), .detail-clean-section:not(.is-clean-hidden)');
+        card.classList.toggle('is-clean-hidden', enabled && visibleChildren.length === 0);
+      });
+    }
+
+    if (cleanToggleEl) {
+      const savedPreference = window.localStorage.getItem('crmPersonDetailCleanView');
+      const cleanEnabled = savedPreference === null ? true : savedPreference === 'true';
+      cleanToggleEl.checked = cleanEnabled;
+      applyCleanView(cleanEnabled);
+
+      cleanToggleEl.addEventListener('change', function () {
+        const enabled = cleanToggleEl.checked;
+        window.localStorage.setItem('crmPersonDetailCleanView', enabled ? 'true' : 'false');
+        applyCleanView(enabled);
+      });
+    }
+
+    if (noteLogToggleEl) {
+      noteLogToggleEl.addEventListener('click', function () {
+        const expanded = noteLogToggleEl.getAttribute('aria-expanded') === 'true';
+        setNoteLogExpanded(!expanded);
+      });
+    }
+
+    function setMemoStatus(text, state) {
+      if (!statusEl) return;
+      statusEl.textContent = text || '';
+      statusEl.className = 'detail-note-status' + (state ? ` is-${state}` : '');
+    }
+
+    function renderNoteTypeLabel(value) {
+      return String(value || 'internal').replace(/_/g, ' ').replace(/\b\w/g, function (char) {
+        return char.toUpperCase();
+      });
+    }
+
+    async function deleteNoteLog(logId) {
+      const res = await fetch(`/crm/people/PER001/profile-memo/${logId}`, {
+        method: 'DELETE'
+      });
+      const payload = await res.json();
+      if (!res.ok) {
+        throw new Error(payload.message || 'Could not delete note log.');
+      }
+      return payload;
+    }
+
+    if (textarea && saveBtn && statusEl && typeEl && noteLogEl) {
+      saveBtn.addEventListener('click', async function () {
+        const originalText = saveBtn.textContent;
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving...';
+        setMemoStatus('Saving note...', 'saving');
+        try {
+          const res = await fetch('/crm/people/PER001/profile-memo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              profile_memo: textarea.value,
+              note_type: typeEl.value
+            })
+          });
+          const payload = await res.json();
+          if (!res.ok) {
+            throw new Error(payload.message || 'Could not save note.');
+          }
+          if (payload.log) {
+            const emptyState = noteLogEl.querySelector('.detail-placeholder-list');
+            if (emptyState) emptyState.remove();
+            const item = document.createElement('div');
+            item.className = 'detail-note-log-item';
+            item.dataset.noteLogId = payload.log.id || '';
+            item.innerHTML = `
+              <div class="detail-note-log-top">
+                <div class="detail-note-log-head">
+                  <div class="detail-note-log-type">${renderNoteTypeLabel(payload.log.note_type)}</div>
+                  <form method="post" action="/crm/people/PER001/profile-memo/${payload.log.id || ''}/delete" onsubmit="return confirm('Delete this note log entry?');">
+                    <button type="submit" class="detail-note-log-delete" aria-label="Delete note log">&times;</button>
+                  </form>
+                </div>
+                <div class="detail-note-log-meta">
+                  ${payload.log.created_by || '—'} ·
+                  <span data-utc="${payload.log.created_at || ''}" data-utc-format="full">${payload.log.created_at || '—'}</span>
+                </div>
+              </div>
+              <div class="detail-note-log-body"></div>
+            `;
+            item.querySelector('.detail-note-log-body').textContent = payload.log.memo_text || '—';
+            noteLogEl.prepend(item);
+            setNoteLogExpanded(true);
+            if (notesCardEl) {
+              notesCardEl.classList.add('detail-card--flash');
+              window.requestAnimationFrame(function () {
+                notesCardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              });
+              window.setTimeout(function () {
+                notesCardEl.classList.remove('detail-card--flash');
+              }, 1600);
+            }
+          }
+          setMemoStatus('Saved.', 'saved');
+          textarea.value = '';
+          typeEl.value = 'internal';
+        } catch (err) {
+          setMemoStatus(err.message || 'Could not save note.', 'error');
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = originalText;
+        }
+      });
+    }
+
+    document.querySelectorAll('.campaign-history-row').forEach(function (row) {
+      row.addEventListener('click', function (event) {
+        const detailId = row.dataset.historyTrigger;
+        const detailRow = document.getElementById(detailId);
+        const button = row.querySelector('.campaign-history-toggle');
+        if (!detailRow || !button) return;
+
+        const isOpen = detailRow.classList.contains('is-open');
+        document.querySelectorAll('.campaign-history-detail').forEach(function (item) {
+          item.classList.remove('is-open');
+          item.setAttribute('aria-hidden', 'true');
+        });
+        document.querySelectorAll('.campaign-history-row').forEach(function (item) {
+          item.classList.remove('is-open');
+          const toggle = item.querySelector('.campaign-history-toggle');
+          if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        });
+
+        if (!isOpen) {
+          detailRow.classList.add('is-open');
+          detailRow.setAttribute('aria-hidden', 'false');
+          row.classList.add('is-open');
+          button.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2743 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Management — MACSD Tool</title>
+<script>
+  (function() {
+    try {
+      var root = document.documentElement;
+      var openState = window.localStorage.getItem('macsd.palette.open.v2');
+      var positionState = window.localStorage.getItem('macsd.palette.position.v2');
+      root.setAttribute('data-palette-state', openState === 'false' ? 'closed' : 'open');
+      if (positionState) {
+        var parsed = JSON.parse(positionState);
+        if (typeof parsed.x === 'number' && typeof parsed.y === 'number') {
+          root.style.setProperty('--palette-initial-x', parsed.x + 'px');
+          root.style.setProperty('--palette-initial-y', parsed.y + 'px');
+        }
+      }
+    } catch (err) {}
+  })();
+</script>
+<link rel="icon" type="image/png" href="static/images/site-logo-black.png?v=2">
+<link rel="shortcut icon" type="image/png" href="static/images/site-logo-black.png?v=2">
+<link rel="apple-touch-icon" href="static/images/site-logo-black.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/main.css">
+
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-mark logo-mark-fallback">MC</div>
+      <img
+        src="static/images/site-logo-black.png"
+        alt="MACSD Tool logo"
+        class="logo-image"
+        onerror="this.style.display='none'; this.previousElementSibling.style.display='flex';"
+      >
+      <div class="logo-copy">
+        <div class="logo-name">MACSD Tool</div>
+        <div class="logo-ver">v0.1 · internal</div>
+      </div>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Main</span>
+      <a href="dashboard.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        <span class="nav-item__label">Dashboard</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Outreach</span>
+      <a href="outreach.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="10" rx="2"/><path d="M1.5 4.5l6.5 4.5 6.5-4.5"/></svg>
+        <span class="nav-item__label">Outreach Projects</span>
+      </a>
+      <a href="outreach-manage.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 5h6M5 8h6M5 11h4"/></svg>
+        <span class="nav-item__label">Project Management</span>
+      </a>
+      <a href="outreach-resources.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5h10"/><path d="M3 8h10"/><path d="M3 11.5h6"/><circle cx="12" cy="11.5" r="1.5"/></svg>
+        <span class="nav-item__label">Resource Hub</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">DGC</span>
+      <a href="dgc-films.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M6 5l5 3-5 3V5z"/></svg>
+        <span class="nav-item__label">Film Database</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">SDLFF</span>
+      <a href="sdlff-films.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M6 5l5 3-5 3V5z"/></svg>
+        <span class="nav-item__label">Film Database</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Directory</span>
+      <a href="crm.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5" r="3"/><path d="M1 13c0-3 2-5 5-5s5 2 5 5"/><circle cx="12" cy="5" r="2"/><path d="M15 13c0-2-1-4-3-4.5"/></svg>
+        <span class="nav-item__label">CRM Directory</span>
+      </a>
+      <a href="database-map.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3-1.5 4 1.5 3-1.5v8L10 13 6 11.5 3 13v-8.5Z"/><path d="M6 3v8.5"/><path d="M10 4.5V13"/></svg>
+        <span class="nav-item__label">San Diego Atlas</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Reports</span>
+      <a href="reports.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13.5h10"/><path d="M5 11V6"/><path d="M8 11V2.5"/><path d="M11 11V8"/></svg>
+        <span class="nav-item__label">Report</span>
+      </a>
+    </div>
+
+    <div class="nav-group">
+      <span class="nav-label">Operations</span>
+      <a href="task-flow.html" class="nav-item active">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h10"/><path d="M3 8h7"/><path d="M3 12h5"/><circle cx="12" cy="8" r="2.5"/></svg>
+        <span class="nav-item__label">Task Management</span>
+      </a>
+      <a href="task-projects.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M5 6h6"/><path d="M5 9h4"/></svg>
+        <span class="nav-item__label">Task Projects</span>
+      </a>
+      <a href="website-crawler.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5.5"/><path d="M2.5 8h11"/><path d="M8 2.5a8.5 8.5 0 0 1 0 11"/><path d="M8 2.5a8.5 8.5 0 0 0 0 11"/></svg>
+        <span class="nav-item__label">Website Crawler</span>
+      </a>
+      <a href="image-to-sheet.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 5h6M5 8h6M5 11h2"/><path d="M11 10.5l1.5 1.5 2-3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="nav-item__label">Image to Sheet</span>
+      </a>
+      <a href="inventory.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="8" width="12" height="6" rx="1"/><path d="M5 8V5a3 3 0 0 1 6 0v3"/></svg>
+        <span class="nav-item__label">Inventory</span>
+      </a>
+      <a href="users.html" class="nav-item ">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-4 2.5-6 6-6s6 2 6 6"/></svg>
+        <span class="nav-item__label">Users</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="avatar">AD</div>
+        <div class="user-copy">
+          <div class="user-name">Admin User</div>
+          <div class="user-role">admin</div>
+        </div>
+        <button
+          type="button"
+          class="palette-toggle"
+          id="palette-toggle"
+          title="Toggle palette"
+          aria-label="Toggle palette"
+          aria-expanded="true"
+        >
+          <span class="palette-toggle__core"></span>
+        </button>
+        <a href="login.html" class="logout-btn" title="Sign out">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3"/><path d="M7 11l3-3-3-3"/><path d="M10 8H2"/></svg>
+        </a>
+      </div>
+    </div>
+    <button
+      type="button"
+      class="sidebar-peek-toggle"
+      onclick="toggleSidebar()"
+      title="Toggle sidebar"
+      aria-label="Toggle sidebar"
+    >
+      <svg class="sidebar-peek-toggle__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3.5L5.5 8L10 12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main" id="main">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()" title="Toggle menu" aria-label="Toggle sidebar">☰</button>
+      <div class="topbar-info">
+        <h1 class="topbar-title">Task Management</h1>
+        <span class="topbar-bread">MACSD / Operations / Task Management</span>
+      </div>
+      <div class="topbar-right">
+        
+  <a href="task-projects.html" class="btn btn-sec btn-sm">Manage Projects</a>
+  
+  <span class="tm-pill tm-pill--danger">1 notifications</span>
+  
+
+      </div>
+    </header>
+
+    <!-- FLASH MESSAGES -->
+    
+      
+    
+
+    <!-- PAGE CONTENT -->
+    <main class="content">
+      
+<style>
+  .tm-shell { display: grid; gap: 18px; }
+  .tm-top { display: grid; grid-template-columns: 1fr; gap: 18px; }
+  .tm-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 16px 34px rgba(15, 23, 42, 0.05);
+  }
+  .tm-hero {
+    background:
+      radial-gradient(circle at top right, rgba(205, 227, 255, 0.7), transparent 34%),
+      linear-gradient(140deg, #fffef8 0%, #f4f7fb 100%);
+    padding: 14px 18px;
+  }
+  .tm-kicker {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #6b7280;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .tm-hero h2 {
+    margin: 0;
+    font-size: clamp(22px, 2vw, 30px);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    max-width: 980px;
+  }
+  .tm-hero p {
+    display: none;
+    margin: 0;
+    color: var(--text2);
+    line-height: 1.55;
+    font-size: 14px;
+    max-width: 1180px;
+  }
+  .tm-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .tm-stat {
+    border-radius: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 12px;
+    min-height: 88px;
+  }
+  .tm-stat--action {
+    appearance: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+  .tm-stat--action:hover {
+    transform: translateY(-1px);
+    border-color: rgba(15, 23, 42, 0.14);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  }
+  .tm-stat__value { font-size: 22px; font-weight: 700; color: var(--text); }
+  .tm-stat__label { margin-top: 1px; font-size: 11px; color: var(--text2); line-height: 1.35; }
+  .tm-stat__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #111827;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .tm-card h3 {
+    margin: 0 0 14px;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+  }
+  .tm-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .tm-field { display: grid; gap: 6px; }
+  .tm-field--full { grid-column: 1 / -1; }
+  .tm-field label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text2);
+  }
+  .tm-field input,
+  .tm-field select,
+  .tm-field textarea {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #fff;
+    color: var(--text);
+    padding: 11px 12px;
+    font: inherit;
+  }
+  .tm-field textarea { min-height: 92px; resize: vertical; }
+  .tm-fieldset {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: rgba(248, 250, 252, 0.72);
+  }
+  .tm-fieldset__title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .tm-shortcuts {
+    display: grid;
+    gap: 12px;
+  }
+  .tm-shortcut-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tm-shortcut {
+    appearance: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--text);
+    padding: 8px 12px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  }
+  .tm-shortcut:hover {
+    border-color: rgba(15, 23, 42, 0.18);
+  }
+  .tm-shortcut.is-active {
+    background: #111827;
+    color: #fff;
+    border-color: #111827;
+  }
+  .tm-shortcut-help {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .tm-shortcut-search {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #fff;
+    color: var(--text);
+    padding: 10px 12px;
+    font: inherit;
+  }
+  .tm-shortcut-film {
+    display: none;
+  }
+  .tm-shortcut-film.is-visible {
+    display: grid;
+  }
+  .tm-film-carousel {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    gap: 10px;
+    align-items: center;
+  }
+  .tm-film-carousel__nav {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--text);
+    font: inherit;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .tm-film-carousel__nav:disabled {
+    opacity: 0.42;
+    cursor: default;
+  }
+  .tm-film-carousel__viewport {
+    overflow: hidden;
+  }
+  .tm-film-picker {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(150px, 150px);
+    gap: 12px;
+    transition: transform 0.24s ease;
+    will-change: transform;
+  }
+  .tm-film-card[hidden] {
+    display: none !important;
+  }
+  .tm-film-card {
+    appearance: none;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: #fff;
+    color: var(--text);
+    overflow: hidden;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .tm-film-card:hover {
+    transform: translateY(-1px);
+    border-color: rgba(15, 23, 42, 0.16);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  }
+  .tm-film-card.is-selected {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+  .tm-film-card__poster {
+    aspect-ratio: 0.72;
+    width: 100%;
+    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+    overflow: hidden;
+  }
+  .tm-film-card__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .tm-film-card__fallback {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    padding: 14px;
+    color: var(--text2);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .tm-film-card__body {
+    display: grid;
+    gap: 4px;
+    padding: 10px 10px 12px;
+  }
+  .tm-film-card__title {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .tm-film-card__meta {
+    font-size: 11px;
+    color: var(--text2);
+    line-height: 1.45;
+  }
+  .tm-actions-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .tm-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    align-items: end;
+  }
+  .tm-inline-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .tm-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .tm-tabs {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(248, 250, 252, 0.92);
+  }
+  .tm-tab {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--text2);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .tm-tab:hover {
+    color: var(--text);
+  }
+  .tm-tab.is-active {
+    background: #111827;
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+  }
+  .tm-tab-panel[hidden] {
+    display: none !important;
+  }
+  .tm-section { display: grid; gap: 18px; }
+  .tm-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .tm-section-head p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .tm-list {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .tm-list th,
+  .tm-list td {
+    padding: 10px 10px;
+    border-top: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  .tm-list tbody tr[data-task-id] {
+    cursor: pointer;
+    transition: background 0.18s ease, box-shadow 0.18s ease;
+  }
+  .tm-list tbody tr[data-task-id]:hover {
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .tm-list tbody tr.is-active {
+    background: rgba(37, 99, 235, 0.06);
+    box-shadow: inset 3px 0 0 #2563eb;
+  }
+  .tm-list th {
+    text-align: left;
+    font-size: 12px;
+    color: var(--text2);
+    font-weight: 700;
+  }
+  .tm-list td { font-size: 13px; }
+  .tm-list a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .tm-list__main {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+  .tm-list__title {
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.35;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tm-list__desc {
+    color: var(--text2);
+    line-height: 1.4;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .tm-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .tm-pill--danger { background: #fee2e2; color: #b91c1c; }
+  .tm-pill--warning { background: #fef3c7; color: #b45309; }
+  .tm-pill--neutral { background: #e2e8f0; color: #475569; }
+  .tm-pill--info { background: #dbeafe; color: #1d4ed8; }
+  .tm-pill--success { background: #dcfce7; color: #15803d; }
+  .tm-pill--muted { background: #f1f5f9; color: #94a3b8; }
+  .tm-linkish { color: var(--text2); font-size: 12px; }
+  .tm-board {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .tm-column {
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.95));
+    padding: 14px;
+    min-height: 280px;
+  }
+  .tm-column.is-drop-target {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+  .tm-column__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .tm-column__title { font-size: 15px; font-weight: 700; }
+  .tm-column__count { font-size: 12px; color: var(--text2); }
+  .tm-column__stack { display: grid; gap: 10px; }
+  .tm-task-card {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px;
+    background: #fff;
+    cursor: grab;
+    display: grid;
+    gap: 10px;
+  }
+  .tm-task-card.is-active { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+  .tm-task-card h4 { margin: 0; font-size: 14px; line-height: 1.45; }
+  .tm-task-card p { margin: 0; font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .tm-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tm-detail {
+    position: sticky;
+    top: 16px;
+    align-self: start;
+    display: grid;
+    gap: 14px;
+  }
+  .tm-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    background: rgba(15, 23, 42, 0.42);
+    backdrop-filter: blur(10px);
+    z-index: 1100;
+  }
+  .tm-modal.is-open {
+    display: flex;
+  }
+  .tm-modal__dialog {
+    width: min(1360px, calc(100vw - 32px));
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+    border-radius: 32px;
+    background:
+      radial-gradient(circle at top right, rgba(219, 234, 254, 0.7), transparent 24%),
+      linear-gradient(180deg, #fbfdff 0%, #f7f9fc 100%);
+    box-shadow: 0 34px 90px rgba(15, 23, 42, 0.28);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+  }
+  .tm-modal__head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 22px;
+    background: rgba(248, 250, 252, 0.95);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+  }
+  .tm-modal__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .tm-modal__close {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--text);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .tm-modal__body {
+    padding: 24px;
+  }
+  .tm-modal-stack {
+    display: grid;
+    gap: 18px;
+  }
+  .tm-modal-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(420px, 0.95fr);
+    gap: 22px;
+    align-items: start;
+  }
+  .tm-modal-main,
+  .tm-modal-side {
+    display: grid;
+    gap: 18px;
+  }
+  .tm-modal__empty {
+    padding: 32px;
+    color: var(--text2);
+    text-align: center;
+  }
+  .tm-loading {
+    padding: 32px;
+    text-align: center;
+    color: var(--text2);
+  }
+  .tm-create-modal__body {
+    padding: 20px;
+  }
+  .tm-detail__title {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+  .tm-detail__desc {
+    margin: 0;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+  .tm-kv {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .tm-kv__item {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 12px;
+    background: rgba(248, 250, 252, 0.9);
+  }
+  .tm-kv__label { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; }
+  .tm-kv__value { margin-top: 4px; font-size: 13px; color: var(--text); }
+  .tm-status-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .tm-status-actions form { margin: 0; }
+  .tm-status-actions button { width: 100%; }
+  .tm-stream {
+    display: grid;
+    gap: 10px;
+  }
+  .tm-message-panel {
+    position: sticky;
+    top: 0;
+    padding: 0;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at top, rgba(255, 255, 255, 0.96), rgba(245, 247, 250, 0.94)),
+      linear-gradient(180deg, #eff3f8 0%, #f7f9fc 100%);
+    border-color: rgba(203, 213, 225, 0.72);
+    min-height: 72vh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  .tm-message-panel__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 18px 16px;
+    border-bottom: 1px solid rgba(203, 213, 225, 0.7);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(14px);
+  }
+  .tm-message-panel__avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #111827 0%, #334155 100%);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    flex: none;
+  }
+  .tm-message-panel__meta h3 {
+    margin: 0;
+  }
+  .tm-message-panel__meta p {
+    margin: 4px 0 0;
+    color: var(--text3);
+    font-size: 12px;
+  }
+  .tm-message-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+    overflow: auto;
+    padding: 18px;
+    background:
+      radial-gradient(circle at top center, rgba(255, 255, 255, 0.5), transparent 58%),
+      linear-gradient(180deg, rgba(241, 245, 249, 0.82), rgba(248, 250, 252, 0.94));
+  }
+  .tm-message {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    max-width: 92%;
+    align-self: flex-start;
+  }
+  .tm-message--mine {
+    align-self: flex-end;
+    justify-content: flex-end;
+  }
+  .tm-message__avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    flex: none;
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    color: #334155;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+  }
+  .tm-message__content {
+    display: grid;
+    gap: 6px;
+    max-width: min(100%, 480px);
+  }
+  .tm-message__meta {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    align-items: center;
+    padding: 0 4px;
+  }
+  .tm-message--mine .tm-message__meta {
+    justify-content: flex-end;
+  }
+  .tm-message__author {
+    font-weight: 700;
+    color: var(--text);
+  }
+  .tm-message__time {
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+  .tm-message__body {
+    padding: 12px 16px;
+    border-radius: 20px 20px 20px 8px;
+    background: #fff;
+    border: 1px solid rgba(203, 213, 225, 0.72);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+    color: #1f2937;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .tm-message__mention {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: rgba(24, 119, 242, 0.12);
+    color: #1456b8;
+    font-weight: 700;
+  }
+  .tm-message--mine .tm-message__body {
+    border-radius: 20px 20px 8px 20px;
+    background: linear-gradient(135deg, #1877f2 0%, #5b9dff 100%);
+    border-color: rgba(24, 119, 242, 0.34);
+    color: #fff;
+  }
+  .tm-message--mine .tm-message__mention {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+  .tm-message-composer {
+    display: grid;
+    gap: 12px;
+    padding: 16px 18px 18px;
+    border-top: 1px solid rgba(203, 213, 225, 0.72);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+  }
+  .tm-mention-strip {
+    display: grid;
+    gap: 8px;
+  }
+  .tm-mention-strip__label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+  }
+  .tm-mention-strip__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tm-mention-chip {
+    appearance: none;
+    border: 1px solid rgba(203, 213, 225, 0.9);
+    background: rgba(255, 255, 255, 0.94);
+    color: #1456b8;
+    border-radius: 999px;
+    padding: 7px 12px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .tm-mention-chip:hover {
+    transform: translateY(-1px);
+    border-color: rgba(24, 119, 242, 0.34);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+  }
+  .tm-message-composer__row {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+  }
+  .tm-message-composer__input {
+    flex: 1;
+  }
+  .tm-message-composer__input textarea {
+    width: 100%;
+    min-height: 56px;
+    max-height: 180px;
+    border: 1px solid rgba(203, 213, 225, 0.9);
+    border-radius: 22px;
+    background: #fff;
+    color: var(--text);
+    padding: 14px 16px;
+    font: inherit;
+    line-height: 1.5;
+    resize: vertical;
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+  .tm-message-composer__input textarea:focus {
+    outline: none;
+    border-color: rgba(24, 119, 242, 0.5);
+    box-shadow: 0 0 0 4px rgba(24, 119, 242, 0.12);
+  }
+  .tm-message-composer__button {
+    min-width: 96px;
+    border-radius: 999px;
+    padding-inline: 18px;
+  }
+  .tm-attachment-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .tm-attachment {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.96);
+  }
+  .tm-attachment__meta {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+  }
+  .tm-attachment__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    word-break: break-word;
+  }
+  .tm-attachment__sub {
+    font-size: 12px;
+    color: var(--text2);
+    word-break: break-word;
+  }
+  .tm-attachment__actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .tm-notification-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .tm-notification {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.96);
+    display: grid;
+    gap: 8px;
+  }
+  .tm-notification.is-unread {
+    border-color: #bfdbfe;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+  }
+  .tm-notification__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .tm-notification__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .tm-notification__message {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .tm-notification__actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .tm-divider {
+    height: 1px;
+    background: var(--line);
+    margin: 2px 0;
+  }
+  .tm-edit-form {
+    display: grid;
+    gap: 12px;
+  }
+  .tm-entry {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.95);
+  }
+  .tm-entry__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+  .tm-entry__actor { font-weight: 700; color: var(--text); }
+  .tm-entry__time { color: var(--text3); font-family: var(--mono); }
+  .tm-entry__body { font-size: 13px; color: var(--text2); line-height: 1.6; white-space: pre-wrap; }
+  .tm-empty {
+    border: 1px dashed var(--line);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    color: var(--text3);
+    font-size: 13px;
+  }
+  @media (max-width: 1220px) {
+    .tm-top, .tm-layout { grid-template-columns: 1fr; }
+    .tm-detail { position: static; }
+    .tm-modal-layout { grid-template-columns: 1fr; }
+    .tm-message-panel { position: static; }
+  }
+  @media (max-width: 1100px) {
+    .tm-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tm-filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tm-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 720px) {
+    .tm-hero { padding: 16px; }
+    .tm-hero h2 { font-size: 24px; }
+    .tm-hero p { font-size: 13px; }
+    .tm-form-grid, .tm-kv, .tm-board, .tm-filter-grid { grid-template-columns: 1fr; }
+    .tm-list { display: block; overflow-x: auto; }
+    .tm-modal { padding: 12px; }
+    .tm-modal__dialog { width: min(100vw - 12px, 100%); max-height: calc(100vh - 12px); border-radius: 24px; }
+    .tm-modal__body { padding: 14px; }
+    .tm-message-panel { min-height: 60vh; }
+    .tm-message { max-width: 94%; }
+    .tm-message__content { max-width: 100%; }
+    .tm-message-composer__row { flex-direction: column; align-items: stretch; }
+    .tm-message-composer__button { width: 100%; }
+  }
+</style>
+
+<div class="tm-shell">
+  <section class="tm-top">
+    <div class="tm-card tm-hero">
+      <div class="tm-kicker">Task Ops</div>
+      <h2>Admin User의 업무 흐름을 실제 Task Management로 정리합니다.</h2>
+      <div class="tm-stats">
+        <div class="tm-stat">
+          <div class="tm-stat__value">7</div>
+          <div class="tm-stat__label">Visible tasks</div>
+        </div>
+        <div class="tm-stat">
+          <div class="tm-stat__value">1</div>
+          <div class="tm-stat__label">My open tasks</div>
+        </div>
+        <div class="tm-stat">
+          <div class="tm-stat__value">2</div>
+          <div class="tm-stat__label">Overdue</div>
+        </div>
+        <div class="tm-stat">
+          <div class="tm-stat__value">2</div>
+          <div class="tm-stat__label">Done</div>
+        </div>
+        <button type="button" class="tm-stat tm-stat--action" id="open-create-task-modal">
+          <div>
+            <div class="tm-stat__value">+</div>
+            <div class="tm-stat__label">New task</div>
+          </div>
+          <span class="tm-stat__cta">Create Task</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="tm-layout">
+    <div class="tm-section">
+      <div class="tm-card">
+        <div class="tm-section-head">
+          <div>
+            <h3>Task Views</h3>
+            <p>보고 싶은 방식에 따라 리스트나 칸반으로 전환해서 task를 확인할 수 있습니다.</p>
+          </div>
+          <div class="tm-tabs" role="tablist" aria-label="Task views">
+            <button type="button" class="tm-tab is-active" role="tab" aria-selected="true" aria-controls="task-list-panel" data-tab-target="task-list-panel">Task List</button>
+            <button type="button" class="tm-tab" role="tab" aria-selected="false" aria-controls="kanban-panel" data-tab-target="kanban-panel">Kanban Board</button>
+          </div>
+        </div>
+        <div class="tm-tab-panel" id="task-list-panel" role="tabpanel">
+          <div class="tm-section">
+            <section class="tm-card">
+              <div class="tm-section-head">
+                <div>
+                  <h3>Task List Filters</h3>
+                  <p>담당자, 상태, 프로젝트, 마감 기준으로 task list를 빠르게 좁혀볼 수 있습니다.</p>
+                </div>
+                <div class="tm-inline-actions">
+                  <a class="btn btn-sec btn-sm" href="/task-flow?mine=1">My Tasks</a>
+                  <a class="btn btn-sec btn-sm" href="/task-flow?due=week">Due This Week</a>
+                  <a class="btn btn-sec btn-sm" href="/task-flow?due=overdue">Overdue</a>
+                  <a class="btn btn-sec btn-sm" href="task-flow.html">Reset</a>
+                </div>
+              </div>
+              <form method="get" class="tm-filter-grid">
+                <div class="tm-field">
+                  <label for="filter-assignee">Assignee</label>
+                  <select id="filter-assignee" name="assignee_id">
+                    <option value="">All</option>
+                    
+                    <option value="1" >Admin User</option>
+                    
+                    <option value="2" >Eloise Lee</option>
+                    
+                  </select>
+                </div>
+                <div class="tm-field">
+                  <label for="filter-status">Status</label>
+                  <select id="filter-status" name="status">
+                    <option value="">All</option>
+                    
+                    <option value="To Do" >To Do</option>
+                    
+                    <option value="In Progress" >In Progress</option>
+                    
+                    <option value="Waiting / On Hold" >Waiting / On Hold</option>
+                    
+                    <option value="Done" >Done</option>
+                    
+                  </select>
+                </div>
+                <div class="tm-field">
+                  <label for="filter-project">Project</label>
+                  <select id="filter-project" name="project_id">
+                    <option value="">All</option>
+                    
+                    <option value="3" >DGC Promotions</option>
+                    
+                    <option value="4" >Internal Research</option>
+                    
+                    <option value="1" >SDLFF Outreach</option>
+                    
+                    <option value="2" >iVIE School Outreach</option>
+                    
+                  </select>
+                </div>
+                <div class="tm-field">
+                  <label for="filter-due">Due Window</label>
+                  <select id="filter-due" name="due">
+                    <option value="">All</option>
+                    <option value="today" >Due today</option>
+                    <option value="week" >Due this week</option>
+                    <option value="overdue" >Overdue</option>
+                  </select>
+                </div>
+                <div class="tm-field">
+                  <label for="filter-mine">My Tasks</label>
+                  <select id="filter-mine" name="mine">
+                    <option value="">All</option>
+                    <option value="1" >Mine only</option>
+                  </select>
+                </div>
+                <div class="tm-field">
+                  <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+              </form>
+            </section>
+
+            <section class="tm-card">
+              <div class="tm-section-head">
+                <div>
+                  <h3>Task List</h3>
+                  <p>제목, 프로젝트, 담당자, 우선순위, 상태, 마감일을 한눈에 보고 상세 팝업으로 이동합니다.</p>
+                </div>
+              </div>
+              
+              <table class="tm-list">
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Project</th>
+                    <th>Assignee</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Due</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <tr data-task-id="3" >
+                    <td>
+                      <div class="tm-list__main">
+                        <div class="tm-list__title">학교 관리자 연락처 업데이트</div>
+                        <div class="tm-list__desc">기존 연락처 중 bounced 처리된 항목을 교체하고 부서명 기준으로 정렬합니다.</div>
+                      </div>
+                    </td>
+                    <td>iVIE School Outreach</td>
+                    <td>Eloise Lee</td>
+                    <td><span class="tm-pill tm-pill--warning">Medium</span></td>
+                    <td><span class="tm-pill tm-pill--warning">Waiting / On Hold</span></td>
+                    <td><span class="tm-pill tm-pill--danger">Overdue · Apr 19</span></td>
+                  </tr>
+                  
+                  <tr data-task-id="6" >
+                    <td>
+                      <div class="tm-list__main">
+                        <div class="tm-list__title">Task Management System Development</div>
+                        <div class="tm-list__desc">Developing a Task Management System on Our Website</div>
+                      </div>
+                    </td>
+                    <td>No project</td>
+                    <td>Eloise Lee</td>
+                    <td><span class="tm-pill tm-pill--warning">Medium</span></td>
+                    <td><span class="tm-pill tm-pill--info">In Progress</span></td>
+                    <td><span class="tm-pill tm-pill--danger">Overdue · Apr 21</span></td>
+                  </tr>
+                  
+                  <tr data-task-id="1" >
+                    <td>
+                      <div class="tm-list__main">
+                        <div class="tm-list__title">African org outreach list 검토</div>
+                        <div class="tm-list__desc">초기 리스트에서 우선 접촉 대상과 누락 연락처를 정리합니다.</div>
+                      </div>
+                    </td>
+                    <td>SDLFF Outreach</td>
+                    <td>Admin User</td>
+                    <td><span class="tm-pill tm-pill--danger">High</span></td>
+                    <td><span class="tm-pill tm-pill--neutral">To Do</span></td>
+                    <td><span class="tm-pill tm-pill--warning">Due today</span></td>
+                  </tr>
+                  
+                  <tr data-task-id="4" >
+                    <td>
+                      <div class="tm-list__main">
+                        <div class="tm-list__title">Updating Outreach list</div>
+                        <div class="tm-list__desc">I am currently organizing and updating the database with the outreach emails I’ve sent so far.</div>
+                      </div>
+                    </td>
+                    <td>Internal Research</td>
+                    <td>Eloise Lee</td>
+                    <td><span class="tm-pill tm-pill--warning">Medium</span></td>
+                    <td><span class="tm-pill tm-pill--info">In Progress</span></td>
+                    <td><span class="tm-pill tm-pill--info">Due this week · Apr 25</span></td>
+                  </tr>
+                  
+                  <tr data-task-id="5" >
+                    <td>
+                      <div class="tm-list__main">
+                        <div class="tm-list__title">Tagging information</div>
+                        <div class="tm-list__desc">Tags need to be added manually for each contact to ensure personalized categorization.</div>
+                      </div>
+                    </td>
+                    <td>Internal Research</td>
+                    <td>Unassigned</td>
+                    <td><span class="tm-pill tm-pill--danger">High</span></td>
+                    <td><span class="tm-pill tm-pill--neutral">To Do</span></td>
+                    <td><span class="tm-pill tm-pill--info">Due this week · Apr 27</span></td>
+                  </tr>
+                  
+                  <tr data-task-id="2" >
+                    <td>
+                      <div class="tm-list__main">
+                        <div class="tm-list__title">My Father&#39;s Shadow 홍보 메일 2차 수정</div>
+                        <div class="tm-list__desc">1차 피드백 반영 후 제목/CTA를 다듬고 최종 발송안 직전 상태로 정리합니다.</div>
+                      </div>
+                    </td>
+                    <td>DGC Promotions</td>
+                    <td>Eloise Lee</td>
+                    <td><span class="tm-pill tm-pill--danger">High</span></td>
+                    <td><span class="tm-pill tm-pill--success">Done</span></td>
+                    <td><span class="tm-pill tm-pill--danger">Overdue · Apr 21</span></td>
+                  </tr>
+                  
+                  <tr data-task-id="7" >
+                    <td>
+                      <div class="tm-list__main">
+                        <div class="tm-list__title">Reply Update in CRM Directory</div>
+                        <div class="tm-list__desc">Updated responses to outreach emails as of April 21.</div>
+                      </div>
+                    </td>
+                    <td>Internal Research</td>
+                    <td>Eloise Lee</td>
+                    <td><span class="tm-pill tm-pill--neutral">Low</span></td>
+                    <td><span class="tm-pill tm-pill--success">Done</span></td>
+                    <td><span class="tm-pill tm-pill--danger">Overdue · Apr 21</span></td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+              
+            </section>
+          </div>
+        </div>
+
+        <div class="tm-tab-panel" id="kanban-panel" role="tabpanel" hidden>
+          <div class="tm-section-head">
+            <div>
+              <h3>Kanban Board</h3>
+              <p>카드를 드래그해서 `To Do / In Progress / Waiting / Done` 사이를 옮기면 상태가 바로 업데이트됩니다.</p>
+            </div>
+          </div>
+          <div class="tm-board">
+            
+            <div class="tm-column" data-status="To Do">
+              <div class="tm-column__head">
+                <div class="tm-column__title">To Do</div>
+                <div class="tm-column__count">2</div>
+              </div>
+              <div class="tm-column__stack">
+                
+                <article class="tm-task-card " draggable="true" data-task-id="1">
+                  <div>
+                    <h4>African org outreach list 검토</h4>
+                    <p>초기 리스트에서 우선 접촉 대상과 누락 연락처를 정리합니다.</p>
+                  </div>
+                  <div class="tm-meta">
+                    <span class="tm-pill tm-pill--danger">High</span>
+                    <span class="tm-pill tm-pill--warning">Due today</span>
+                  </div>
+                  <div class="tm-linkish">SDLFF Outreach · Admin User</div>
+                </article>
+                
+                <article class="tm-task-card " draggable="true" data-task-id="5">
+                  <div>
+                    <h4>Tagging information</h4>
+                    <p>Tags need to be added manually for each contact to ensure personalized categorization.</p>
+                  </div>
+                  <div class="tm-meta">
+                    <span class="tm-pill tm-pill--danger">High</span>
+                    <span class="tm-pill tm-pill--info">Due this week · Apr 27</span>
+                  </div>
+                  <div class="tm-linkish">Internal Research · Unassigned</div>
+                </article>
+                
+                
+              </div>
+            </div>
+            
+            <div class="tm-column" data-status="In Progress">
+              <div class="tm-column__head">
+                <div class="tm-column__title">In Progress</div>
+                <div class="tm-column__count">2</div>
+              </div>
+              <div class="tm-column__stack">
+                
+                <article class="tm-task-card " draggable="true" data-task-id="6">
+                  <div>
+                    <h4>Task Management System Development</h4>
+                    <p>Developing a Task Management System on Our Website</p>
+                  </div>
+                  <div class="tm-meta">
+                    <span class="tm-pill tm-pill--warning">Medium</span>
+                    <span class="tm-pill tm-pill--danger">Overdue · Apr 21</span>
+                  </div>
+                  <div class="tm-linkish">No project · Eloise Lee</div>
+                </article>
+                
+                <article class="tm-task-card " draggable="true" data-task-id="4">
+                  <div>
+                    <h4>Updating Outreach list</h4>
+                    <p>I am currently organizing and updating the database with the outreach emails I’ve sent so far.</p>
+                  </div>
+                  <div class="tm-meta">
+                    <span class="tm-pill tm-pill--warning">Medium</span>
+                    <span class="tm-pill tm-pill--info">Due this week · Apr 25</span>
+                  </div>
+                  <div class="tm-linkish">Internal Research · Eloise Lee</div>
+                </article>
+                
+                
+              </div>
+            </div>
+            
+            <div class="tm-column" data-status="Waiting / On Hold">
+              <div class="tm-column__head">
+                <div class="tm-column__title">Waiting / On Hold</div>
+                <div class="tm-column__count">1</div>
+              </div>
+              <div class="tm-column__stack">
+                
+                <article class="tm-task-card " draggable="true" data-task-id="3">
+                  <div>
+                    <h4>학교 관리자 연락처 업데이트</h4>
+                    <p>기존 연락처 중 bounced 처리된 항목을 교체하고 부서명 기준으로 정렬합니다.</p>
+                  </div>
+                  <div class="tm-meta">
+                    <span class="tm-pill tm-pill--warning">Medium</span>
+                    <span class="tm-pill tm-pill--danger">Overdue · Apr 19</span>
+                  </div>
+                  <div class="tm-linkish">iVIE School Outreach · Eloise Lee</div>
+                </article>
+                
+                
+              </div>
+            </div>
+            
+            <div class="tm-column" data-status="Done">
+              <div class="tm-column__head">
+                <div class="tm-column__title">Done</div>
+                <div class="tm-column__count">2</div>
+              </div>
+              <div class="tm-column__stack">
+                
+                <article class="tm-task-card " draggable="true" data-task-id="2">
+                  <div>
+                    <h4>My Father&#39;s Shadow 홍보 메일 2차 수정</h4>
+                    <p>1차 피드백 반영 후 제목/CTA를 다듬고 최종 발송안 직전 상태로 정리합니다.</p>
+                  </div>
+                  <div class="tm-meta">
+                    <span class="tm-pill tm-pill--danger">High</span>
+                    <span class="tm-pill tm-pill--danger">Overdue · Apr 21</span>
+                  </div>
+                  <div class="tm-linkish">DGC Promotions · Eloise Lee</div>
+                </article>
+                
+                <article class="tm-task-card " draggable="true" data-task-id="7">
+                  <div>
+                    <h4>Reply Update in CRM Directory</h4>
+                    <p>Updated responses to outreach emails as of April 21.</p>
+                  </div>
+                  <div class="tm-meta">
+                    <span class="tm-pill tm-pill--neutral">Low</span>
+                    <span class="tm-pill tm-pill--danger">Overdue · Apr 21</span>
+                  </div>
+                  <div class="tm-linkish">Internal Research · Eloise Lee</div>
+                </article>
+                
+                
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="tm-modal" id="task-detail-modal" aria-hidden="true">
+  <div class="tm-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="task-detail-modal-title">
+    <div class="tm-modal__head">
+      <div class="tm-modal__title" id="task-detail-modal-title">Task Detail</div>
+      <button type="button" class="tm-modal__close" id="task-detail-close" aria-label="Close task detail">×</button>
+    </div>
+    <div class="tm-modal__body" id="task-detail-content">
+      <div class="tm-modal__empty">Select a task to see its details.</div>
+    </div>
+  </div>
+</div>
+
+<div class="tm-modal" id="create-task-modal" aria-hidden="true">
+  <div class="tm-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="create-task-modal-title">
+    <div class="tm-modal__head">
+      <div class="tm-modal__title" id="create-task-modal-title">Create Task</div>
+      <button type="button" class="tm-modal__close" id="create-task-close" aria-label="Close create task">×</button>
+    </div>
+    <div class="tm-create-modal__body">
+      <form method="post" action="/task-flow/tasks" enctype="multipart/form-data" class="tm-form-grid">
+        <div class="tm-fieldset">
+          <div class="tm-fieldset__title">Quick Start</div>
+          <div class="tm-shortcuts">
+            <div class="tm-shortcut-list">
+              
+              <button
+                type="button"
+                class="tm-shortcut"
+                data-shortcut-key="dgc_film_outreach"
+                data-shortcut-label="DGC Film Outreach"
+                data-project-id="3"
+                data-priority="High"
+                data-status="To Do"
+                data-title-template="DGC Outreach: {film_title} outreach"
+                data-description-template="Coordinate DGC film outreach for {film_title}. Confirm target list, draft status, and next outreach step."
+                data-requires-dgc-film="true"
+              >
+                DGC Film Outreach
+              </button>
+              
+              <button
+                type="button"
+                class="tm-shortcut"
+                data-shortcut-key="school_outreach"
+                data-shortcut-label="School Outreach"
+                data-project-id="2"
+                data-priority="Medium"
+                data-status="To Do"
+                data-title-template="School outreach follow-up"
+                data-description-template="Update school contacts, confirm outreach status, and prepare the next follow-up action."
+                data-requires-dgc-film="false"
+              >
+                School Outreach
+              </button>
+              
+              <button
+                type="button"
+                class="tm-shortcut"
+                data-shortcut-key="internal_research"
+                data-shortcut-label="Internal Research"
+                data-project-id="4"
+                data-priority="Medium"
+                data-status="To Do"
+                data-title-template="Internal research task"
+                data-description-template="Capture the research goal, source list, and the next concrete deliverable."
+                data-requires-dgc-film="false"
+              >
+                Internal Research
+              </button>
+              
+            </div>
+            <div class="tm-shortcut-help" id="task-shortcut-help">Choose a shortcut to prefill common task settings for repeat work.</div>
+            <div class="tm-field tm-shortcut-film" id="task-shortcut-film-field">
+              <label>DGC Film</label>
+              <input type="hidden" id="task-shortcut-key" name="shortcut_key" value="">
+              <input type="hidden" id="task-shortcut-dgc-film" name="shortcut_dgc_film_id" value="">
+              <input type="search" id="task-shortcut-dgc-search" class="tm-shortcut-search" placeholder="Search DGC films by title">
+              <div class="tm-film-carousel">
+                <button type="button" class="tm-film-carousel__nav" id="task-shortcut-dgc-prev" aria-label="Previous films">&lt;</button>
+                <div class="tm-film-carousel__viewport">
+                  <div class="tm-film-picker" id="task-shortcut-dgc-film-picker">
+                    
+                    <button
+                      type="button"
+                      class="tm-film-card"
+                      data-film-id="26"
+                      data-film-title="A Savage Art: The Life &amp; Cartoons of Pat Oliphant"
+                    >
+                      <div class="tm-film-card__poster">
+                        <img src="/films/dgc/26/poster-image" alt="A Savage Art: The Life &amp; Cartoons of Pat Oliphant" loading="lazy" onerror="this.hidden = true; this.parentElement.querySelector('.tm-film-card__fallback').hidden = false;">
+                        <div class="tm-film-card__fallback" hidden>A Savage Art: The Life &amp; Cartoons of Pat Oliphant</div>
+                      </div>
+                      <div class="tm-film-card__body">
+                        <div class="tm-film-card__title">A Savage Art: The Life &amp; Cartoons of Pat Oliphant</div>
+                        <div class="tm-film-card__meta">Bill Banowsky · 2025</div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      class="tm-film-card"
+                      data-film-id="28"
+                      data-film-title="Bonkers Half-Assed Midnight: Demonwarp"
+                    >
+                      <div class="tm-film-card__poster">
+                        <img src="/films/dgc/28/poster-image" alt="Bonkers Half-Assed Midnight: Demonwarp" loading="lazy" onerror="this.hidden = true; this.parentElement.querySelector('.tm-film-card__fallback').hidden = false;">
+                        <div class="tm-film-card__fallback" hidden>Bonkers Half-Assed Midnight: Demonwarp</div>
+                      </div>
+                      <div class="tm-film-card__body">
+                        <div class="tm-film-card__title">Bonkers Half-Assed Midnight: Demonwarp</div>
+                        <div class="tm-film-card__meta">Emmett Alston · 1988</div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      class="tm-film-card"
+                      data-film-id="27"
+                      data-film-title="DGC Video: The Young Girls of Rochefort"
+                    >
+                      <div class="tm-film-card__poster">
+                        <img src="/films/dgc/27/poster-image" alt="DGC Video: The Young Girls of Rochefort" loading="lazy" onerror="this.hidden = true; this.parentElement.querySelector('.tm-film-card__fallback').hidden = false;">
+                        <div class="tm-film-card__fallback" hidden>DGC Video: The Young Girls of Rochefort</div>
+                      </div>
+                      <div class="tm-film-card__body">
+                        <div class="tm-film-card__title">DGC Video: The Young Girls of Rochefort</div>
+                        <div class="tm-film-card__meta">Jacques Demy · 1967</div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      class="tm-film-card"
+                      data-film-id="14"
+                      data-film-title="Lumière, Le Cinéma"
+                    >
+                      <div class="tm-film-card__poster">
+                        <img src="/films/dgc/14/poster-image" alt="Lumière, Le Cinéma" loading="lazy" onerror="this.hidden = true; this.parentElement.querySelector('.tm-film-card__fallback').hidden = false;">
+                        <div class="tm-film-card__fallback" hidden>Lumière, Le Cinéma</div>
+                      </div>
+                      <div class="tm-film-card__body">
+                        <div class="tm-film-card__title">Lumière, Le Cinéma</div>
+                        <div class="tm-film-card__meta">Thierry Frémaux · 2024</div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      class="tm-film-card"
+                      data-film-id="30"
+                      data-film-title="My Father’s Shadow"
+                    >
+                      <div class="tm-film-card__poster">
+                        <img src="/films/dgc/30/poster-image" alt="My Father’s Shadow" loading="lazy" onerror="this.hidden = true; this.parentElement.querySelector('.tm-film-card__fallback').hidden = false;">
+                        <div class="tm-film-card__fallback" hidden>My Father’s Shadow</div>
+                      </div>
+                      <div class="tm-film-card__body">
+                        <div class="tm-film-card__title">My Father’s Shadow</div>
+                        <div class="tm-film-card__meta">Akinola Davies Jr. · 2025</div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      class="tm-film-card"
+                      data-film-id="31"
+                      data-film-title="Palestine ’36"
+                    >
+                      <div class="tm-film-card__poster">
+                        <img src="/films/dgc/31/poster-image" alt="Palestine ’36" loading="lazy" onerror="this.hidden = true; this.parentElement.querySelector('.tm-film-card__fallback').hidden = false;">
+                        <div class="tm-film-card__fallback" hidden>Palestine ’36</div>
+                      </div>
+                      <div class="tm-film-card__body">
+                        <div class="tm-film-card__title">Palestine ’36</div>
+                        <div class="tm-film-card__meta">Annemarie Jacir · 2025</div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      class="tm-film-card"
+                      data-film-id="10"
+                      data-film-title="Sirāt"
+                    >
+                      <div class="tm-film-card__poster">
+                        <img src="/films/dgc/10/poster-image" alt="Sirāt" loading="lazy" onerror="this.hidden = true; this.parentElement.querySelector('.tm-film-card__fallback').hidden = false;">
+                        <div class="tm-film-card__fallback" hidden>Sirāt</div>
+                      </div>
+                      <div class="tm-film-card__body">
+                        <div class="tm-film-card__title">Sirāt</div>
+                        <div class="tm-film-card__meta">Oliver Laxe · 2025</div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      class="tm-film-card"
+                      data-film-id="11"
+                      data-film-title="The President’s Cake"
+                    >
+                      <div class="tm-film-card__poster">
+                        <img src="/films/dgc/11/poster-image" alt="The President’s Cake" loading="lazy" onerror="this.hidden = true; this.parentElement.querySelector('.tm-film-card__fallback').hidden = false;">
+                        <div class="tm-film-card__fallback" hidden>The President’s Cake</div>
+                      </div>
+                      <div class="tm-film-card__body">
+                        <div class="tm-film-card__title">The President’s Cake</div>
+                        <div class="tm-film-card__meta">Hasan Hadi · 2025</div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      class="tm-film-card"
+                      data-film-id="12"
+                      data-film-title="What Does That Nature Say to You"
+                    >
+                      <div class="tm-film-card__poster">
+                        <img src="/films/dgc/12/poster-image" alt="What Does That Nature Say to You" loading="lazy" onerror="this.hidden = true; this.parentElement.querySelector('.tm-film-card__fallback').hidden = false;">
+                        <div class="tm-film-card__fallback" hidden>What Does That Nature Say to You</div>
+                      </div>
+                      <div class="tm-film-card__body">
+                        <div class="tm-film-card__title">What Does That Nature Say to You</div>
+                        <div class="tm-film-card__meta">Hong Sang-soo · 2025</div>
+                      </div>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      class="tm-film-card"
+                      data-film-id="15"
+                      data-film-title="“This is America at 250: Frederick Wiseman” – Hospital"
+                    >
+                      <div class="tm-film-card__poster">
+                        <img src="/films/dgc/15/poster-image" alt="“This is America at 250: Frederick Wiseman” – Hospital" loading="lazy" onerror="this.hidden = true; this.parentElement.querySelector('.tm-film-card__fallback').hidden = false;">
+                        <div class="tm-film-card__fallback" hidden>“This is America at 250: Frederick Wiseman” – Hospital</div>
+                      </div>
+                      <div class="tm-film-card__body">
+                        <div class="tm-film-card__title">“This is America at 250: Frederick Wiseman” – Hospital</div>
+                        <div class="tm-film-card__meta">Frederick Wiseman · 1970</div>
+                      </div>
+                    </button>
+                    
+                  </div>
+                </div>
+                <button type="button" class="tm-film-carousel__nav" id="task-shortcut-dgc-next" aria-label="Next films">&gt;</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tm-field tm-field--full">
+          <label for="task-title">Title</label>
+          <input id="task-title" type="text" name="title" placeholder="예: African org outreach list 검토" required>
+        </div>
+        <div class="tm-field tm-field--full">
+          <label for="task-description">Description</label>
+          <textarea id="task-description" name="description" placeholder="업무 배경, 다음 액션, 막힌 포인트 등을 적어두면 좋습니다."></textarea>
+        </div>
+        <div class="tm-field">
+          <label for="task-assignee">Assignee</label>
+          <select id="task-assignee" name="assignee_user_id">
+            <option value="">Unassigned</option>
+            
+            <option value="1">Admin User</option>
+            
+            <option value="2">Eloise Lee</option>
+            
+          </select>
+        </div>
+        <div class="tm-field">
+          <label for="task-due">Due Date</label>
+          <input id="task-due" type="date" name="due_date">
+        </div>
+        <div class="tm-field">
+          <label for="task-priority">Priority</label>
+          <select id="task-priority" name="priority">
+            
+            <option value="High">High</option>
+            
+            <option value="Medium">Medium</option>
+            
+            <option value="Low">Low</option>
+            
+          </select>
+        </div>
+        <div class="tm-field">
+          <label for="task-project">Project</label>
+          <select id="task-project" name="project_id">
+            <option value="">No project</option>
+            
+            <option value="3">DGC Promotions</option>
+            
+            <option value="4">Internal Research</option>
+            
+            <option value="1">SDLFF Outreach</option>
+            
+            <option value="2">iVIE School Outreach</option>
+            
+          </select>
+        </div>
+        <div class="tm-field">
+          <label for="task-status">Status</label>
+          <select id="task-status" name="status">
+            
+            <option value="To Do">To Do</option>
+            
+            <option value="In Progress">In Progress</option>
+            
+            <option value="Waiting / On Hold">Waiting / On Hold</option>
+            
+            <option value="Done">Done</option>
+            
+          </select>
+        </div>
+        <div class="tm-fieldset">
+          <div class="tm-fieldset__title">Attachment</div>
+          <div class="tm-form-grid">
+            <div class="tm-field">
+              <label for="task-attachment-label">Label</label>
+              <input id="task-attachment-label" type="text" name="attachment_label" placeholder="예: Dropbox Folder / Draft PDF">
+            </div>
+            <div class="tm-field">
+              <label for="task-attachment-file">File</label>
+              <input id="task-attachment-file" type="file" name="attachment_file">
+            </div>
+            <div class="tm-field tm-field--full">
+              <label for="task-attachment-link">Shared Link</label>
+              <input id="task-attachment-link" type="url" name="attachment_external_url" placeholder="https://">
+            </div>
+            <div class="tm-field tm-field--full">
+              <label for="task-attachment-description">Description</label>
+              <textarea id="task-attachment-description" name="attachment_description" placeholder="파일과 링크가 무엇인지, 어떻게 써야 하는지 적어두면 좋습니다. 파일과 링크를 둘 다 넣어도 함께 저장됩니다."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="tm-field">
+          <label>&nbsp;</label>
+          <button type="submit" class="btn btn-primary">Create Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const tableRows = document.querySelectorAll('.tm-list tbody tr[data-task-id]');
+    const cards = document.querySelectorAll('.tm-task-card[draggable="true"]');
+    const columns = document.querySelectorAll('.tm-column[data-status]');
+    const tabs = document.querySelectorAll('.tm-tab[data-tab-target]');
+    const tabPanels = document.querySelectorAll('.tm-tab-panel');
+    const modalEl = document.getElementById('task-detail-modal');
+    const modalContentEl = document.getElementById('task-detail-content');
+    const modalCloseEl = document.getElementById('task-detail-close');
+    const createModalEl = document.getElementById('create-task-modal');
+    const createModalOpenEl = document.getElementById('open-create-task-modal');
+    const createModalCloseEl = document.getElementById('create-task-close');
+    const shortcutButtons = document.querySelectorAll('.tm-shortcut[data-shortcut-key]');
+    const shortcutHelpEl = document.getElementById('task-shortcut-help');
+    const shortcutFilmFieldEl = document.getElementById('task-shortcut-film-field');
+    const shortcutKeyInputEl = document.getElementById('task-shortcut-key');
+    const shortcutFilmInputEl = document.getElementById('task-shortcut-dgc-film');
+    const shortcutFilmSearchEl = document.getElementById('task-shortcut-dgc-search');
+    const shortcutFilmPickerEl = document.getElementById('task-shortcut-dgc-film-picker');
+    const shortcutFilmCardEls = document.querySelectorAll('.tm-film-card[data-film-id]');
+    const shortcutFilmPrevEl = document.getElementById('task-shortcut-dgc-prev');
+    const shortcutFilmNextEl = document.getElementById('task-shortcut-dgc-next');
+    const titleInputEl = document.getElementById('task-title');
+    const descriptionInputEl = document.getElementById('task-description');
+    const priorityInputEl = document.getElementById('task-priority');
+    const statusInputEl = document.getElementById('task-status');
+    const projectInputEl = document.getElementById('task-project');
+    let draggedTaskId = null;
+    let activeTaskId = null;
+    let activeShortcut = null;
+    let filmCarouselIndex = 0;
+
+    function getVisibleFilmCards() {
+      return Array.from(shortcutFilmCardEls).filter((card) => !card.hidden);
+    }
+
+    function getFilmCarouselStep() {
+      if (!shortcutFilmPickerEl || !shortcutFilmCardEls.length) return 1;
+      const viewport = shortcutFilmPickerEl.parentElement;
+      const cardWidth = shortcutFilmCardEls[0].offsetWidth || 150;
+      const gap = 12;
+      const viewportWidth = viewport ? viewport.clientWidth : 0;
+      return Math.max(1, Math.floor((viewportWidth + gap) / (cardWidth + gap)));
+    }
+
+    function wireTaskModalInteractions() {
+      if (!modalContentEl) return;
+      const messageList = modalContentEl.querySelector('.tm-message-list');
+      if (messageList) {
+        messageList.scrollTop = messageList.scrollHeight;
+      }
+      modalContentEl.querySelectorAll('.tm-mention-chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const textarea = modalContentEl.querySelector('#comment-body');
+          const mentionValue = chip.dataset.mentionValue;
+          if (!textarea || !mentionValue) return;
+          const currentValue = textarea.value;
+          const spacer = currentValue && !/\s$/.test(currentValue) ? ' ' : '';
+          textarea.value = `${currentValue}${spacer}${mentionValue} `;
+          textarea.focus();
+          textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        });
+      });
+    }
+
+    function activateTab(targetId) {
+      tabs.forEach((tab) => {
+        const isActive = tab.dataset.tabTarget === targetId;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      tabPanels.forEach((panel) => {
+        panel.hidden = panel.id !== targetId;
+      });
+      try {
+        window.localStorage.setItem('macsd.task.view', targetId);
+      } catch (error) {
+      }
+    }
+
+    function setActiveTask(taskId) {
+      tableRows.forEach((row) => {
+        row.classList.toggle('is-active', String(row.dataset.taskId) === String(taskId));
+      });
+      cards.forEach((card) => {
+        card.classList.toggle('is-active', String(card.dataset.taskId) === String(taskId));
+      });
+    }
+
+    async function openTaskModal(taskId, pushHistory) {
+      if (!taskId || !modalEl || !modalContentEl) return;
+      activeTaskId = taskId;
+      setActiveTask(taskId);
+      modalEl.classList.add('is-open');
+      modalEl.setAttribute('aria-hidden', 'false');
+      modalContentEl.innerHTML = '<div class="tm-loading">Loading task detail...</div>';
+
+      try {
+        const response = await fetch(`/task-flow/tasks/${taskId}/modal`);
+        if (!response.ok) throw new Error('failed');
+        modalContentEl.innerHTML = await response.text();
+        wireTaskModalInteractions();
+        if (pushHistory) {
+          const url = new URL(window.location.href);
+          url.searchParams.set('task_id', taskId);
+          window.history.pushState({ taskId }, '', url);
+        }
+      } catch (error) {
+        modalContentEl.innerHTML = '<div class="tm-modal__empty">Task detail could not be loaded.</div>';
+      }
+    }
+
+    function closeTaskModal(updateHistory) {
+      if (!modalEl || !modalContentEl) return;
+      modalEl.classList.remove('is-open');
+      modalEl.setAttribute('aria-hidden', 'true');
+      modalContentEl.innerHTML = '<div class="tm-modal__empty">Select a task to see its details.</div>';
+      activeTaskId = null;
+      setActiveTask('');
+      if (updateHistory) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('task_id');
+        window.history.pushState({}, '', url);
+      }
+    }
+
+    function openCreateTaskModal() {
+      if (!createModalEl) return;
+      createModalEl.classList.add('is-open');
+      createModalEl.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeCreateTaskModal() {
+      if (!createModalEl) return;
+      createModalEl.classList.remove('is-open');
+      createModalEl.setAttribute('aria-hidden', 'true');
+    }
+
+    function renderShortcutCopy(template, filmTitle) {
+      if (!template) return '';
+      return template.replaceAll('{film_title}', filmTitle || 'selected film');
+    }
+
+    function syncFilmCarousel() {
+      const visibleCards = getVisibleFilmCards();
+      if (!shortcutFilmPickerEl) return;
+      if (!visibleCards.length) {
+        shortcutFilmPickerEl.style.transform = 'translateX(0)';
+        if (shortcutFilmPrevEl) {
+          shortcutFilmPrevEl.disabled = true;
+        }
+        if (shortcutFilmNextEl) {
+          shortcutFilmNextEl.disabled = true;
+        }
+        return;
+      }
+      const cardWidth = visibleCards[0].offsetWidth || 150;
+      const gap = 12;
+      const visibleCount = getFilmCarouselStep();
+      const offset = filmCarouselIndex * (cardWidth + gap);
+      shortcutFilmPickerEl.style.transform = `translateX(-${offset}px)`;
+      const maxIndex = Math.max(0, visibleCards.length - visibleCount);
+      if (shortcutFilmPrevEl) {
+        shortcutFilmPrevEl.disabled = filmCarouselIndex <= 0;
+      }
+      if (shortcutFilmNextEl) {
+        shortcutFilmNextEl.disabled = filmCarouselIndex >= maxIndex;
+      }
+    }
+
+    function moveFilmCarousel(direction) {
+      const visibleCards = getVisibleFilmCards();
+      const visibleCount = getFilmCarouselStep();
+      const maxIndex = Math.max(0, visibleCards.length - visibleCount);
+      filmCarouselIndex = Math.max(0, Math.min(maxIndex, filmCarouselIndex + direction * visibleCount));
+      syncFilmCarousel();
+    }
+
+    function centerFilmCard(targetCard) {
+      const visibleCards = getVisibleFilmCards();
+      if (!targetCard || !visibleCards.length) return;
+      const visibleCount = getFilmCarouselStep();
+      const selectedIndex = visibleCards.indexOf(targetCard);
+      if (selectedIndex < 0) return;
+      const centeredIndex = selectedIndex - Math.floor(visibleCount / 2);
+      const maxIndex = Math.max(0, visibleCards.length - visibleCount);
+      filmCarouselIndex = Math.max(0, Math.min(maxIndex, centeredIndex));
+      syncFilmCarousel();
+    }
+
+    function filterShortcutFilms(query) {
+      const needle = String(query || '').trim().toLowerCase();
+      shortcutFilmCardEls.forEach((card) => {
+        const filmTitle = (card.dataset.filmTitle || '').toLowerCase();
+        card.hidden = needle && !filmTitle.includes(needle);
+      });
+      const visibleCards = getVisibleFilmCards();
+      if (!visibleCards.length) {
+        if (shortcutHelpEl) {
+          shortcutHelpEl.textContent = 'No DGC films match this search.';
+        }
+      } else if (activeShortcut && activeShortcut.dataset.requiresDgcFilm === 'true' && shortcutHelpEl) {
+        shortcutHelpEl.textContent = activeShortcut.dataset.shortcutLabel || 'Choose a DGC film.';
+      }
+      const selectedCard = Array.from(shortcutFilmCardEls).find((card) => card.classList.contains('is-selected') && !card.hidden);
+      if (selectedCard) {
+        centerFilmCard(selectedCard);
+      } else {
+        filmCarouselIndex = 0;
+        syncFilmCarousel();
+      }
+    }
+
+    function applyShortcut(shortcutButton) {
+      if (!shortcutButton) return;
+      activeShortcut = shortcutButton;
+      if (shortcutKeyInputEl) {
+        shortcutKeyInputEl.value = shortcutButton.dataset.shortcutKey || '';
+      }
+      shortcutButtons.forEach((button) => {
+        button.classList.toggle('is-active', button === shortcutButton);
+      });
+
+      const requiresFilm = shortcutButton.dataset.requiresDgcFilm === 'true';
+      if (shortcutHelpEl) {
+        shortcutHelpEl.textContent = shortcutButton.dataset.shortcutLabel || 'Shortcut selected.';
+      }
+      if (shortcutFilmFieldEl) {
+        shortcutFilmFieldEl.classList.toggle('is-visible', requiresFilm);
+      }
+      if (projectInputEl && shortcutButton.dataset.projectId) {
+        projectInputEl.value = shortcutButton.dataset.projectId;
+      }
+      if (priorityInputEl && shortcutButton.dataset.priority) {
+        priorityInputEl.value = shortcutButton.dataset.priority;
+      }
+      if (statusInputEl && shortcutButton.dataset.status) {
+        statusInputEl.value = shortcutButton.dataset.status;
+      }
+
+      if (!requiresFilm) {
+        if (titleInputEl && !titleInputEl.value.trim()) {
+          titleInputEl.value = renderShortcutCopy(shortcutButton.dataset.titleTemplate, '');
+        }
+        if (descriptionInputEl && !descriptionInputEl.value.trim()) {
+          descriptionInputEl.value = renderShortcutCopy(shortcutButton.dataset.descriptionTemplate, '');
+        }
+        if (shortcutFilmInputEl) {
+          shortcutFilmInputEl.value = '';
+        }
+        if (shortcutKeyInputEl) {
+          shortcutKeyInputEl.value = shortcutButton.dataset.shortcutKey || '';
+        }
+        shortcutFilmCardEls.forEach((card) => card.classList.remove('is-selected'));
+        return;
+      }
+
+      if (shortcutFilmCardEls.length) {
+        filmCarouselIndex = 0;
+        if (shortcutFilmSearchEl) {
+          shortcutFilmSearchEl.value = '';
+        }
+        filterShortcutFilms('');
+        syncFilmCarousel();
+      }
+      syncShortcutFilm();
+    }
+
+    function syncShortcutFilm(filmId, filmTitle) {
+      if (!activeShortcut || !shortcutFilmInputEl) return;
+      if (activeShortcut.dataset.requiresDgcFilm !== 'true') return;
+      if (filmId) {
+        shortcutFilmInputEl.value = filmId;
+      }
+      if (!filmTitle) return;
+      if (titleInputEl) {
+        titleInputEl.value = renderShortcutCopy(activeShortcut.dataset.titleTemplate, filmTitle);
+      }
+      if (descriptionInputEl && !descriptionInputEl.value.trim()) {
+        descriptionInputEl.value = renderShortcutCopy(activeShortcut.dataset.descriptionTemplate, filmTitle);
+      }
+      if (shortcutHelpEl) {
+        shortcutHelpEl.textContent = `${activeShortcut.dataset.shortcutLabel} ready for ${filmTitle}.`;
+      }
+    }
+
+    tableRows.forEach((row) => {
+      row.addEventListener('click', () => {
+        openTaskModal(row.dataset.taskId, true);
+      });
+    });
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        activateTab(tab.dataset.tabTarget);
+      });
+    });
+
+    shortcutButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        applyShortcut(button);
+      });
+    });
+
+    shortcutFilmCardEls.forEach((card) => {
+      card.addEventListener('click', () => {
+        shortcutFilmCardEls.forEach((item) => item.classList.remove('is-selected'));
+        card.classList.add('is-selected');
+        syncShortcutFilm(card.dataset.filmId, card.dataset.filmTitle || '');
+        centerFilmCard(card);
+      });
+    });
+
+    if (shortcutFilmSearchEl) {
+      shortcutFilmSearchEl.addEventListener('input', (event) => {
+        filterShortcutFilms(event.target.value);
+      });
+    }
+
+    if (shortcutFilmPrevEl) {
+      shortcutFilmPrevEl.addEventListener('click', () => moveFilmCarousel(-1));
+    }
+
+    if (shortcutFilmNextEl) {
+      shortcutFilmNextEl.addEventListener('click', () => moveFilmCarousel(1));
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener('click', () => {
+        if (draggedTaskId) return;
+        openTaskModal(card.dataset.taskId, true);
+      });
+      card.addEventListener('dragstart', () => {
+        draggedTaskId = card.dataset.taskId;
+      });
+      card.addEventListener('dragend', () => {
+        draggedTaskId = null;
+        columns.forEach((column) => column.classList.remove('is-drop-target'));
+      });
+    });
+
+    columns.forEach((column) => {
+      column.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        column.classList.add('is-drop-target');
+      });
+      column.addEventListener('dragleave', () => {
+        column.classList.remove('is-drop-target');
+      });
+      column.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        column.classList.remove('is-drop-target');
+        if (!draggedTaskId) return;
+
+        const nextStatus = column.dataset.status;
+        try {
+          const response = await fetch(`/task-flow/tasks/${draggedTaskId}/status`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ status: nextStatus })
+          });
+          if (!response.ok) throw new Error('failed');
+          window.location.reload();
+        } catch (error) {
+          window.alert('Task status update failed. Please try again.');
+        }
+      });
+    });
+
+    if (modalCloseEl) {
+      modalCloseEl.addEventListener('click', () => closeTaskModal(true));
+    }
+
+    if (createModalOpenEl) {
+      createModalOpenEl.addEventListener('click', openCreateTaskModal);
+    }
+
+    if (createModalCloseEl) {
+      createModalCloseEl.addEventListener('click', closeCreateTaskModal);
+    }
+
+    if (modalEl) {
+      modalEl.addEventListener('click', (event) => {
+        if (event.target === modalEl) closeTaskModal(true);
+      });
+    }
+
+    if (createModalEl) {
+      createModalEl.addEventListener('click', (event) => {
+        if (event.target === createModalEl) closeCreateTaskModal();
+      });
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modalEl && modalEl.classList.contains('is-open')) {
+        closeTaskModal(true);
+      }
+      if (event.key === 'Escape' && createModalEl && createModalEl.classList.contains('is-open')) {
+        closeCreateTaskModal();
+      }
+    });
+
+    window.addEventListener('popstate', () => {
+      const params = new URLSearchParams(window.location.search);
+      const taskId = params.get('task_id');
+      if (taskId) {
+        openTaskModal(taskId, false);
+      } else {
+        closeTaskModal(false);
+      }
+    });
+
+    const initialTaskId = new URLSearchParams(window.location.search).get('task_id');
+    let initialTabId = 'task-list-panel';
+    try {
+      initialTabId = window.localStorage.getItem('macsd.task.view') || initialTabId;
+    } catch (error) {
+    }
+    if (!document.getElementById(initialTabId)) {
+      initialTabId = 'task-list-panel';
+    }
+    activateTab(initialTabId);
+    syncFilmCarousel();
+    window.addEventListener('resize', syncFilmCarousel);
+    if (initialTaskId) {
+      openTaskModal(initialTaskId, false);
+    }
+  })();
+</script>
+
+    </main>
+  </div>
+
+</div>
+<aside
+  class="palette-panel is-booting"
+  id="palette-panel"
+  aria-hidden="false"
+  data-default-open="true"
+>
+  <div class="palette-panel__header" id="palette-drag-handle">
+    <div class="palette-panel__title">Palette</div>
+    <button
+      type="button"
+      class="palette-panel__close"
+      id="palette-close"
+      title="Hide palette"
+      aria-label="Hide palette"
+    >
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 8h8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="palette-panel__body">
+    <section class="palette-section">
+      <div class="palette-section__label">Recent</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="outreach-resources.html"
+            class="palette-tile palette-tile--outreach"
+            title="Outreach Resources"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--green"></span>
+            <span class="palette-tile__icon">OW</span>
+            <span class="palette-tile__label">Outreach Resources</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="194"
+            title="Pin Outreach Resources"
+            aria-label="Pin Outreach Resources"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="database-map.html"
+            class="palette-tile palette-tile--database_map"
+            title="San Diego Atlas"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">San Diego Atlas</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="193"
+            title="Pin San Diego Atlas"
+            aria-label="Pin San Diego Atlas"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="film-report.html"
+            class="palette-tile palette-tile--film_report"
+            title="Film Report"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">FR</span>
+            <span class="palette-tile__label">Film Report</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="192"
+            title="Pin Film Report"
+            aria-label="Pin Film Report"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="reports.html"
+            class="palette-tile palette-tile--reports"
+            title="Reports"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">RT</span>
+            <span class="palette-tile__label">Reports</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="191"
+            title="Pin Reports"
+            aria-label="Pin Reports"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="crm-report.html"
+            class="palette-tile palette-tile--crm_report"
+            title="CRM Report"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--blue"></span>
+            <span class="palette-tile__icon">RP</span>
+            <span class="palette-tile__label">CRM Report</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="190"
+            title="Pin CRM Report"
+            aria-label="Pin CRM Report"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="task-flow.html"
+            class="palette-tile palette-tile--task_flow"
+            title="Task Flow"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--gray"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Task Flow</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="189"
+            title="Pin Task Flow"
+            aria-label="Pin Task Flow"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="crm.html"
+            class="palette-tile palette-tile--crm_directory"
+            title="CRM Directory"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--blue"></span>
+            <span class="palette-tile__icon">CRM</span>
+            <span class="palette-tile__label">CRM Directory</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="8"
+            title="Pin CRM Directory"
+            aria-label="Pin CRM Directory"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="dashboard.html"
+            class="palette-tile palette-tile--dashboard"
+            title="Dashboard"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--green"></span>
+            <span class="palette-tile__icon">DB</span>
+            <span class="palette-tile__label">Dashboard</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin "
+            data-palette-pin
+            data-item-id="4"
+            title="Pin Dashboard"
+            aria-label="Pin Dashboard"
+          >•</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="palette-section__label">Pinned</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/sdlff/films/7"
+            class="palette-tile palette-tile--film"
+            title="ANGIE"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">ANGIE</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="34"
+            title="Unpin ANGIE"
+            aria-label="Unpin ANGIE"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/dgc/films/27"
+            class="palette-tile palette-tile--film"
+            title="DGC Video: The Young Girls of Rochefort"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">DGC Video: The Young Girls of Rochefort</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="18"
+            title="Unpin DGC Video: The Young Girls of Rochefort"
+            aria-label="Unpin DGC Video: The Young Girls of Rochefort"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="/dgc/films/28"
+            class="palette-tile palette-tile--film"
+            title="Bonkers Half-Assed Midnight: Demonwarp"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">PL</span>
+            <span class="palette-tile__label">Bonkers Half-Assed Midnight: Demonwarp</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="16"
+            title="Unpin Bonkers Half-Assed Midnight: Demonwarp"
+            aria-label="Unpin Bonkers Half-Assed Midnight: Demonwarp"
+          >•</button>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="outreach.html"
+            class="palette-tile palette-tile--outreach"
+            title="Outreach Projects"
+            
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">OW</span>
+            <span class="palette-tile__label">Outreach Projects</span>
+          </a>
+          <button
+            type="button"
+            class="palette-pin is-pinned"
+            data-palette-pin
+            data-item-id="5"
+            title="Unpin Outreach Projects"
+            aria-label="Unpin Outreach Projects"
+          >•</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="palette-section">
+      <div class="palette-section__label">Apps</div>
+      <div class="palette-grid">
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="https://www.canva.com/"
+            class="palette-tile palette-tile--app"
+            title="Canva"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">CV</span>
+            <span class="palette-tile__label">Canva</span>
+          </a>
+        </div>
+        
+        <div class="palette-tile-wrap">
+          <a
+            href="https://docs.google.com/spreadsheets/d/1uWRg1f2Odr7ErWQtmammraE3rF5q9bF1iFyqZ3fOpVk/edit?gid=1358102068#gid=1358102068"
+            class="palette-tile palette-tile--app"
+            title="CRM Sheet"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="palette-tile__dot palette-tile__dot--amber"></span>
+            <span class="palette-tile__icon">GS</span>
+            <span class="palette-tile__label">CRM Sheet</span>
+          </a>
+        </div>
+        
+      </div>
+    </section>
+  </div>
+</aside>
+<div class="chatbot-shell" data-chatbot-shell>
+  <button
+    type="button"
+    class="chatbot-restore"
+    id="chatbot-restore"
+    aria-controls="chatbot-panel"
+    hidden
+  >
+    Show assistant
+  </button>
+  <button
+    type="button"
+    class="chatbot-launcher"
+    id="chatbot-launcher"
+    aria-expanded="false"
+    aria-controls="chatbot-panel"
+  >
+    <span class="chatbot-launcher__pulse"></span>
+    <span class="chatbot-launcher__icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 10.5h8"></path>
+        <path d="M8 14h5"></path>
+        <path d="M12 3C7.03 3 3 6.58 3 11c0 2.1.92 4 2.42 5.42V21l4.07-2.26c.8.17 1.64.26 2.51.26 4.97 0 9-3.58 9-8s-4.03-8-9-8z"></path>
+      </svg>
+    </span>
+    <span class="chatbot-launcher__text">
+      <strong>Ask MACSD</strong>
+      <span>Need help in this workspace?</span>
+    </span>
+  </button>
+  <button
+    type="button"
+    class="chatbot-launcher-hide"
+    id="chatbot-hide"
+    aria-label="Hide chatbot"
+    title="Hide chatbot"
+  >
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 4l8 8"></path>
+      <path d="M12 4l-8 8"></path>
+    </svg>
+  </button>
+
+  <aside
+    class="chatbot-panel"
+    id="chatbot-panel"
+    aria-hidden="true"
+    data-chatbot-open="false"
+  >
+    <div class="chatbot-panel__header">
+      <div class="chatbot-panel__eyebrow">Assistant</div>
+      <div>
+        <div class="chatbot-panel__title">MACSD Helper</div>
+        <div class="chatbot-panel__subtitle">Ask about pages, workflows, or records.</div>
+      </div>
+      <button
+        type="button"
+        class="chatbot-panel__close"
+        id="chatbot-close"
+        aria-label="Close chatbot"
+      >
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M4 4l8 8"></path>
+          <path d="M12 4l-8 8"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="chatbot-panel__hide"
+        id="chatbot-panel-hide"
+        aria-label="Hide chatbot"
+      >
+        Hide
+      </button>
+    </div>
+
+    <div class="chatbot-panel__body">
+      <div class="chatbot-panel__intro">
+        <div class="chatbot-panel__badge">UI skeleton</div>
+        <p>
+          This is the shared chatbot shell. Next we can connect it to an API and pass page context from Flask.
+        </p>
+      </div>
+
+      <div class="chatbot-suggestions" aria-label="Suggested prompts">
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="How do I use this page?">How do I use this page?</button>
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="Where can I find film records?">Where can I find film records?</button>
+        <button type="button" class="chatbot-suggestion" data-chatbot-prompt="Help me navigate the CRM.">Help me navigate the CRM.</button>
+      </div>
+
+      <div class="chatbot-thread" id="chatbot-thread" aria-live="polite">
+        <article class="chatbot-message chatbot-message--bot">
+          <div class="chatbot-message__meta">MACSD Helper</div>
+          <div class="chatbot-message__bubble">
+            Hi there. I am ready for the backend hookup, but the UI is already in place so we can keep building from here.
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <form class="chatbot-composer" id="chatbot-form">
+      <label class="sr-only" for="chatbot-input">Chat message</label>
+      <textarea
+        id="chatbot-input"
+        class="chatbot-composer__input"
+        rows="1"
+        placeholder="Ask about this page or a workflow..."
+      ></textarea>
+      <button type="submit" class="chatbot-composer__submit">Send</button>
+    </form>
+  </aside>
+</div>
+<script src="static/js/main.js"></script>
+
+</body>
+</html>
